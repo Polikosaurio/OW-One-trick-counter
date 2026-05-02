@@ -1,5 +1,5 @@
 """
-Main Window - Complete GUI
+Main Window
 """
 
 import customtkinter as ctk
@@ -24,7 +24,6 @@ class MainWindow:
         self.root.resizable(False, False)
         
         ctk.set_appearance_mode("dark")
-        ctk.set_default_color_theme("blue")
         
         self._setup_ui()
         self._setup_tray()
@@ -36,13 +35,6 @@ class MainWindow:
             font=ctk.CTkFont(size=24, weight="bold")
         ).pack(pady=15)
         
-        ctk.CTkLabel(
-            self.root,
-            text="Select enemy hero & your hero",
-            font=ctk.CTkFont(size=12),
-            text_color="#888888"
-        ).pack(pady=(0, 10))
-        
         self.hero_selector = HeroSelector(self.root)
         self.hero_selector.pack(pady=5, padx=20, fill="both", expand=True)
         
@@ -51,117 +43,97 @@ class MainWindow:
         
         ctk.CTkButton(
             btn_frame,
-            text="Toggle Overlay",
+            text="Toggle Overlay (O)",
             command=self.toggle_overlay,
             width=140
         ).pack(side="left", padx=5, pady=10)
         
         ctk.CTkButton(
             btn_frame,
-            text="Mouse Lock",
+            text="Mouse Lock (M)",
             command=self.toggle_mouse_lock,
             width=140
         ).pack(side="left", padx=5, pady=10)
         
-        settings_frame = ctk.CTkFrame(self.root)
-        settings_frame.pack(pady=10, padx=20, fill="both", expand=True)
-        
-        ctk.CTkLabel(
-            settings_frame,
-            text="Settings",
-            font=ctk.CTkFont(size=14, weight="bold")
-        ).pack(pady=5)
+        settings = ctk.CTkFrame(self.root)
+        settings.pack(pady=10, padx=20, fill="x")
         
         self.start_var = ctk.BooleanVar(value=self.config.get("start_with_game", True))
         ctk.CTkCheckBox(
-            settings_frame,
-            text="Auto-start with Overwatch",
+            settings,
+            text="Auto-start with OW",
             variable=self.start_var,
-            command=self._save_settings
+            command=lambda: self.config.set("start_with_game", self.start_var.get())
         ).pack(anchor="w", padx=20)
         
-        opacity_frame = ctk.CTkFrame(settings_frame)
-        opacity_frame.pack(fill="x", padx=20, pady=5)
+        op_frame = ctk.CTkFrame(settings)
+        op_frame.pack(fill="x", padx=20, pady=5)
         
-        ctk.CTkLabel(opacity_frame, text="Overlay opacity:").pack(side="left", padx=5)
+        ctk.CTkLabel(op_frame, text="Opacity:").pack(side="left", padx=5)
         
         self.opacity_slider = ctk.CTkSlider(
-            opacity_frame,
-            from_=30,
-            to=100,
-            command=self._on_opacity_change
+            op_frame, from_=30, to=100,
+            command=self._on_opacity
         )
         self.opacity_slider.set(int(self.config.get("overlay_opacity", 0.85) * 100))
         self.opacity_slider.pack(side="left", padx=5, fill="x", expand=True)
         
-        pos_frame = ctk.CTkFrame(settings_frame)
+        pos_frame = ctk.CTkFrame(settings)
         pos_frame.pack(fill="x", padx=20, pady=5)
         
-        ctk.CTkLabel(pos_frame, text="Position X/Y:").pack(side="left", padx=5)
+        ctk.CTkLabel(pos_frame, text="Pos X/Y:").pack(side="left", padx=5)
         
-        self.x_entry = ctk.CTkEntry(pos_frame, width=60)
+        self.x_entry = ctk.CTkEntry(pos_frame, width=50)
         self.x_entry.insert(0, str(self.config.get("overlay_position", {}).get("x", 100)))
         self.x_entry.pack(side="left", padx=2)
         
-        self.y_entry = ctk.CTkEntry(pos_frame, width=60)
+        self.y_entry = ctk.CTkEntry(pos_frame, width=50)
         self.y_entry.insert(0, str(self.config.get("overlay_position", {}).get("y", 100)))
         self.y_entry.pack(side="left", padx=2)
         
         ctk.CTkButton(
-            pos_frame,
-            text="Save",
-            command=self._save_position,
-            width=60
+            pos_frame, text="Save", command=self._save_pos, width=50
         ).pack(side="left", padx=5)
         
         ctk.CTkLabel(
             self.root,
-            text=f"Overlay: {self.config.get('hotkey_toggle')} | Lock: {self.config.get('hotkey_mouse_lock')}",
+            text=f"Hotkeys: {self.config.get('hotkey_toggle')} / {self.config.get('hotkey_mouse_lock')}",
             font=ctk.CTkFont(size=10),
             text_color="#666666"
         ).pack(pady=5)
     
     def _setup_tray(self):
         try:
-            from pystray import MenuItem as TrayMenuItem
+            from pystray import MenuItem as MI
             import pystray
             from PIL import Image
             
-            assets_path = os.path.join(
-                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                "..", "Assets", "HeroUI", "tracer.png"
-            )
+            project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            icon_path = os.path.join(project_root, "..", "Assets", "HeroUI", "tracer.png")
             
-            if os.path.exists(assets_path):
-                icon = Image.open(assets_path).resize((64, 64), Image.LANCZOS)
+            if os.path.exists(icon_path):
+                icon = Image.open(icon_path).resize((64, 64), Image.LANCZOS)
             else:
                 icon = Image.new('RGB', (64, 64), color='#2196F3')
             
-            self._tray_icon = icon
-            
             menu = (
-                TrayMenuItem("Show Overlay", lambda: self.toggle_overlay()),
-                TrayMenuItem("Toggle Mouse Lock", lambda: self.toggle_mouse_lock()),
-                TrayMenuItem("---", lambda: None),
-                TrayMenuItem("Exit", lambda: self.quit())
+                MI("Toggle Overlay", lambda: self.toggle_overlay()),
+                MI("Toggle Mouse Lock", lambda: self.toggle_mouse_lock()),
+                MI("Exit", lambda: self.quit())
             )
             
             self.tray = pystray.Icon("OWCounter", icon, "OW Counter", menu)
-            
         except Exception as e:
-            print(f"[Tray] Warning: {e}")
+            print(f"[Tray] Error: {e}")
             self.tray = None
     
-    def _save_settings(self):
-        self.config.set("start_with_game", self.start_var.get())
-    
-    def _on_opacity_change(self, value):
-        opacity = value / 100.0
-        self.config.set("overlay_opacity", opacity)
+    def _on_opacity(self, val):
+        op = val / 100.0
+        self.config.set("overlay_opacity", op)
         if self.overlay and self.overlay.window:
-            self.overlay.window.attributes("-alpha", opacity)
+            self.overlay.window.attributes("-alpha", op)
     
-    def _save_position(self):
+    def _save_pos(self):
         try:
             x = int(self.x_entry.get())
             y = int(self.y_entry.get())
@@ -191,6 +163,7 @@ class MainWindow:
             self.mouse_lock_active = False
         else:
             rect = get_primary_monitor_rect()
+            print(f"[MouseLock] Locking to {rect}")
             MouseLock.clip(rect)
             self.mouse_lock_active = True
     
