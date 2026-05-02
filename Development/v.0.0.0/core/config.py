@@ -18,7 +18,18 @@ class Config:
         "cv_scoreboard_ocr": False,
     }
     
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+    
     def __init__(self):
+        if self._initialized:
+            return
+        self._initialized = True
         self.settings = self.DEFAULT_SETTINGS.copy()
         self.config_path = self._get_config_path()
         self.load()
@@ -26,7 +37,7 @@ class Config:
     def _get_config_path(self):
         app_data = os.getenv("APPDATA")
         if app_data:
-            config_dir = os.path.join(app_data, "OW2Counter")
+            config_dir = os.path.join(app_data, "OWCounter")
             os.makedirs(config_dir, exist_ok=True)
             return os.path.join(config_dir, "config.json")
         return "config.json"
@@ -56,11 +67,10 @@ class Config:
         self.save()
     
     @classmethod
-    def load(cls):
-        config = cls()
-        return config
+    def get_instance(cls):
+        return cls()
 
 
 if __name__ == "__main__":
-    cfg = Config.load()
+    cfg = Config()
     print(f"Config loaded: {cfg.settings}")

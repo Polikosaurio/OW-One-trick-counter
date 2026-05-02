@@ -17,7 +17,7 @@ class MainWindow:
         self.mouse_lock_active = False
         
         self.root = ctk.CTk()
-        self.root.title("OW2 One Trick Counter")
+        self.root.title("OW One Trick Counter")
         self.root.geometry("600x500")
         self.root.resizable(False, False)
         
@@ -31,7 +31,7 @@ class MainWindow:
         """Setup main UI"""
         title = ctk.CTkLabel(
             self.root,
-            text="OW2 One Trick Counter",
+            text="OW One Trick Counter",
             font=ctk.CTkFont(size=24, weight="bold")
         )
         title.pack(pady=20)
@@ -109,7 +109,7 @@ class MainWindow:
             if self.overlay:
                 self.overlay.hide()
             self.overlay_visible = False
-            print("[OW2 Counter] Overlay hidden")
+            print("[OW Counter] Overlay hidden")
         else:
             if not self.overlay:
                 self.overlay = GameOverlay(
@@ -118,7 +118,7 @@ class MainWindow:
                 )
             self.overlay.show()
             self.overlay_visible = True
-            print("[OW2 Counter] Overlay shown")
+            print("[OW Counter] Overlay shown")
     
     def toggle_mouse_lock(self):
         """Toggle mouse lock"""
@@ -127,17 +127,17 @@ class MainWindow:
         if self.mouse_lock_active:
             MouseLock.release()
             self.mouse_lock_active = False
-            print("[OW2 Counter] Mouse lock released")
+            print("[OW Counter] Mouse lock released")
         else:
             from core.mouse_lock import get_primary_monitor_rect
             rect = get_primary_monitor_rect()
             MouseLock.clip(rect)
             self.mouse_lock_active = True
-            print("[OW2 Counter] Mouse locked")
+            print("[OW Counter] Mouse locked")
     
     def run(self):
         """Start main loop"""
-        print("[OW2 Counter] Starting...")
+        print("[OW Counter] Starting...")
         
         if self.tray:
             import threading
