@@ -1,0 +1,29 @@
+# OW2 One Trick Counter - Dependencies
+# v.0.0.0
+
+# Core GUI
+customtkinter>=5.0
+
+# Hotkeys
+keyboard>=0.13
+
+# Windows API
+pywin32>=306
+
+# System tray
+pystray>=0.19
+
+# Screenshot
+pyscreeze>=0.1
+
+# Computer Vision
+opencv-python>=4.8
+
+# OCR
+pytesseract>=0.3
+
+# Process detection
+psutil>=5.9
+
+# Pillow (for icons)
+Pillow>=10.0

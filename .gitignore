@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Config local
+config.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Assets (grandes) - ignore binary images
+Assets/HeroUI/*.png
+!Assets/HeroUI/.gitkeep
