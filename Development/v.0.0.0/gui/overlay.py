@@ -4,9 +4,6 @@ Small clickable icon with strategy tooltip
 """
 
 import tkinter as tk
-import win32con
-import win32gui
-import win32api
 import os
 
 
@@ -16,38 +13,43 @@ class Overlay:
         self.selection = selection
         self.window = None
         self.visible = False
-        
+        self.tooltip = None
         self._create_window()
     
     def _create_window(self):
-        """Create overlay window"""
         self.window = tk.Tk()
         self.window.overrideredirect(True)
         self.window.attributes("-topmost", True)
-        self.window.attributes("-alpha", self.config.get("overlay_opacity", 0.85))
+        
+        opacity = self.config.get("overlay_opacity", 0.85)
+        self.window.attributes("-alpha", opacity)
         
         pos = self.config.get("overlay_position", {"x": 100, "y": 100})
         self.window.geometry(f"+{pos['x']}+{pos['y']}")
         
         self.window.configure(bg="black")
+        self.window.withdraw()
         
         self._setup_ui()
-        
-        self.window.withdraw()
         
         self.window.protocol("WM_DELETE_WINDOW", self.hide)
     
     def _setup_ui(self):
-        """Setup overlay UI"""
-        try:
-            from PIL import Image, ImageTk
-            
-            base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            icon_path = os.path.join(base, "Assets", "HeroUI", f"{self.selection['enemy']}.png")
-            
-            if os.path.exists(icon_path):
-                img = Image.open(icon_path)
-                img = img.resize((64, 64), Image.LANCZOS)
+        from PIL import Image, ImageTk
+        
+        hero = self.selection.get("enemy", "tracer")
+        
+        assets_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "..", "Assets", "HeroUI", f"{hero}.png"
+        )
+        
+        label = None
+        
+        if os.path.exists(assets_path):
+            try:
+                img = Image.open(assets_path)
+                img = img.resize((48, 48), Image.LANCZOS)
                 self.icon_image = ImageTk.PhotoImage(img)
                 
                 label = tk.Label(
@@ -56,58 +58,26 @@ class Overlay:
                     bg="black",
                     cursor="hand2"
                 )
-            else:
-                label = tk.Label(
-                    self.window,
-                    text=self.selection['enemy'][:3].upper(),
-                    bg="black",
-                    fg="white",
-                    font=("Arial", 24, "bold"),
-                    cursor="hand2"
-                )
-        except Exception as e:
+            except:
+                pass
+        
+        if not label:
             label = tk.Label(
                 self.window,
-                text=self.selection['enemy'][:3].upper(),
+                text=hero[:4].upper(),
                 bg="black",
                 fg="white",
-                font=("Arial", 24, "bold")
+                font=("Arial", 14, "bold"),
+                cursor="hand2"
             )
         
         label.pack(padx=2, pady=2)
         
-        label.bind("<Button-1>", self._on_click)
-        label.bind("<Enter>", self._show_tooltip)
-        label.bind("<Leave>", self._hide_tooltip)
-        
-        self.label = label
-        
-        self.tooltip = tk.Toplevel(self.window)
-        self.tooltip.overrideredirect(True)
-        self.tooltip.attributes("-topmost", True)
-        self.tooltip.attributes("-alpha", 0.95)
-        self.tooltip.configure(bg="#1a1a2e")
-        self.tooltip.withdraw()
-        
-        self._setup_tooltip_ui()
+        label.bind("<Button-1>", lambda e: self._toggle_tooltip())
+        label.bind("<Enter>", lambda e: self._show_tooltip())
+        label.bind("<Leave>", lambda e: self._hide_tooltip())
     
-    def _setup_tooltip_ui(self):
-        """Setup tooltip content"""
-        info_text = self._get_counter_text()
-        
-        label = tk.Label(
-            self.tooltip,
-            text=info_text,
-            bg="#1a1a2e",
-            fg="white",
-            font=("Arial", 10),
-            justify="left",
-            wraplength=250
-        )
-        label.pack(padx=10, pady=5)
-    
-    def _get_counter_text(self):
-        """Get counter advice text"""
+    def _get_advice_text(self):
         from core.counters import CounterDB
         
         enemy = self.selection.get("enemy", "")
@@ -119,69 +89,72 @@ class Overlay:
         if your:
             counter = CounterDB.get_counter(enemy, your)
             if counter:
-                return f"Playing {your}\n\nCounter: {counter['hero']}\n\n{counter['reason'][:150]}"
+                return f"Counter: {counter['hero']}\n\n{counter['reason'][:150]}"
         
         counters = CounterDB.get_all_counters(enemy, 3)
         if counters:
-            text = f"Best counters for {enemy}:\n\n"
+            text = f"Best vs {enemy}:\n"
             for c in counters:
-                text += f"• {c['hero']} ({c['role']})\n"
+                text += f"• {c['hero']}\n"
             return text
         
         return f"No data for {enemy}"
     
-    def _on_click(self, event):
-        """Handle click - toggle info"""
-        if self.tooltip.winfo_viewable():
+    def _toggle_tooltip(self):
+        if self.tooltip and self.tooltip.winfo_viewable():
             self.tooltip.withdraw()
         else:
-            self._show_tooltip(None)
+            self._show_tooltip()
     
-    def _show_tooltip(self, event):
-        """Show tooltip"""
-        if self.window.winfo_x() < 100:
-            x = self.window.winfo_x() + 80
-        else:
-            x = self.window.winfo_x() - 280
+    def _show_tooltip(self):
+        if not self.tooltip:
+            self.tooltip = tk.Toplevel(self.window)
+            self.tooltip.overrideredirect(True)
+            self.tooltip.attributes("-topmost", True)
+            self.tooltip.configure(bg="#1a1a2e")
+            
+            x = self.window.winfo_x() + 60
+            y = self.window.winfo_y()
+            self.tooltip.geometry(f"+{x}+{y}")
+            
+            text = self._get_advice_text()
+            
+            label = tk.Label(
+                self.tooltip,
+                text=text,
+                bg="#1a1a2e",
+                fg="white",
+                font=("Arial", 10),
+                justify="left",
+                wraplength=200,
+                padx=10,
+                pady=10
+            )
+            label.pack()
         
-        y = self.window.winfo_y()
-        self.tooltip.geometry(f"+{x}+{y}")
         self.tooltip.deiconify()
     
-    def _hide_tooltip(self, event):
-        """Hide tooltip"""
-        self.tooltip.withdraw()
+    def _hide_tooltip(self):
+        if self.tooltip:
+            self.tooltip.withdraw()
     
     def show(self):
-        """Show overlay"""
         if self.window:
             self.window.deiconify()
             self.visible = True
     
     def hide(self):
-        """Hide overlay"""
         if self.window:
             self.window.withdraw()
-            self.tooltip.withdraw()
+            if self.tooltip:
+                self.tooltip.withdraw()
             self.visible = False
     
     def toggle(self):
-        """Toggle visibility"""
         if self.visible:
             self.hide()
         else:
             self.show()
     
     def is_visible(self):
-        """Check if visible"""
         return self.visible
-
-
-if __name__ == "__main__":
-    from core.config import Config
-    cfg = Config.load()
-    selection = {"enemy": "widowmaker", "your": "winston"}
-    overlay = Overlay(cfg, selection)
-    overlay.show()
-    print("Overlay running. Press close to exit.")
-    overlay.window.mainloop()
