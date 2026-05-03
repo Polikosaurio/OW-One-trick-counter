@@ -3,9 +3,8 @@
   "role": "Support",
   "tags": {
     "healing": 0.8,
-    "peel": 1.0,
-    "anti_flank": 0.9,
-    "crowd_control": 0.8,
+    "peel": 0.5,
+    "crowd_control": 0.5,
     "utility": 0.8,
     "mobile": 0.6,
     "poke_from_cover": 0.9,
@@ -13,23 +12,28 @@
     "cover_dependent": 0.8,
     "exposed_vulnerable": 0.9,
     "loses_poke_duels": 0.8,
+    "weak_to_flank": 0.9,
+    "weak_to_dive": 0.8,
+    "struggles_vs_dive": 0.8,
+    "weak_to_close_combat": 0.9,
+    "struggles_vs_close_combat": 0.8,
+    "vulnerable_to_kiting": 0.4,
     "weak_to_sniper": 1.0,
     "weak_to_poke": 0.4,
     "weak_to_ranged": 0.5,
     "weak_to_hitscan": 0.4,
     "self_sustain": 0.6,
-    "escape_ability": 0.5,
+    "escape_ability": 0.4,
     "weak_to_sustained_damage": 0.4,
     "weak_to_anti_heal": 0.4,
     "weak_against_sharpshooter": 0.4,
     "weak_against_specialist": 0.3,
-    "strong_against_flanker": 0.7,
-    "strong_against_recon": 0.5
+    "weak_against_flanker": 0.7,
+    "weak_against_initiator": 0.5,
+    "strong_against_recon": 0.3
   },
   "best_against": [
     "genji",
-    "tracer",
-    "sombra",
     "reaper",
     "winston",
     "doomfist",
@@ -41,7 +45,10 @@
     "ashe",
     "pharah",
     "sigma",
-    "soldier76"
+    "soldier76",
+    "tracer",
+    "sombra",
+    "vendetta"
   ],
   "subrole": "survivor"
 }
