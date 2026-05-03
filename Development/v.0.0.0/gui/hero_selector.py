@@ -589,27 +589,30 @@ class HeroSelector(ctk.CTkFrame):
         for widget in self.alts_icons_frame.winfo_children():
             widget.destroy()
         
+        filter_mode = self.alts_filter_var.get()  # "Your Role" or "All Roles"
+        
         if self.selected_enemy:
-            # Get absolutely all counters sorted by score
             all_alts = db.get_all_counters(self.selected_enemy, limit=60)
             
-            # Determine the "current role" for filtering
-            current_role = db.get_role(self.selected_your) if self.selected_your else None
+            # Determine which role to filter by
+            if self.selected_your:
+                filter_role = db.get_role(self.selected_your)
+            else:
+                filter_role = db.get_role(self.selected_enemy)
             
-            # Apply "Your Role" filter when toggle is set AND we have a role to filter by
-            if self.alts_filter_var.get() == "Your Role" and current_role:
-                all_alts = [a for a in all_alts if a['role'] == current_role]
+            if filter_mode == "Your Role" and filter_role:
+                all_alts = [a for a in all_alts if a['role'] == filter_role]
                 if self.selected_your:
-                    self.alts_title_lbl.configure(text=f"BEST {current_role.upper()} ALTS")
+                    self.alts_title_lbl.configure(text=f"BEST {filter_role.upper()} ALTS")
                 else:
-                    self.alts_title_lbl.configure(text=f"WEAK TO ({current_role.upper()})")
+                    self.alts_title_lbl.configure(text=f"WEAK TO ({filter_role.upper()})")
             else:
                 if self.selected_your:
                     self.alts_title_lbl.configure(text="BEST ALTERNATIVES")
                 else:
-                    self.alts_title_lbl.configure(text=f"WEAK TO")
+                    self.alts_title_lbl.configure(text="WEAK TO")
             
-            # Filter out the currently selected enemy and your currently selected hero
+            # Filter out selected heroes
             all_alts = [a for a in all_alts if a['hero'] not in (self.selected_enemy, self.selected_your)]
             
             for alt in all_alts:
@@ -623,19 +626,19 @@ class HeroSelector(ctk.CTkFrame):
                 btn.pack(side="left", padx=2)
                 
         elif self.selected_your:
-            self.alts_title_lbl.configure(text="STRONG AGAINST")
-            # Encontrar a quién contrarresta mejor "Your Hero"
             strong_against = []
             for h in db._heroes.keys():
                 if h == self.selected_your: continue
-                # Evaluamos qué tan bueno es tu héroe contra 'h'
                 score = db._score_counter(h, self.selected_your)
                 strong_against.append({'hero': h, 'score': score, 'role': db.get_role(h)})
             
             strong_against.sort(key=lambda x: -x['score'])
             
-            # "Your Role" filter only makes sense when showing ally alternatives,
-            # not when showing enemy targets. Don't apply it here.
+            filter_role = db.get_role(self.selected_your)
+            if filter_mode == "Your Role" and filter_role:
+                strong_against = [a for a in strong_against if a['role'] == filter_role]
+            
+            self.alts_title_lbl.configure(text="STRONG AGAINST")
                 
             for alt in strong_against:
                 alt_img = self.hero_images.get(alt['hero'])
@@ -643,7 +646,6 @@ class HeroSelector(ctk.CTkFrame):
                     self.alts_icons_frame, text="", image=alt_img, width=34, height=34,
                     fg_color=self._get_color_for_score(alt['score'], cb_mode), 
                     border_width=0,
-                    # Al hacer clic en un enemigo frente al que somos fuertes, lo marcamos como ENEMIGO
                     command=lambda h=alt['hero']: self._on_enemy_click(h)
                 )
                 btn.pack(side="left", padx=2)
