@@ -590,7 +590,6 @@ class HeroSelector(ctk.CTkFrame):
             widget.destroy()
         
         if self.selected_enemy:
-            self.alts_title_lbl.configure(text="BEST ALTERNATIVES")
             # Get absolutely all counters sorted by score
             all_alts = db.get_all_counters(self.selected_enemy, limit=60)
             
@@ -600,7 +599,15 @@ class HeroSelector(ctk.CTkFrame):
             # Apply "Your Role" filter when toggle is set AND we have a role to filter by
             if self.alts_filter_var.get() == "Your Role" and current_role:
                 all_alts = [a for a in all_alts if a['role'] == current_role]
-                self.alts_title_lbl.configure(text=f"BEST {current_role.upper()} ALTS")
+                if self.selected_your:
+                    self.alts_title_lbl.configure(text=f"BEST {current_role.upper()} ALTS")
+                else:
+                    self.alts_title_lbl.configure(text=f"WEAK TO ({current_role.upper()})")
+            else:
+                if self.selected_your:
+                    self.alts_title_lbl.configure(text="BEST ALTERNATIVES")
+                else:
+                    self.alts_title_lbl.configure(text=f"WEAK TO")
             
             # Filter out the currently selected enemy and your currently selected hero
             all_alts = [a for a in all_alts if a['hero'] not in (self.selected_enemy, self.selected_your)]
