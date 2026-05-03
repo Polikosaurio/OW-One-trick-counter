@@ -144,16 +144,17 @@ class HeroSelector(ctk.CTkFrame):
         self.skill_rank_combo.pack(side="right", padx=5)
         ctk.CTkLabel(header_frame, text="Rank", font=ctk.CTkFont(size=9)).pack(side="right", padx=(0, 2))
         
-        # Smurf Alert Toggle
-        from core.counters import SMURF_EMOJI, SMURF_WARNING
-        self.smurf_var = ctk.BooleanVar(value=False)
-        self.smurf_toggle = ctk.CTkSwitch(
-            header_frame, text=f" {SMURF_EMOJI} Smurf Alert", 
-            variable=self.smurf_var, command=self._on_smurf_change, 
-            font=ctk.CTkFont(size=9), switch_width=30, switch_height=15,
-            fg_color="#3355FF", progress_color="#3366FF"
+        # Smurf Alert - clickable cube, blue only when active
+        from core.counters import SMURF_EMOJI
+        self.smurf_active = False
+        self.smurf_btn = ctk.CTkButton(
+            header_frame, text=f"{SMURF_EMOJI}", 
+            font=ctk.CTkFont(size=14), width=28, height=28,
+            fg_color="transparent", hover_color="#3355FF",
+            border_color="#555", border_width=2, corner_radius=4,
+            command=self._toggle_smurf
         )
-        self.smurf_toggle.pack(side="right", padx=5)
+        self.smurf_btn.pack(side="right", padx=5)
         
         self.roster_frame = ctk.CTkFrame(roster_container, fg_color="transparent")
         self.roster_frame.pack()
@@ -305,10 +306,15 @@ class HeroSelector(ctk.CTkFrame):
                     break
         self._schedule_update()
 
-    def _on_smurf_change(self):
-        # Toggle smurf suspicion mode
+    def _toggle_smurf(self):
+        """Toggle smurf alert: blue cube when active, transparent when not."""
+        self.smurf_active = not self.smurf_active
+        if self.smurf_active:
+            self.smurf_btn.configure(fg_color="#3355FF", border_color="#3355FF")
+        else:
+            self.smurf_btn.configure(fg_color="transparent", border_color="#555")
         if self._db:
-            self._db.set_smurf(self.smurf_var.get())
+            self._db.set_smurf(self.smurf_active)
         self._schedule_update()
 
     def _schedule_update(self):
@@ -569,7 +575,7 @@ class HeroSelector(ctk.CTkFrame):
         intensity = self.intensity_var.get()
         alts_filter = self.alts_filter_var.get()
         skill_rank = self.skill_rank_var.get()
-        smurf_active = self.smurf_var.get()
+        smurf_active = self.smurf_active
         current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity, alts_filter, skill_rank, smurf_active)
         if current_state == self._last_update_state:
             return
@@ -577,7 +583,7 @@ class HeroSelector(ctk.CTkFrame):
         
         # Apply smurf state to DB
         if self._db:
-            self._db.set_smurf(smurf_active)
+            self._db.set_smurf(self.smurf_active)
         
         # Paleta de selecciones principales
         enemy_c = "#FF9900" if cb_mode else "#FF4444"  # Orange vs Red
