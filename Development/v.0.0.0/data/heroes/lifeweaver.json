@@ -9,7 +9,14 @@
     "pull": 1.0,
     "main_support": 0.7,
     "weak_to_flank": 0.6,
-    "game_sense_intensive": 0.7
+    "game_sense_intensive": 0.7,
+    "self_sustain": 0.6,
+    "weak_to_anti_heal": 0.5,
+    "weak_to_dive": 0.5,
+    "weak_against_flanker": 0.5,
+    "weak_against_sharpshooter": 0.5,
+    "strong_against_bruiser": 0.4,
+    "strong_against_specialist": 0.3
   },
   "best_against": [
     "team"
@@ -18,5 +25,6 @@
     "genji",
     "tracer",
     "dva"
-  ]
+  ],
+  "subrole": "medic"
 }

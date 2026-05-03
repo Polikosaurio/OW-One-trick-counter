@@ -9,7 +9,17 @@
     "tanky": 0.9,
     "crowd_control": 0.7,
     "weak_to_poke": 0.8,
-    "static": 0.7
+    "static": 0.7,
+    "anchor": 0.7,
+    "frontline": 0.6,
+    "resistant_to_cc": 0.7,
+    "resistant_to_knockback": 0.7,
+    "low_mobility": 0.5,
+    "weak_to_flank": 0.5,
+    "weak_to_mobility": 0.4,
+    "strong_against_bruiser": 0.5,
+    "strong_against_initiator": 0.5,
+    "weak_against_specialist": 0.3
   },
   "best_against": [
     "team",
@@ -19,5 +29,6 @@
     "widowmaker",
     "pharah",
     "junkrat"
-  ]
+  ],
+  "subrole": "stalwart"
 }

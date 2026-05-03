@@ -1,17 +1,231 @@
 {
   "heroes": [
-    "ana", "anran", "ashe", "baptiste", "bastion", "brigitte", "cassidy", "domina", "doomfist", "dva",
-    "echo", "emre", "freja", "genji", "hanzo", "hazard", "illari", "jetpackcat", "junkerqueen", "junkrat",
-    "juno", "kiriko", "lifeweaver", "lucio", "mauga", "mei", "mercy", "mizuki", "moira", "orisa",
-    "pharah", "ramattra", "reaper", "reinhardt", "roadhog", "sierra", "sigma", "sojourn", "soldier76", "sombra",
-    "symmetra", "torbjorn", "tracer", "vendetta", "venture", "widowmaker", "winston", "wreckingball", "wuyang",
-    "zarya", "zenyatta"
+    "ana",
+    "anran",
+    "ashe",
+    "baptiste",
+    "bastion",
+    "brigitte",
+    "cassidy",
+    "domina",
+    "doomfist",
+    "dva",
+    "echo",
+    "emre",
+    "freja",
+    "genji",
+    "hanzo",
+    "hazard",
+    "illari",
+    "jetpackcat",
+    "junkerqueen",
+    "junkrat",
+    "juno",
+    "kiriko",
+    "lifeweaver",
+    "lucio",
+    "mauga",
+    "mei",
+    "mercy",
+    "mizuki",
+    "moira",
+    "orisa",
+    "pharah",
+    "ramattra",
+    "reaper",
+    "reinhardt",
+    "roadhog",
+    "sierra",
+    "sigma",
+    "sojourn",
+    "soldier76",
+    "sombra",
+    "symmetra",
+    "torbjorn",
+    "tracer",
+    "vendetta",
+    "venture",
+    "widowmaker",
+    "winston",
+    "wreckingball",
+    "wuyang",
+    "zarya",
+    "zenyatta"
   ],
   "count": 51,
   "roles": {
-    "Tank": ["dva", "orisa", "ramattra", "reinhardt", "roadhog", "sigma", "winston", "zarya", "wreckingball", "hazard", "junkerqueen", "doomfist", "domina", "mauga"],
-    "DPS": ["ashe", "bastion", "cassidy", "echo", "genji", "hanzo", "junkrat", "mei", "pharah", "reaper", "sojourn", "sombra", "symmetra", "torbjorn", "tracer", "venture", "widowmaker", "soldier76", "anran", "emre", "freja", "sierra", "vendetta"],
-    "Support": ["ana", "baptiste", "brigitte", "kiriko", "lifeweaver", "lucio", "mercy", "moira", "zenyatta", "illari", "juno", "wuyang", "mizuki", "jetpackcat"]
+    "Tank": [
+      "dva",
+      "orisa",
+      "ramattra",
+      "reinhardt",
+      "roadhog",
+      "sigma",
+      "winston",
+      "zarya",
+      "wreckingball",
+      "hazard",
+      "junkerqueen",
+      "doomfist",
+      "domina",
+      "mauga"
+    ],
+    "DPS": [
+      "ashe",
+      "bastion",
+      "cassidy",
+      "echo",
+      "genji",
+      "hanzo",
+      "junkrat",
+      "mei",
+      "pharah",
+      "reaper",
+      "sojourn",
+      "sombra",
+      "symmetra",
+      "torbjorn",
+      "tracer",
+      "venture",
+      "widowmaker",
+      "soldier76",
+      "anran",
+      "emre",
+      "freja",
+      "sierra",
+      "vendetta"
+    ],
+    "Support": [
+      "ana",
+      "baptiste",
+      "brigitte",
+      "kiriko",
+      "lifeweaver",
+      "lucio",
+      "mercy",
+      "moira",
+      "zenyatta",
+      "illari",
+      "juno",
+      "wuyang",
+      "mizuki",
+      "jetpackcat"
+    ]
   },
-  "updated": "2026-05-03"
+  "updated": "2026-05-03",
+  "subroles": {
+    "bruiser": [
+      "mauga",
+      "orisa",
+      "roadhog",
+      "zarya"
+    ],
+    "initiator": [
+      "dva",
+      "doomfist",
+      "hazard",
+      "winston",
+      "wreckingball"
+    ],
+    "stalwart": [
+      "domina",
+      "junkerqueen",
+      "ramattra",
+      "reinhardt",
+      "sigma"
+    ],
+    "sharpshooter": [
+      "ashe",
+      "cassidy",
+      "hanzo",
+      "sojourn",
+      "widowmaker"
+    ],
+    "flanker": [
+      "anran",
+      "genji",
+      "reaper",
+      "tracer",
+      "vendetta",
+      "venture"
+    ],
+    "specialist": [
+      "bastion",
+      "emre",
+      "junkrat",
+      "mei",
+      "soldier76",
+      "symmetra",
+      "torbjorn"
+    ],
+    "recon": [
+      "echo",
+      "freja",
+      "pharah",
+      "sierra",
+      "sombra"
+    ],
+    "tactician": [
+      "ana",
+      "baptiste",
+      "jetpackcat",
+      "lucio",
+      "zenyatta"
+    ],
+    "medic": [
+      "kiriko",
+      "lifeweaver",
+      "mercy",
+      "moira"
+    ],
+    "survivor": [
+      "brigitte",
+      "illari",
+      "juno",
+      "mizuki",
+      "wuyang"
+    ]
+  },
+  "subrole_info": {
+    "bruiser": {
+      "role": "Tank",
+      "passive": "Reduces critical damage received. At critical health, gain movement speed."
+    },
+    "initiator": {
+      "role": "Tank",
+      "passive": "Staying airborne lightly heals you."
+    },
+    "stalwart": {
+      "role": "Tank",
+      "passive": "Reduces knockbacks and slows received."
+    },
+    "sharpshooter": {
+      "role": "DPS",
+      "passive": "Critical hits reduce your movement ability cooldowns."
+    },
+    "flanker": {
+      "role": "DPS",
+      "passive": "Health packs restore more health."
+    },
+    "specialist": {
+      "role": "DPS",
+      "passive": "Eliminating an enemy briefly increases your reload speed."
+    },
+    "recon": {
+      "role": "DPS",
+      "passive": "Detect enemies below half health through walls after damaging them."
+    },
+    "tactician": {
+      "role": "Support",
+      "passive": "Gain excess ultimate charge that carries over after using your ultimate."
+    },
+    "medic": {
+      "role": "Support",
+      "passive": "Healing allies with your weapon also heals you."
+    },
+    "survivor": {
+      "role": "Support",
+      "passive": "Using a movement ability activates passive health regeneration."
+    }
+  }
 }

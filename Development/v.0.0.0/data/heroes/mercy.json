@@ -10,7 +10,13 @@
     "main_support": 0.8,
     "weak_to_flank": 0.8,
     "weak_to_dive": 0.8,
-    "low_aim_needed": 0.9
+    "low_aim_needed": 0.9,
+    "self_sustain": 0.6,
+    "weak_to_anti_heal": 0.5,
+    "weak_against_flanker": 0.5,
+    "weak_against_sharpshooter": 0.5,
+    "strong_against_bruiser": 0.4,
+    "strong_against_specialist": 0.3
   },
   "best_against": [
     "pocket_targets"
@@ -20,5 +26,6 @@
     "tracer",
     "dva",
     "winston"
-  ]
+  ],
+  "subrole": "medic"
 }

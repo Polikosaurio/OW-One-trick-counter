@@ -9,7 +9,16 @@
     "escape_ability": 0.7,
     "aim_intensive": 0.6,
     "weak_to_cc": 0.6,
-    "weak_to_poke": 0.5
+    "weak_to_poke": 0.5,
+    "assassination": 0.6,
+    "weak_to_aoe": 0.5,
+    "weak_to_sustained_damage": 0.4,
+    "weak_to_anti_flank": 0.5,
+    "weak_against_stalwart": 0.5,
+    "weak_against_survivor": 0.3,
+    "strong_against_sharpshooter": 0.7,
+    "strong_against_tactician": 0.6,
+    "strong_against_medic": 0.5
   },
   "best_against": [
     "supports",
@@ -20,5 +29,6 @@
     "cassidy",
     "roadhog",
     "symmetra"
-  ]
+  ],
+  "subrole": "flanker"
 }

@@ -9,7 +9,16 @@
     "main_support": 0.9,
     "escape_ability": 0.8,
     "weak_to_poke": 0.6,
-    "low_aim_needed": 0.8
+    "low_aim_needed": 0.8,
+    "self_sustain": 0.6,
+    "peel": 0.5,
+    "weak_to_anti_heal": 0.5,
+    "weak_to_dive": 0.5,
+    "weak_to_flank": 0.4,
+    "weak_against_flanker": 0.5,
+    "weak_against_sharpshooter": 0.5,
+    "strong_against_bruiser": 0.4,
+    "strong_against_specialist": 0.3
   },
   "best_against": [
     "team",
@@ -20,5 +29,6 @@
     "sombra",
     "zenyatta",
     "ana"
-  ]
+  ],
+  "subrole": "medic"
 }

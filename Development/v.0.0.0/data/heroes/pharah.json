@@ -9,7 +9,16 @@
     "burst_damage": 0.7,
     "air_control": 1.0,
     "weak_to_hitscan": 0.9,
-    "weak_to_anti_air": 0.8
+    "weak_to_anti_air": 0.8,
+    "info_gathering": 0.7,
+    "pick_potential": 0.6,
+    "dive_capability": 0.5,
+    "weak_to_aoe": 0.5,
+    "weak_to_sustained_damage": 0.4,
+    "weak_against_stalwart": 0.4,
+    "weak_against_flanker": 0.3,
+    "strong_against_tactician": 0.5,
+    "strong_against_medic": 0.4
   },
   "best_against": [
     "team",
@@ -20,5 +29,6 @@
     "bastion",
     "soldier76",
     "widowmaker"
-  ]
+  ],
+  "subrole": "recon"
 }

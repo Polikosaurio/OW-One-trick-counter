@@ -10,7 +10,14 @@
     "invulnerability": 0.7,
     "off_support": 0.9,
     "weak_to_flank": 0.5,
-    "game_sense_intensive": 0.6
+    "game_sense_intensive": 0.6,
+    "self_sustain": 0.6,
+    "weak_to_anti_heal": 0.5,
+    "weak_to_dive": 0.5,
+    "weak_against_flanker": 0.5,
+    "weak_against_sharpshooter": 0.5,
+    "strong_against_bruiser": 0.4,
+    "strong_against_specialist": 0.3
   },
   "best_against": [
     "genji",
@@ -24,5 +31,6 @@
     "cassidy",
     "sojourn",
     "hanzo"
-  ]
+  ],
+  "subrole": "medic"
 }

@@ -8,7 +8,16 @@
     "speed": 1.0,
     "orbital": 0.9,
     "off_support": 1.0,
-    "weak_to_flank": 0.5
+    "weak_to_flank": 0.5,
+    "self_sustain": 0.6,
+    "peel": 0.5,
+    "escape_ability": 0.5,
+    "weak_to_sustained_damage": 0.4,
+    "weak_to_anti_heal": 0.4,
+    "weak_against_sharpshooter": 0.4,
+    "weak_against_specialist": 0.3,
+    "strong_against_flanker": 0.4,
+    "strong_against_recon": 0.3
   },
   "best_against": [
     "divers"
@@ -17,5 +26,6 @@
     "genji",
     "tracer",
     "dva"
-  ]
+  ],
+  "subrole": "survivor"
 }

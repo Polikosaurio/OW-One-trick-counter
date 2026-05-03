@@ -12,7 +12,15 @@
     "weak_to_sniper": 1.0,
     "weak_to_ranged": 0.9,
     "weak_to_poke": 0.8,
-    "weak_to_hitscan": 0.7
+    "weak_to_hitscan": 0.7,
+    "self_sustain": 0.6,
+    "escape_ability": 0.5,
+    "weak_to_sustained_damage": 0.4,
+    "weak_to_anti_heal": 0.4,
+    "weak_against_sharpshooter": 0.4,
+    "weak_against_specialist": 0.3,
+    "strong_against_flanker": 0.4,
+    "strong_against_recon": 0.3
   },
   "best_against": [
     "genji",
@@ -30,5 +38,6 @@
     "pharah",
     "sigma",
     "soldier76"
-  ]
+  ],
+  "subrole": "survivor"
 }

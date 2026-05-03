@@ -9,7 +9,17 @@
     "escape_ability": 0.6,
     "aim_intensive": 0.7,
     "weak_to_dive": 0.6,
-    "weak_to_cc": 0.5
+    "weak_to_cc": 0.5,
+    "info_gathering": 0.7,
+    "pick_potential": 0.6,
+    "dive_capability": 0.5,
+    "weak_to_aoe": 0.5,
+    "weak_to_anti_air": 0.4,
+    "weak_to_sustained_damage": 0.4,
+    "weak_against_stalwart": 0.4,
+    "weak_against_flanker": 0.3,
+    "strong_against_tactician": 0.5,
+    "strong_against_medic": 0.4
   },
   "best_against": [
     "tanks",
@@ -20,5 +30,6 @@
     "dva",
     "genji",
     "tracer"
-  ]
+  ],
+  "subrole": "recon"
 }

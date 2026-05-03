@@ -9,7 +9,14 @@
     "tanky": 0.9,
     "hook": 1.0,
     "weak_to_cc": 0.5,
-    "no_shield": 0.0
+    "no_shield": 0.0,
+    "sustained_damage": 0.7,
+    "close_combat": 0.6,
+    "weak_to_poke": 0.6,
+    "weak_to_kiting": 0.5,
+    "vulnerable_when_low_hp": 0.4,
+    "weak_against_stalwart": 0.6,
+    "strong_against_initiator": 0.4
   },
   "best_against": [
     "team",
@@ -19,5 +26,6 @@
     "widowmaker",
     "pharah",
     "junkrat"
-  ]
+  ],
+  "subrole": "bruiser"
 }

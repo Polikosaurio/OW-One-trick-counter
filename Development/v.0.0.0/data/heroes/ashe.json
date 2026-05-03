@@ -10,7 +10,17 @@
     "one_shot": 0.3,
     "mobile": 0.4,
     "weak_to_flank": 0.5,
-    "low_mobility": 0.5
+    "low_mobility": 0.5,
+    "critical_damage": 0.7,
+    "long_range": 0.7,
+    "pick_potential": 0.6,
+    "weak_to_dive": 0.8,
+    "weak_to_close_combat": 0.6,
+    "weak_against_flanker": 0.7,
+    "weak_against_initiator": 0.7,
+    "strong_against_tactician": 0.5,
+    "strong_against_medic": 0.4,
+    "strong_against_specialist": 0.4
   },
   "best_against": [
     "widowmaker",
@@ -24,5 +34,6 @@
     "tracer",
     "winston",
     "dva"
-  ]
+  ],
+  "subrole": "sharpshooter"
 }

@@ -561,7 +561,7 @@ class HeroSelector(ctk.CTkFrame):
         
         if self.selected_enemy and self.selected_your:
             if self.selected_enemy == self.selected_your:
-                advice_text = f"⚔️ MIRROR MATCH: {your_name} vs {enemy_name} ⚔️\n\nThis is a pure skill matchup. Both heroes share the exact same strengths and weaknesses.\n\nTACTICS:\n• Victory depends heavily on superior mechanical execution and better cooldown management.\n• Focus on out-positioning your counterpart.\n• Wait for them to use their defensive/escape cooldowns before you commit yours."
+                advice_text = f"[MIRROR MATCH] {your_name} vs {enemy_name}\n\nThis is a pure skill matchup. Both heroes share the exact same strengths and weaknesses.\n\nTACTICS:\n- Victory depends heavily on superior mechanical execution and better cooldown management.\n- Focus on out-positioning your counterpart.\n- Wait for them to use their defensive/escape cooldowns before you commit yours."
             else:
                 counter = db.get_counter(self.selected_enemy, self.selected_your)
                 advice_text = f"MATCHUP: {your_name} vs {enemy_name}\n\n{counter.get('reason', 'No data')}"

@@ -9,7 +9,20 @@
     "aim_intensive": 0.7,
     "close_combat": 0.6,
     "weak_to_mobility": 0.6,
-    "no_self_defense": 0.4
+    "no_self_defense": 0.4,
+    "sniper": 0.7,
+    "critical_damage": 0.7,
+    "long_range": 0.7,
+    "pick_potential": 0.6,
+    "weak_to_dive": 0.8,
+    "weak_to_flank": 0.7,
+    "weak_to_close_combat": 0.6,
+    "low_mobility": 0.5,
+    "weak_against_flanker": 0.7,
+    "weak_against_initiator": 0.7,
+    "strong_against_tactician": 0.5,
+    "strong_against_medic": 0.4,
+    "strong_against_specialist": 0.4
   },
   "best_against": [
     "genji",
@@ -23,5 +36,6 @@
     "dva",
     "winston",
     "echo"
-  ]
+  ],
+  "subrole": "sharpshooter"
 }

@@ -10,7 +10,16 @@
     "spam": 0.5,
     "off_support": 0.9,
     "weak_to_poke": 0.7,
-    "aim_intensive": 0.2
+    "aim_intensive": 0.2,
+    "ultimate_economy": 0.8,
+    "utility": 0.6,
+    "game_sense_intensive": 0.5,
+    "weak_to_dive": 0.6,
+    "weak_to_flank": 0.5,
+    "low_mobility": 0.5,
+    "weak_against_flanker": 0.6,
+    "weak_against_initiator": 0.6,
+    "strong_against_bruiser": 0.3
   },
   "best_against": [
     "dva",
@@ -22,5 +31,6 @@
     "widowmaker",
     "cassidy",
     "hanzo"
-  ]
+  ],
+  "subrole": "tactician"
 }

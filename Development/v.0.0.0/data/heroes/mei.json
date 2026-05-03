@@ -9,7 +9,17 @@
     "survival": 0.8,
     "wall": 0.8,
     "weak_to_flank": 0.5,
-    "no_self_defense": 0.4
+    "no_self_defense": 0.4,
+    "area_denial": 0.6,
+    "sustained_damage": 0.6,
+    "utility": 0.5,
+    "zone_control": 0.5,
+    "weak_to_dive": 0.6,
+    "weak_to_long_range": 0.5,
+    "weak_against_flanker": 0.5,
+    "weak_against_initiator": 0.5,
+    "strong_against_sharpshooter": 0.4,
+    "strong_against_survivor": 0.3
   },
   "best_against": [
     "dva",
@@ -22,5 +32,6 @@
     "pharah",
     "echo",
     "divers"
-  ]
+  ],
+  "subrole": "specialist"
 }

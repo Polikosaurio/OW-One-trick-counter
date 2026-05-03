@@ -10,7 +10,16 @@
     "escape_ability": 0.9,
     "anti_utility": 0.9,
     "weak_to_corr": 0.5,
-    "game_sense_intensive": 0.7
+    "game_sense_intensive": 0.7,
+    "info_gathering": 0.7,
+    "pick_potential": 0.6,
+    "weak_to_aoe": 0.5,
+    "weak_to_anti_air": 0.4,
+    "weak_to_sustained_damage": 0.4,
+    "weak_against_stalwart": 0.4,
+    "weak_against_flanker": 0.3,
+    "strong_against_tactician": 0.5,
+    "strong_against_medic": 0.4
   },
   "best_against": [
     "supports",
@@ -20,5 +29,6 @@
     "cassidy",
     "brigitte",
     "mercy"
-  ]
+  ],
+  "subrole": "recon"
 }

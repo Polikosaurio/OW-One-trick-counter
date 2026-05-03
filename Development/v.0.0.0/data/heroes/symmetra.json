@@ -9,7 +9,15 @@
     "turrent": 1.0,
     "utility": 0.9,
     "weak_to_flank": 0.7,
-    "static": 0.8
+    "static": 0.8,
+    "sustained_damage": 0.6,
+    "zone_control": 0.5,
+    "weak_to_dive": 0.6,
+    "weak_to_long_range": 0.5,
+    "weak_against_flanker": 0.5,
+    "weak_against_initiator": 0.5,
+    "strong_against_sharpshooter": 0.4,
+    "strong_against_survivor": 0.3
   },
   "best_against": [
     "team",
@@ -19,5 +27,6 @@
     "dva",
     "winston",
     "genji"
-  ]
+  ],
+  "subrole": "specialist"
 }
