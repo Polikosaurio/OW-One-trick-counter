@@ -106,13 +106,24 @@ TAG_OPPOSITES = {
     "weak_vs_sustained_poke": "sustained_damage",
     # Le cuesta en combate cerrado
     "struggles_vs_close_combat": "close_combat",
+    # Vulnerable a hack que deshabilita habilidades
+    "weak_to_hack": "anti_flank",
+    # Vulnerable a cleanse que elimina DoT/buffs
+    "weak_to_cleanse": "dot_damage",
+    # Vulnerable a absorcion de proyectiles
+    "weak_to_projectile_absorption": "projectile",
+    # Vulnerable a barreras que bloquean daño
+    "weak_to_barrier": "shield_break",
 }
 
 # Tags that are inherently good for a hero to have regardless of matchup
 GENERIC_GOOD_TAGS = {"healing", "peel", "anti_flank", "utility", "versatile",
     "close_quarters_dominant", "strong_cover_utilization", "high_burst_combo",
     "ally_transport", "projectile_absorption", "pick_potential_from_range",
-    "dive_synergy", "zone_lockdown", "shield_break", "angle_denial"}
+    "dive_synergy", "zone_lockdown", "shield_break", "angle_denial",
+    "tracking_ability", "invulnerability_frames", "dot_damage",
+    "damage_reduction", "deflect_melee", "block_ability",
+    "burst_healing", "sustained_healing"}
 
 # Subrole descriptions for advice generation
 SUBROLE_INFO = {
@@ -141,6 +152,19 @@ MATCHUP_LABELS = {
     "struggles_vs_dive":      "dive compositions",
     "weak_vs_sustained_poke": "sustained poke",
     "struggles_vs_close_combat": "close combat",
+    "weak_to_hack":          "hack vulnerability",
+    "weak_to_cleanse":       "cleanse/sustain",
+    "weak_to_projectile_absorption": "projectile absorption",
+    "weak_to_barrier":       "barrier pressure",
+    # Kit strength tags
+    "tracking_ability":      "tracking shots",
+    "invulnerability_frames": "invulnerability",
+    "dot_damage":            "burn/dot damage",
+    "damage_reduction":      "damage mitigation",
+    "deflect_melee":         "melee deflection",
+    "block_ability":         "block/parry",
+    "burst_healing":         "burst healing",
+    "sustained_healing":     "sustained healing",
     # Kit strength tags
     "poke_from_cover":        "poke from cover",
     "strong_cover_utilization": "cover fights",
@@ -335,6 +359,12 @@ class CounterDB:
         enemy_skill = self._get_skill_modifier(enemy_hero, rank_override=enemy_rank)
         # Invert: 1.3 skill → 0.77 weakness mitigation
         enemy_weakness_mod = 2.0 - enemy_skill
+
+        # Smurf bonus: flat reduction to weakness exploitability
+        # Represents better positioning, cooldown awareness, and game sense
+        # that a smurf player has regardless of hero choice
+        if self._smurf_suspected:
+            enemy_weakness_mod *= 0.75  # 25% harder to exploit weaknesses
 
         # My skill: determines how well I exploit enemy weaknesses
         my_mod = self._get_skill_modifier(my_hero)
