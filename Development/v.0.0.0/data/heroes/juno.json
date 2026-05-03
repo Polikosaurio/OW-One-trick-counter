@@ -19,13 +19,5 @@
     "strong_against_flanker": 0.4,
     "strong_against_recon": 0.3
   },
-  "best_against": [
-    "divers"
-  ],
-  "counters_me": [
-    "genji",
-    "tracer",
-    "dva"
-  ],
   "subrole": "survivor"
 }

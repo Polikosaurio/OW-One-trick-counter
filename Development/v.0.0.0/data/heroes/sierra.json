@@ -27,32 +27,5 @@
     "strong_against_medic": 0.5,
     "strong_against_recon": 0.4
   },
-  "best_against": [
-    "genji",
-    "tracer",
-    "anran",
-    "pharah",
-    "echo",
-    "lucio",
-    "mercy",
-    "moira",
-    "kiriko",
-    "widowmaker",
-    "hanzo"
-  ],
-  "counters_me": [
-    "sombra",
-    "dva",
-    "winston",
-    "brigitte",
-    "juno",
-    "sigma",
-    "anran",
-    "genji",
-    "tracer",
-    "jetpackcat",
-    "sojourn",
-    "kiriko"
-  ],
   "subrole": "recon"
 }

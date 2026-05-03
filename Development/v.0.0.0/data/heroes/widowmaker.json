@@ -24,24 +24,5 @@
     "strong_against_medic": 0.4,
     "strong_against_specialist": 0.4
   },
-  "best_against": [
-    "pharah",
-    "zenyatta",
-    "ana",
-    "torbjorn",
-    "cassidy",
-    "mei",
-    "junkrat",
-    "baptiste"
-  ],
-  "counters_me": [
-    "winston",
-    "dva",
-    "sombra",
-    "genji",
-    "tracer",
-    "doomfist",
-    "wreckingball"
-  ],
   "subrole": "sharpshooter"
 }

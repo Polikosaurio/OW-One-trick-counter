@@ -22,19 +22,5 @@
     "strong_against_sharpshooter": 0.4,
     "strong_against_survivor": 0.3
   },
-  "best_against": [
-    "reinhardt",
-    "sigma",
-    "zarya",
-    "roadhog",
-    "team"
-  ],
-  "counters_me": [
-    "sombra",
-    "genji",
-    "tracer",
-    "winston",
-    "dva"
-  ],
   "subrole": "specialist"
 }

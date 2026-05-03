@@ -20,14 +20,5 @@
     "strong_against_sharpshooter": 0.4,
     "strong_against_survivor": 0.3
   },
-  "best_against": [
-    "team",
-    "static_defense"
-  ],
-  "counters_me": [
-    "dva",
-    "winston",
-    "genji"
-  ],
   "subrole": "specialist"
 }

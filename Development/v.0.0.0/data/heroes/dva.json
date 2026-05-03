@@ -21,18 +21,5 @@
     "strong_against_sharpshooter": 0.5,
     "strong_against_tactician": 0.4
   },
-  "best_against": [
-    "widowmaker",
-    "pharah",
-    "hanzo",
-    "zenyatta",
-    "mercy"
-  ],
-  "counters_me": [
-    "ramattra",
-    "zarya",
-    "sigma",
-    "roadhog"
-  ],
   "subrole": "initiator"
 }

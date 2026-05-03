@@ -30,31 +30,5 @@
     "strong_against_tactician": 0.5,
     "strong_against_medic": 0.4
   },
-  "best_against": [
-    "genji",
-    "winston",
-    "wreckingball",
-    "tracer",
-    "dva",
-    "doomfist",
-    "anran",
-    "vendetta",
-    "sombra",
-    "mercy",
-    "ana"
-  ],
-  "counters_me": [
-    "ashe",
-    "sombra",
-    "hanzo",
-    "reinhardt",
-    "zarya",
-    "ana",
-    "bastion",
-    "sigma",
-    "dva",
-    "zenyatta",
-    "soldier76"
-  ],
   "subrole": "initiator"
 }

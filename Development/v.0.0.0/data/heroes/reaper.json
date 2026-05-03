@@ -28,16 +28,5 @@
     "strong_against_medic": 0.5,
     "strong_against_bruiser": 0.6
   },
-  "best_against": [
-    "tanks",
-    "close_quarters"
-  ],
-  "counters_me": [
-    "widowmaker",
-    "hanzo",
-    "cassidy",
-    "ashe",
-    "soldier76"
-  ],
   "subrole": "flanker"
 }

@@ -19,18 +19,5 @@
     "weak_against_initiator": 0.6,
     "strong_against_bruiser": 0.3
   },
-  "best_against": [
-    "junkrat",
-    "pharah",
-    "reaper",
-    "genji",
-    "tracer"
-  ],
-  "counters_me": [
-    "genji",
-    "tracer",
-    "dva",
-    "winston"
-  ],
   "subrole": "tactician"
 }

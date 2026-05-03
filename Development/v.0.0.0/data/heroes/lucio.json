@@ -21,16 +21,5 @@
     "weak_against_initiator": 0.6,
     "strong_against_bruiser": 0.3
   },
-  "best_against": [
-    "dva",
-    "winston",
-    "genji",
-    "divers"
-  ],
-  "counters_me": [
-    "widowmaker",
-    "cassidy",
-    "hanzo"
-  ],
   "subrole": "tactician"
 }

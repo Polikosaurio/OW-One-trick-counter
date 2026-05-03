@@ -23,18 +23,5 @@
     "strong_against_medic": 0.4,
     "strong_against_specialist": 0.4
   },
-  "best_against": [
-    "widowmaker",
-    "pharah",
-    "zenyatta",
-    "mercy",
-    "team"
-  ],
-  "counters_me": [
-    "genji",
-    "tracer",
-    "winston",
-    "dva"
-  ],
   "subrole": "sharpshooter"
 }

@@ -26,27 +26,5 @@
     "strong_against_medic": 0.4,
     "cooldown_dependent": 0.6
   },
-  "best_against": [
-    "pharah",
-    "echo",
-    "zenyatta",
-    "ana",
-    "moira",
-    "lucio",
-    "mercy"
-  ],
-  "counters_me": [
-    "widowmaker",
-    "hanzo",
-    "cassidy",
-    "ashe",
-    "tracer",
-    "genji",
-    "doomfist",
-    "reaper",
-    "sombra",
-    "roadhog",
-    "zarya"
-  ],
   "subrole": "recon"
 }

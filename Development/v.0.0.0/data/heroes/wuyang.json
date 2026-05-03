@@ -35,27 +35,5 @@
     "strong_against_recon": 0.3,
     "cooldown_dependent": 0.5
   },
-  "best_against": [
-    "ana",
-    "zenyatta",
-    "mercy",
-    "moira",
-    "genji",
-    "reaper",
-    "winston",
-    "doomfist",
-    "venture"
-  ],
-  "counters_me": [
-    "widowmaker",
-    "hanzo",
-    "ashe",
-    "pharah",
-    "sigma",
-    "soldier76",
-    "tracer",
-    "sombra",
-    "vendetta"
-  ],
   "subrole": "survivor"
 }

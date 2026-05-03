@@ -19,18 +19,5 @@
     "strong_against_bruiser": 0.4,
     "strong_against_specialist": 0.3
   },
-  "best_against": [
-    "genji",
-    "tracer",
-    "dva",
-    "winston",
-    "divers"
-  ],
-  "counters_me": [
-    "widowmaker",
-    "cassidy",
-    "sojourn",
-    "hanzo"
-  ],
   "subrole": "medic"
 }

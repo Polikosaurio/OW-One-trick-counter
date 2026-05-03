@@ -18,14 +18,5 @@
     "strong_against_bruiser": 0.4,
     "strong_against_specialist": 0.3
   },
-  "best_against": [
-    "pocket_targets"
-  ],
-  "counters_me": [
-    "genji",
-    "tracer",
-    "dva",
-    "winston"
-  ],
   "subrole": "medic"
 }

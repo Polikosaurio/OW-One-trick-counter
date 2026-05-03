@@ -1,13 +1,16 @@
 """
-Counter Database v2.3 - Tag-based System with Skill Scaling & Smurf Detection
-Provides strategic advice based on hero tag matching, adjusted by player skill rank.
-Counters are scored and sorted so the best ones come first.
+Counter Database v3.0 - Fully Dynamic Tag-based System
+All matchups computed from tag weights + skill rank + map phase context.
+No hardcoded hero lists (best_against / counters_me removed).
 """
 
 import json
 import os
 
-# Overwatch 2 Competitive Ranks with emojis
+# ---------------------------------------------------------------------------
+# Competitive Ranks
+# ---------------------------------------------------------------------------
+
 RANK_INFO = {
     "bronze":     {"tier": 0, "label": "Bronze",     "emoji": "\u2B50"},
     "silver":     {"tier": 1, "label": "Silver",     "emoji": "\U0001F948"},
@@ -22,217 +25,281 @@ RANK_INFO = {
 RANK_ORDER = list(RANK_INFO.keys())
 DEFAULT_RANK = "platinum"
 
-# Smurf: enemy plays as if 3 tiers above current lobby rank
 SMURF_TIER_BOOST = 3
 SMURF_EMOJI = "\U0001F535"
 SMURF_WARNING = "\u26A0\uFE0F"
 
-# Tags whose effectiveness scales with player skill rank.
-# direction="positive" = stronger at high ranks (aim-dependent, mechanical heroes)
-# direction="negative" = stronger at low ranks (mobility, unpredictable play)
+# ---------------------------------------------------------------------------
+# Skill-dependent tags
+# direction="positive" = stronger at high rank
+# direction="negative" = stronger at low rank
+# ---------------------------------------------------------------------------
+
 SKILL_DEPENDENT_TAGS = {
-    # Aim-dependent: benefit from good mechanics at high rank
-    "aim_intensive":    {"direction": "positive", "weight": 0.3},
-    "high_skill_ceiling": {"direction": "positive", "weight": 0.25},
-    "sniper":           {"direction": "positive", "weight": 0.2},
-    "hitscan":          {"direction": "positive", "weight": 0.15},
-    # Mobility-based: benefit from enemy tracking weakness at low rank
-    "mobile":           {"direction": "negative", "weight": 0.25},
-    "dive_capability":  {"direction": "negative", "weight": 0.2},
-    "flank":            {"direction": "negative", "weight": 0.15},
-    "escape_ability":   {"direction": "negative", "weight": 0.15},
-    # Game sense: benefit from macro understanding at high rank
+    "aim_intensive":        {"direction": "positive", "weight": 0.3},
+    "high_skill_ceiling":   {"direction": "positive", "weight": 0.25},
+    "sniper":               {"direction": "positive", "weight": 0.2},
+    "hitscan":              {"direction": "positive", "weight": 0.15},
+    "mobile":               {"direction": "negative", "weight": 0.25},
+    "dive_capability":      {"direction": "negative", "weight": 0.2},
+    "flank":                {"direction": "negative", "weight": 0.15},
+    "escape_ability":       {"direction": "negative", "weight": 0.15},
     "game_sense_intensive": {"direction": "positive", "weight": 0.2},
-    # Cooldown dependent: benefit from enemies not playing around CDs at low rank
     "cooldown_dependent":   {"direction": "negative", "weight": 0.15},
 }
 
+# ---------------------------------------------------------------------------
+# Tag opposites: weakness → exploit ability
+# ---------------------------------------------------------------------------
 
-# Maps an enemy weakness tag → the player tag that exploits it.
-# Covers all weakness tags actually used in heroes_db.json.
 TAG_OPPOSITES = {
-    # Mobility / positioning weaknesses
-    "weak_to_flank":    "flank",
-    "weak_to_mobility": "dive_capability",
-    "weak_to_dive":     "dive_capability",
-    # CC weaknesses
-    "weak_to_cc":       "crowd_control",
-    # Range / aim weaknesses
-    "weak_to_sniper":   "sniper",
-    "weak_to_poke":     "poke",
-    "weak_to_ranged":   "poke",
-    "weak_to_hitscan":  "hitscan",
-    # Damage-type weaknesses
-    "weak_to_burst":    "burst_damage",
-    "weak_to_anti_air": "hitscan",
-    # Additional weakness tags from subrole system
-    "weak_to_kiting":       "mobile",
-    "weak_to_grounding":    "anti_air",
-    "weak_to_close_combat": "close_combat",
-    "weak_to_aoe":          "area_denial",
+    # Mobility / positioning
+    "weak_to_flank":            "flank",
+    "weak_to_mobility":         "dive_capability",
+    "weak_to_dive":             "dive_capability",
+    # CC
+    "weak_to_cc":               "crowd_control",
+    # Range / aim
+    "weak_to_sniper":           "sniper",
+    "weak_to_poke":             "poke",
+    "weak_to_ranged":           "poke",
+    "weak_to_hitscan":          "hitscan",
+    # Damage types
+    "weak_to_burst":            "burst_damage",
+    "weak_to_anti_air":         "hitscan",
+    # Extended weaknesses
+    "weak_to_kiting":           "mobile",
+    "weak_to_grounding":        "anti_air",
+    "weak_to_close_combat":     "close_combat",
+    "weak_to_aoe":              "area_denial",
     "weak_to_sustained_damage": "sustained_damage",
-    "weak_to_anti_flank":   "anti_flank",
-    "weak_to_long_range":   "long_range",
-    "weak_to_anti_heal":    "anti_healer",
-    # Subrole-specific counter tags
-    "weak_against_bruiser":       "bruiser",
-    "weak_against_initiator":     "initiator",
-    "weak_against_stalwart":      "stalwart",
-    "weak_against_sharpshooter":  "sharpshooter",
-    "weak_against_flanker":       "flanker",
-    "weak_against_specialist":    "specialist",
-    "weak_against_recon":         "recon",
-    "weak_against_tactician":     "tactician",
-    "weak_against_medic":         "medic",
-    "weak_against_survivor":      "survivor",
-    # --- Matchup-specific tags (contextual weaknesses) ---
-    # Los pierde en duelos del mismo tipo (ej: poke vs poke)
-    "loses_poke_duels":       "sniper",
-    # Depende de cobertura para ser efectivo
-    "cover_dependent":        "angle_denial",
-    # Muy débil cuando está expuesto/sin cobertura
-    "exposed_vulnerable":     "poke",
-    # Le cuesta contra enemigos a distancia
-    "struggles_vs_ranged":    "long_range",
-    # Vulnerable a que lo kiteen
-    "vulnerable_to_kiting":   "mobile",
-    # Depende de escudos para sobrevivir
-    "shield_reliant":         "shield_break",
-    # Solo puede pelear en melee
-    "melee_only":             "long_range",
-    # Le cuesta contra composiciones dive
-    "struggles_vs_dive":      "dive_capability",
-    # Pierde contra poke sostenido (no burst)
-    "weak_vs_sustained_poke": "sustained_damage",
-    # Le cuesta en combate cerrado
+    "weak_to_anti_flank":       "anti_flank",
+    "weak_to_long_range":       "long_range",
+    "weak_to_anti_heal":        "anti_healer",
+    # Subrole weaknesses
+    "weak_against_bruiser":      "bruiser",
+    "weak_against_initiator":    "initiator",
+    "weak_against_stalwart":     "stalwart",
+    "weak_against_sharpshooter": "sharpshooter",
+    "weak_against_flanker":      "flanker",
+    "weak_against_specialist":   "specialist",
+    "weak_against_recon":        "recon",
+    "weak_against_tactician":    "tactician",
+    "weak_against_medic":        "medic",
+    "weak_against_survivor":     "survivor",
+    # Contextual
+    "loses_poke_duels":          "sniper",
+    "cover_dependent":           "angle_denial",
+    "exposed_vulnerable":        "poke",
+    "struggles_vs_ranged":       "long_range",
+    "vulnerable_to_kiting":      "mobile",
+    "shield_reliant":            "shield_break",
+    "melee_only":                "long_range",
+    "struggles_vs_dive":         "dive_capability",
+    "weak_vs_sustained_poke":    "sustained_damage",
     "struggles_vs_close_combat": "close_combat",
-    # Vulnerable a hack que deshabilita habilidades
-    "weak_to_hack": "anti_flank",
-    # Vulnerable a cleanse que elimina DoT/buffs
-    "weak_to_cleanse": "dot_damage",
-    # Vulnerable a absorcion de proyectiles
+    "weak_to_hack":              "anti_flank",
+    "weak_to_cleanse":           "dot_damage",
     "weak_to_projectile_absorption": "projectile",
-    # Vulnerable a barreras que bloquean daño
-    "weak_to_barrier": "shield_break",
+    "weak_to_barrier":           "shield_break",
 }
 
-# Tags that are inherently good for a hero to have regardless of matchup
-GENERIC_GOOD_TAGS = {"healing", "peel", "anti_flank", "utility", "versatile",
+# Tags that are inherently advantageous regardless of matchup
+GENERIC_GOOD_TAGS = {
+    "healing", "peel", "anti_flank", "utility", "versatile",
     "close_quarters_dominant", "strong_cover_utilization", "high_burst_combo",
     "ally_transport", "projectile_absorption", "pick_potential_from_range",
     "dive_synergy", "zone_lockdown", "shield_break", "angle_denial",
     "tracking_ability", "invulnerability_frames", "dot_damage",
     "damage_reduction", "deflect_melee", "block_ability",
-    "burst_healing", "sustained_healing"}
-
-# Subrole descriptions for advice generation
-SUBROLE_INFO = {
-    "bruiser":       {"role": "Tank", "passive": "Reduces critical damage. At low HP, gain movement speed."},
-    "initiator":     {"role": "Tank", "passive": "Staying airborne lightly heals you."},
-    "stalwart":      {"role": "Tank", "passive": "Reduces knockbacks and slows received."},
-    "sharpshooter":  {"role": "DPS", "passive": "Critical hits reduce movement ability cooldowns."},
-    "flanker":       {"role": "DPS", "passive": "Health packs restore more health."},
-    "specialist":    {"role": "DPS", "passive": "Eliminations briefly increase reload speed."},
-    "recon":         {"role": "DPS", "passive": "Detect enemies below half health through walls after damaging them."},
-    "tactician":     {"role": "Support", "passive": "Excess ultimate charge carries over after using your ultimate."},
-    "medic":         {"role": "Support", "passive": "Healing allies with your weapon also heals you."},
-    "survivor":      {"role": "Support", "passive": "Using a movement ability activates passive health regeneration."},
+    "burst_healing", "sustained_healing",
 }
 
-# Human-readable labels for matchup tags
+# ---------------------------------------------------------------------------
+# Tag-to-behavior mapping for advice generation
+# Maps strong hero tags → what they naturally prey on
+# ---------------------------------------------------------------------------
+
+TAG_PREYS_ON = {
+    "sniper":              "exposed / low-mobility heroes",
+    "poke":                "heroes who must step into the open",
+    "hitscan":             "aerial / fast-moving targets",
+    "dive_capability":     "backline supports and squishy DPS",
+    "flank":               "isolated supports and positional heroes",
+    "burst_damage":        "low-sustain heroes caught off-guard",
+    "sustained_damage":    "shield-reliant and kiting heroes",
+    "close_combat":        "immobile heroes without escape tools",
+    "crowd_control":       "dive heroes and ability-reliant comps",
+    "area_denial":         "grouped heroes and zone-dependent setups",
+    "long_range":          "short-range heroes that must close distance",
+    "mobile":              "static / anchor-type heroes",
+    "aim_intensive":       "heroes with predictable movement patterns",
+    "high_skill_ceiling":  "heroes with exploitable cooldown windows",
+    "anti_healer":         "sustain-dependent compositions",
+    "dot_damage":          "heroes without cleanse options",
+    "tracking_ability":    "erratic movement heroes (dive / flank)",
+    "projectile_absorption":"projectile-heavy teams",
+    "shield_break":        "barrier-reliant tanks and setups",
+    "aerial":              "ground-bound heroes without anti-air",
+    "brawl":               "poke-dependent compositions",
+    "shield":              "poke and sustain heroes",
+}
+
+# Subrole descriptions
+SUBROLE_INFO = {
+    "bruiser":      {"role": "Tank",    "passive": "Reduces critical damage. At low HP, gain movement speed."},
+    "initiator":    {"role": "Tank",    "passive": "Staying airborne lightly heals you."},
+    "stalwart":     {"role": "Tank",    "passive": "Reduces knockbacks and slows received."},
+    "sharpshooter": {"role": "DPS",     "passive": "Critical hits reduce movement ability cooldowns."},
+    "flanker":      {"role": "DPS",     "passive": "Health packs restore more health."},
+    "specialist":   {"role": "DPS",     "passive": "Eliminations briefly increase reload speed."},
+    "recon":        {"role": "DPS",     "passive": "Detect enemies below half health through walls after damaging them."},
+    "tactician":    {"role": "Support", "passive": "Excess ultimate charge carries over after using your ultimate."},
+    "medic":        {"role": "Support", "passive": "Healing allies with your weapon also heals you."},
+    "survivor":     {"role": "Support", "passive": "Using a movement ability activates passive health regeneration."},
+}
+
 MATCHUP_LABELS = {
-    # Matchup-specific tags (contextual weaknesses)
-    "loses_poke_duels":       "poke duels",
-    "cover_dependent":        "cover denial",
-    "exposed_vulnerable":     "exposure to poke",
-    "struggles_vs_ranged":    "ranged opponents",
-    "vulnerable_to_kiting":   "kiting",
-    "shield_reliant":         "shield pressure",
-    "melee_only":             "range advantage",
-    "struggles_vs_dive":      "dive compositions",
-    "weak_vs_sustained_poke": "sustained poke",
+    # Contextual weaknesses
+    "loses_poke_duels":          "poke duels",
+    "cover_dependent":           "cover denial",
+    "exposed_vulnerable":        "exposure to poke",
+    "struggles_vs_ranged":       "ranged opponents",
+    "vulnerable_to_kiting":      "kiting",
+    "shield_reliant":            "shield pressure",
+    "melee_only":                "range advantage",
+    "struggles_vs_dive":         "dive compositions",
+    "weak_vs_sustained_poke":    "sustained poke",
     "struggles_vs_close_combat": "close combat",
-    "weak_to_hack":          "hack vulnerability",
-    "weak_to_cleanse":       "cleanse/sustain",
+    "weak_to_hack":              "hack vulnerability",
+    "weak_to_cleanse":           "cleanse/sustain",
     "weak_to_projectile_absorption": "projectile absorption",
-    "weak_to_barrier":       "barrier pressure",
-    # Kit strength tags
-    "tracking_ability":      "tracking shots",
-    "invulnerability_frames": "invulnerability",
-    "dot_damage":            "burn/dot damage",
-    "damage_reduction":      "damage mitigation",
-    "deflect_melee":         "melee deflection",
-    "block_ability":         "block/parry",
-    "burst_healing":         "burst healing",
-    "sustained_healing":     "sustained healing",
-    # Kit strength tags
-    "poke_from_cover":        "poke from cover",
-    "strong_cover_utilization": "cover fights",
-    "close_quarters_dominant": "close quarters",
-    "high_burst_combo":       "burst combos",
-    "ally_transport":         "ally mobility",
-    "projectile_absorption":  "projectile-heavy comps",
+    "weak_to_barrier":           "barrier pressure",
+    # Kit strengths
+    "tracking_ability":          "tracking shots",
+    "invulnerability_frames":    "invulnerability",
+    "dot_damage":                "burn/dot damage",
+    "damage_reduction":          "damage mitigation",
+    "deflect_melee":             "melee deflection",
+    "block_ability":             "block/parry",
+    "burst_healing":             "burst healing",
+    "sustained_healing":         "sustained healing",
+    "poke_from_cover":           "poke from cover",
+    "strong_cover_utilization":  "cover fights",
+    "close_quarters_dominant":   "close quarters",
+    "high_burst_combo":          "burst combos",
+    "ally_transport":            "ally mobility",
+    "projectile_absorption":     "projectile-heavy comps",
     "pick_potential_from_range": "pick potential at range",
-    "dive_synergy":           "dive compositions",
-    "zone_lockdown":          "zone control",
-    "shield_break":           "shields",
-    "angle_denial":           "angle control",
-    # Legacy weakness tags
-    "weak_to_flank":          "flank pressure",
-    "weak_to_mobility":       "mobile enemies",
-    "weak_to_dive":           "dive compositions",
-    "weak_to_cc":             "crowd control",
-    "weak_to_sniper":         "snipers",
-    "weak_to_poke":           "poke damage",
-    "weak_to_ranged":         "ranged pressure",
-    "weak_to_hitscan":        "hitscan accuracy",
-    "weak_to_burst":          "burst damage",
-    "weak_to_anti_air":       "anti-air",
-    "weak_to_kiting":         "kiting",
-    "weak_to_grounding":      "grounding effects",
-    "weak_to_close_combat":   "close combat",
-    "weak_to_aoe":            "AoE damage",
-    "weak_to_sustained_damage": "sustained damage",
-    "weak_to_anti_flank":     "anti-flank",
-    "weak_to_long_range":     "long range",
-    "weak_to_anti_heal":      "anti-heal",
-    # Legacy strength tags
-    "sniper":                 "sniper damage",
-    "poke":                   "poke damage",
-    "hitscan":                "hitscan pressure",
-    "burst_damage":           "burst damage",
-    "flank":                  "flank access",
-    "dive_capability":        "dive potential",
-    "crowd_control":          "crowd control",
-    "mobile":                 "mobility",
-    "long_range":             "long range",
-    "sustained_damage":       "sustained damage",
-    "close_combat":           "close combat",
-    "area_denial":            "area denial",
-    "anti_flank":             "anti-flank",
-    "anti_air":               "anti-air",
-    # Subrole weakness tags
-    "weak_against_bruiser":       "bruiser pressure",
-    "weak_against_initiator":     "initiator dive",
-    "weak_against_stalwart":      "stalwart defense",
-    "weak_against_sharpshooter":  "sharpshooter picks",
-    "weak_against_flanker":       "flank pressure",
-    "weak_against_specialist":    "specialist sustained fire",
-    "weak_against_recon":         "recon tracking",
-    "weak_against_tactician":     "tactician ult economy",
-    "weak_against_medic":         "medic sustain",
-    "weak_against_survivor":      "survivor sustain",
-    # Subrole strength tags
-    "strong_against_bruiser":       "bruiser counter",
-    "strong_against_initiator":     "initiator counter",
-    "strong_against_stalwart":      "stalwart counter",
-    "strong_against_sharpshooter":  "sharpshooter counter",
-    "strong_against_flanker":       "flanker counter",
-    "strong_against_specialist":    "specialist counter",
-    "strong_against_recon":         "recon counter",
-    "strong_against_tactician":     "tactician counter",
-    "strong_against_medic":         "medic counter",
-    "strong_against_survivor":      "survivor counter",
+    "dive_synergy":              "dive compositions",
+    "zone_lockdown":             "zone control",
+    "shield_break":              "shields",
+    "angle_denial":              "angle control",
+    # Weaknesses
+    "weak_to_flank":             "flank pressure",
+    "weak_to_mobility":          "mobile enemies",
+    "weak_to_dive":              "dive compositions",
+    "weak_to_cc":                "crowd control",
+    "weak_to_sniper":            "snipers",
+    "weak_to_poke":              "poke damage",
+    "weak_to_ranged":            "ranged pressure",
+    "weak_to_hitscan":           "hitscan accuracy",
+    "weak_to_burst":             "burst damage",
+    "weak_to_anti_air":          "anti-air",
+    "weak_to_kiting":            "kiting",
+    "weak_to_grounding":         "grounding effects",
+    "weak_to_close_combat":      "close combat",
+    "weak_to_aoe":               "AoE damage",
+    "weak_to_sustained_damage":  "sustained damage",
+    "weak_to_anti_flank":        "anti-flank",
+    "weak_to_long_range":        "long range",
+    "weak_to_anti_heal":         "anti-heal",
+    # Strengths
+    "sniper":              "sniper damage",
+    "poke":                "poke damage",
+    "hitscan":             "hitscan pressure",
+    "burst_damage":        "burst damage",
+    "flank":               "flank access",
+    "dive_capability":     "dive potential",
+    "crowd_control":       "crowd control",
+    "mobile":              "mobility",
+    "long_range":          "long range",
+    "sustained_damage":    "sustained damage",
+    "close_combat":        "close combat",
+    "area_denial":         "area denial",
+    "anti_flank":          "anti-flank",
+    "anti_air":            "anti-air",
+    # Subrole tags
+    "weak_against_bruiser":      "bruiser pressure",
+    "weak_against_initiator":    "initiator dive",
+    "weak_against_stalwart":     "stalwart defense",
+    "weak_against_sharpshooter": "sharpshooter picks",
+    "weak_against_flanker":      "flank pressure",
+    "weak_against_specialist":   "specialist sustained fire",
+    "weak_against_recon":        "recon tracking",
+    "weak_against_tactician":    "tactician ult economy",
+    "weak_against_medic":        "medic sustain",
+    "weak_against_survivor":     "survivor sustain",
+    "strong_against_bruiser":    "bruiser counter",
+    "strong_against_initiator":  "initiator counter",
+    "strong_against_stalwart":   "stalwart counter",
+    "strong_against_sharpshooter":"sharpshooter counter",
+    "strong_against_flanker":    "flanker counter",
+    "strong_against_specialist": "specialist counter",
+    "strong_against_recon":      "recon counter",
+    "strong_against_tactician":  "tactician counter",
+    "strong_against_medic":      "medic counter",
+    "strong_against_survivor":   "survivor counter",
+}
+
+# ---------------------------------------------------------------------------
+# Map phase modifiers (extensible - add maps as data becomes available)
+# Each phase modifies tag weights multiplicatively.
+# weight > 1.0 buffs that tag, < 1.0 nerfs it.
+# ---------------------------------------------------------------------------
+
+MAP_PHASE_MODIFIERS = {
+    "circuit_royale": {
+        "phase_1": {
+            "name": "Outside Push to First Checkpoint",
+            "tags": {
+                "long_range":         1.25,
+                "poke":               1.20,
+                "sniper":             1.20,
+                "hitscan":            1.15,
+                "shield_break":       1.10,
+                "pick_potential_from_range": 1.15,
+            },
+        },
+        "phase_2": {
+            "name": "Checkpoint to Bank Interior",
+            "tags": {
+                "dive_capability":    1.25,
+                "mobile":             1.20,
+                "flank":              1.20,
+                "burst_damage":       1.15,
+                "escape_ability":     1.15,
+            },
+        },
+        "phase_3": {
+            "name": "Final Stand to Vault Door",
+            "tags": {
+                "close_combat":       1.30,
+                "brawl":              1.25,
+                "area_denial":        1.20,
+                "crowd_control":      1.15,
+                "close_quarters_dominant": 1.20,
+                "sustained_damage":   1.15,
+            },
+        },
+    },
+}
+
+# Map aliases (so UI can reference maps by different keys)
+MAP_ALIASES = {
+    "circuitroyal": "circuit_royale",
+    "circuit_royale": "circuit_royale",
+    "cr": "circuit_royale",
 }
 
 
@@ -242,6 +309,8 @@ class CounterDB:
     _roles = None
     _rank = DEFAULT_RANK
     _smurf_suspected = False
+    _current_map = None
+    _current_phase = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -251,7 +320,6 @@ class CounterDB:
 
     def _load(self):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
         with open(os.path.join(base_dir, "data", "heroes_index.json"), "r", encoding="utf-8") as f:
             index = json.load(f)
             self._roles = index["roles"]
@@ -274,8 +342,11 @@ class CounterDB:
                 return role
         return "DPS"
 
+    def get_subrole(self, hero):
+        data = self.get_hero_data(hero)
+        return data.get("subrole", "unknown")
+
     def set_rank(self, rank):
-        """Set the current skill rank for matchup scaling."""
         if rank in RANK_INFO:
             self._rank = rank
 
@@ -283,27 +354,52 @@ class CounterDB:
         return self._rank
 
     def set_smurf(self, suspected):
-        """Toggle smurf suspicion mode - enemy plays above their rank."""
         self._smurf_suspected = suspected
 
     def get_smurf(self):
         return self._smurf_suspected
 
+    def set_map(self, map_key=None, phase=None):
+        """Set current map and optional phase for context-aware scoring."""
+        if not map_key:
+            self._current_map = None
+            self._current_phase = None
+            return
+        normalized = MAP_ALIASES.get(map_key.lower(), map_key.lower())
+        if normalized in MAP_PHASE_MODIFIERS:
+            self._current_map = normalized
+            if phase and phase in MAP_PHASE_MODIFIERS[normalized]:
+                self._current_phase = phase
+            else:
+                self._current_phase = None
+        else:
+            self._current_map = None
+            self._current_phase = None
+
+    def get_map_info(self):
+        """Return current map/phase display info."""
+        if not self._current_map:
+            return None
+        info = {"map": self._current_map.replace("_", " ").title()}
+        if self._current_phase:
+            phase_data = MAP_PHASE_MODIFIERS[self._current_map][self._current_phase]
+            info["phase"] = phase_data["name"]
+            info["phase_key"] = self._current_phase
+        return info
+
     def _get_skill_modifier(self, hero, rank_override=None):
         """
-        Returns a multiplier based on hero's skill-dependent tags and current rank.
-        > 1.0 means hero benefits at current rank level
-        < 1.0 means hero is disadvantaged at current rank level
-        rank_override: use a specific rank key instead of self._rank (for smurf detection)
+        Multiplier based on skill-dependent tags and rank.
+        > 1.0 = hero benefits at this rank
+        < 1.0 = hero is disadvantaged
         """
         hero_data = self.get_hero_data(hero)
         tags = hero_data.get("tags", {})
         effective_rank = rank_override if rank_override else self._rank
         rank_tier = RANK_INFO[effective_rank]["tier"]
-        max_tier = len(RANK_ORDER) - 1  # 7 for Champion
+        max_tier = len(RANK_ORDER) - 1
 
         modifier = 1.0
-
         for tag, info in SKILL_DEPENDENT_TAGS.items():
             if tag not in tags:
                 continue
@@ -312,12 +408,8 @@ class CounterDB:
             strength = info["weight"]
 
             if direction == "positive":
-                # Aim/mechanical heroes: stronger at high rank
-                # Bronze (tier 0) → 0.7, Champion (tier 7) → 1.3
                 rank_factor = 0.7 + (0.6 * rank_tier / max_tier)
             else:
-                # Mobility heroes: stronger at low rank
-                # Bronze (tier 0) → 1.3, Champion (tier 7) → 0.7
                 rank_factor = 1.3 - (0.6 * rank_tier / max_tier)
 
             modifier += tag_weight * strength * (rank_factor - 1.0)
@@ -325,24 +417,30 @@ class CounterDB:
         return modifier
 
     def _get_enemy_rank(self):
-        """Returns the effective rank of the enemy (boosted if smurf is suspected)."""
         lobby_rank = self._rank
         if self._smurf_suspected:
             boosted_tier = min(RANK_INFO[lobby_rank]["tier"] + SMURF_TIER_BOOST, len(RANK_ORDER) - 1)
             return RANK_ORDER[boosted_tier]
         return lobby_rank
 
+    def _get_tag_modifiers(self):
+        """Return tag weight multipliers from current map phase, if any."""
+        if not self._current_map or not self._current_phase:
+            return {}
+        try:
+            return MAP_PHASE_MODIFIERS[self._current_map][self._current_phase].get("tags", {})
+        except KeyError:
+            return {}
+
     # ------------------------------------------------------------------
-    # Scoring
+    # Core scoring - purely tag-driven
     # ------------------------------------------------------------------
 
     def _score_counter(self, enemy_hero, my_hero):
         """
-        Returns a numeric score (higher = better counter).
-        Based on how many of the enemy's weaknesses the player hero covers.
-        Skill rank modifiers are applied to both heroes.
-        If smurf is suspected, enemy weaknesses are harder to exploit
-        (better positioning, mechanics, game sense).
+        Numeric score (higher = better counter).
+        Computed entirely from enemy weakness tags matched against
+        player hero's exploitation tags, scaled by skill rank and map.
         """
         enemy = self.get_hero_data(enemy_hero)
         my_data = self.get_hero_data(my_hero)
@@ -351,40 +449,79 @@ class CounterDB:
 
         enemy_tags = enemy.get("tags", {})
         my_tags = my_data.get("tags", {})
+        tag_mods = self._get_tag_modifiers()
 
-        # Enemy skill: determines how well they mitigate their weaknesses
+        # Enemy skill → how well they mitigate weaknesses
         enemy_rank = self._get_enemy_rank()
-        # For the enemy, higher rank = less exploitable weaknesses
-        # We use an INVERSE modifier: high skill reduces weakness weight
         enemy_skill = self._get_skill_modifier(enemy_hero, rank_override=enemy_rank)
-        # Invert: 1.3 skill → 0.77 weakness mitigation
         enemy_weakness_mod = 2.0 - enemy_skill
 
-        # Smurf bonus: flat reduction to weakness exploitability
-        # Represents better positioning, cooldown awareness, and game sense
-        # that a smurf player has regardless of hero choice
         if self._smurf_suspected:
-            enemy_weakness_mod *= 0.75  # 25% harder to exploit weaknesses
+            enemy_weakness_mod *= 0.75
 
-        # My skill: determines how well I exploit enemy weaknesses
+        # My skill → how well I exploit weaknesses
         my_mod = self._get_skill_modifier(my_hero)
 
         score = 0.0
         for tag, weight in enemy_tags.items():
-            if tag in TAG_OPPOSITES:
-                opposite = TAG_OPPOSITES[tag]
-                my_val = my_tags.get(opposite, 0.0)
-                # Enemy weakness scaled down by their skill (smurf = harder to exploit)
-                # My counter strength scaled by my skill
-                effective_weakness = weight * enemy_weakness_mod
-                score += effective_weakness * (my_val * my_mod)
+            if tag not in TAG_OPPOSITES:
+                continue
+            opposite = TAG_OPPOSITES[tag]
+            my_val = my_tags.get(opposite, 0.0)
+            if my_val <= 0:
+                continue
 
-        # Bonus if the enemy explicitly lists my_hero in their counters_me
-        # Smurf enemies play around their counters better
-        if my_hero in [c.strip().lower() for c in enemy.get("counters_me", [])]:
-            score += 1.0 * my_mod * enemy_weakness_mod
+            effective_weakness = weight * enemy_weakness_mod
+
+            # Apply map phase modifier if this tag is affected
+            map_mult = tag_mods.get(opposite, 1.0)
+
+            score += effective_weakness * (my_val * my_mod) * map_mult
 
         return score
+
+    # ------------------------------------------------------------------
+    # Dynamic matchup computation (replaces hardcoded lists)
+    # ------------------------------------------------------------------
+
+    def compute_matchups(self, hero, limit=5):
+        """
+        Compute both best counters (heroes that beat `hero`)
+        and best targets (heroes that `hero` beats) dynamically.
+
+        Returns:
+            {
+                "counters_me": [{"hero": "x", "score": 3.2}, ...],
+                "best_against": [{"hero": "y", "score": 2.8}, ...],
+            }
+        """
+        all_heroes = list(self._heroes.keys())
+
+        # Counters: heroes that beat `hero` (high counter score when playing THEM vs hero)
+        counters = []
+        for candidate in all_heroes:
+            if candidate == hero:
+                continue
+            score = self._score_counter(hero, candidate)
+            if score > 0:
+                counters.append({"hero": candidate, "score": round(score, 2)})
+        counters.sort(key=lambda x: -x["score"])
+
+        # Best against: heroes that `hero` beats
+        # (high counter score when playing `hero` vs THEM)
+        best_against = []
+        for candidate in all_heroes:
+            if candidate == hero:
+                continue
+            score = self._score_counter(candidate, hero)
+            if score > 0:
+                best_against.append({"hero": candidate, "score": round(score, 2)})
+        best_against.sort(key=lambda x: -x["score"])
+
+        return {
+            "counters_me": counters[:limit],
+            "best_against": best_against[:limit],
+        }
 
     # ------------------------------------------------------------------
     # Public API
@@ -394,7 +531,6 @@ class CounterDB:
         """Advice for playing my_hero against enemy_hero."""
         enemy = self.get_hero_data(enemy_hero)
         my_data = self.get_hero_data(my_hero)
-
         if not enemy or not my_data:
             return {"hero": my_hero, "reason": "No data available"}
 
@@ -409,50 +545,82 @@ class CounterDB:
         }
 
     def _format_tag_label(self, tag):
-        """Return a human-readable label for any tag."""
         if tag in MATCHUP_LABELS:
             return MATCHUP_LABELS[tag]
         return tag.replace("weak_to_", "").replace("weak_against_", "").replace("_", " ")
+
+    def _infer_enemy_targets(self, enemy_hero, enemy):
+        """
+        Derive what type of heroes this enemy preys on from their tags.
+        Replaces the old hardcoded best_against list.
+        """
+        tags = enemy.get("tags", {})
+        targets = []
+        for tag, val in sorted(tags.items(), key=lambda kv: -kv[1]):
+            if tag in TAG_PREYS_ON and val >= 0.6:
+                targets.append(TAG_PREYS_ON[tag])
+        # Deduplicate while preserving order
+        seen = set()
+        unique = []
+        for t in targets:
+            if t not in seen:
+                seen.add(t)
+                unique.append(t)
+        return unique[:3]
 
     def _generate_advice(self, enemy_hero, enemy, my_data, my_role):
         enemy_tags = enemy.get("tags", {})
         my_tags = my_data.get("tags", {})
         enemy_name = enemy.get("name", enemy_hero.capitalize())
-        my_name = my_data.get("name", "Your hero")
 
         adv_yours = []
         adv_theirs = []
         tactics = []
 
-        # 1. Tu héroe explota debilidades del enemigo
+        # 1. Your hero exploits enemy weaknesses
+        seen_advantages = set()
         for tag, weight in sorted(enemy_tags.items(), key=lambda kv: -kv[1]):
             if tag in TAG_OPPOSITES and weight >= 0.5:
                 opposite = TAG_OPPOSITES[tag]
                 if my_tags.get(opposite, 0) >= 0.5:
                     weakness = self._format_tag_label(tag)
                     ability = self._format_tag_label(opposite)
-                    adv_yours.append(f"[+] You have {ability} against their {weakness}")
+                    label = f"_{ability}__{weakness}"
+                    if label not in seen_advantages:
+                        seen_advantages.add(label)
+                        adv_yours.append(f"[+] You have {ability} against their {weakness}")
 
-        # 2. El enemigo explota tus debilidades
+        # 2. Enemy exploits your weaknesses
+        seen_threats = set()
         for tag, weight in sorted(my_tags.items(), key=lambda kv: -kv[1]):
             if tag in TAG_OPPOSITES and weight >= 0.5:
                 opposite = TAG_OPPOSITES[tag]
                 if enemy_tags.get(opposite, 0) >= 0.5:
                     weakness = self._format_tag_label(tag)
                     ability = self._format_tag_label(opposite)
-                    adv_theirs.append(f"[!] They have {ability} against your {weakness}")
+                    label = f"_{ability}__{weakness}"
+                    if label not in seen_threats:
+                        seen_threats.add(label)
+                        adv_theirs.append(f"[!] They have {ability} against your {weakness}")
 
-        # 3. Role-specific generic tips based on my own strong tags
+        # 3. Role-specific tips from strong generic tags
         for my_tag, val in my_tags.items():
             if val >= 0.7 and my_tag in GENERIC_GOOD_TAGS:
                 tactics.append(f"- Prioritize your {my_tag.replace('_', ' ').upper()} in this matchup.")
 
-        # 4. What the enemy preys on
-        e_best = [b.strip().capitalize() for b in enemy.get("best_against", []) if b.strip()]
-        if e_best:
-            tactics.append(f"- {enemy_name} usually targets: {', '.join(e_best[:3])}.")
+        # 4. Dynamic: what this enemy type preys on (derived from tags)
+        prey_types = self._infer_enemy_targets(enemy_hero, enemy)
+        if prey_types:
+            tactics.append(f"- {enemy_name} typically preys on: {'; '.join(prey_types)}.")
 
-        # Formatear el breakdown
+        # 5. Map phase context (if active)
+        map_info = self.get_map_info()
+        if map_info:
+            tactics.append(f"- Map: {map_info['map']}")
+            if "phase" in map_info:
+                tactics.append(f"  Phase: {map_info['phase']}")
+
+        # Format
         breakdown = []
         if adv_yours:
             breakdown.append("YOUR ADVANTAGES:\n" + "\n".join(adv_yours))
@@ -472,7 +640,7 @@ class CounterDB:
         return "\n\n".join(breakdown)
 
     def get_all_counters(self, enemy_hero, limit=5):
-        """Returns the top `limit` counter-picks for enemy_hero, sorted by score."""
+        """Top counter-picks for enemy_hero, sorted by score."""
         enemy = self.get_hero_data(enemy_hero)
         if not enemy:
             return []
@@ -494,9 +662,7 @@ class CounterDB:
         return results[:limit]
 
     def get_role_counters(self, enemy_hero, my_role):
-        """
-        Returns all heroes of my_role sorted by counter score vs enemy_hero.
-        """
+        """All heroes of my_role sorted by counter score vs enemy_hero."""
         enemy = self.get_hero_data(enemy_hero)
         if not enemy:
             return []
@@ -517,14 +683,9 @@ class CounterDB:
         return results
 
     def get_recommended_switch(self, enemy_hero, current_hero):
-        """
-        Suggests the best hero of the same role to switch to.
-        Excludes the hero you're already on.
-        """
+        """Best hero of same role to switch to."""
         my_role = self.get_role(current_hero)
         role_counters = self.get_role_counters(enemy_hero, my_role)
-
-        # Filter out current hero (already excluded in get_role_counters, but be safe)
         candidates = [r for r in role_counters if r["hero"] != current_hero]
 
         if candidates:
@@ -536,12 +697,11 @@ class CounterDB:
                 "reason": best["reason"],
                 "role": my_role,
             }
-
         return None
 
 
 # ---------------------------------------------------------------------------
-# Module-level convenience wrappers
+# Module-level wrappers
 # ---------------------------------------------------------------------------
 
 def get_counter(enemy_hero, my_hero):
@@ -557,15 +717,40 @@ def get_recommended_switch(enemy_hero, current_hero):
 
 
 if __name__ == "__main__":
-    print("Testing CounterDB...")
+    print("Testing CounterDB v3.0...")
     db = CounterDB()
 
-    print("\n--- Widowmaker vs Ana ---")
-    print(get_counter("widowmaker", "ana"))
+    print(f"\nTotal heroes: {len(db._heroes)}")
 
-    print("\n--- Top 5 counters vs Widowmaker ---")
+    print("\n--- Dynamic matchups: Widowmaker ---")
+    matchups = db.compute_matchups("widowmaker", 5)
+    print("Counters me (who beats Widow):")
+    for c in matchups["counters_me"]:
+        print(f"  {c['hero']} (score={c['score']:.2f})")
+    print("Best against (who Widow beats):")
+    for c in matchups["best_against"]:
+        print(f"  {c['hero']} (score={c['score']:.2f})")
+
+    print("\n--- Dynamic matchups: Hazard ---")
+    matchups = db.compute_matchups("hazard", 5)
+    print("Counters me:")
+    for c in matchups["counters_me"]:
+        print(f"  {c['hero']} (score={c['score']:.2f})")
+    print("Best against:")
+    for c in matchups["best_against"]:
+        print(f"  {c['hero']} (score={c['score']:.2f})")
+
+    print("\n--- Advice: Tracer vs Domina ---")
+    r = db.get_counter("domina", "tracer")
+    print(f"Score: {r['score']:.2f}")
+    print(r["reason"])
+
+    print("\n--- Map context: Circuit Royale Phase 3 vs Widowmaker ---")
+    db.set_map("circuit_royale", "phase_3")
     for c in db.get_all_counters("widowmaker", 5):
-        print(f"  {c['hero']} (score={c['score']:.2f}) — {c['reason'][:60]}")
+        print(f"  {c['hero']} (score={c['score']:.2f})")
+    db.set_map(None)
 
-    print("\n--- Recommend switch from Ana vs Widow ---")
-    print(get_recommended_switch("widowmaker", "ana"))
+    print("\n--- Top counters vs Vendetta ---")
+    for c in db.get_all_counters("vendetta", 5):
+        print(f"  {c['hero']} (score={c['score']:.2f})")

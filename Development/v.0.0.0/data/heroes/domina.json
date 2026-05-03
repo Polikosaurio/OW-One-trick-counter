@@ -28,32 +28,5 @@
     "strong_against_bruiser": 0.4,
     "strong_against_recon": 0.5
   },
-  "best_against": [
-    "pharah",
-    "echo",
-    "widowmaker",
-    "hanzo",
-    "junkrat",
-    "bastion",
-    "torbjorn",
-    "sojourn",
-    "ashe",
-    "cassidy"
-  ],
-  "counters_me": [
-    "reaper",
-    "vendetta",
-    "sombra",
-    "doomfist",
-    "winston",
-    "roadhog",
-    "mei",
-    "bastion",
-    "sojourn",
-    "ramattra",
-    "zarya",
-    "junkrat",
-    "tracer"
-  ],
   "subrole": "stalwart"
 }

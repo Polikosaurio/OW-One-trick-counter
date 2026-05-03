@@ -27,31 +27,5 @@
     "strong_against_medic": 0.4,
     "strong_against_recon": 0.4
   },
-  "best_against": [
-    "ana",
-    "zenyatta",
-    "widowmaker",
-    "hanzo",
-    "moira",
-    "lucio",
-    "mercy",
-    "ashe",
-    "cassidy",
-    "sojourn"
-  ],
-  "counters_me": [
-    "winston",
-    "junkrat",
-    "venture",
-    "orisa",
-    "sojourn",
-    "kiriko",
-    "brigitte",
-    "pharah",
-    "echo",
-    "roadhog",
-    "zarya",
-    "moira"
-  ],
   "subrole": "flanker"
 }

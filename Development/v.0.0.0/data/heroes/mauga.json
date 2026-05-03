@@ -15,16 +15,5 @@
     "weak_against_stalwart": 0.6,
     "strong_against_initiator": 0.4
   },
-  "best_against": [
-    "team",
-    "close",
-    "brawl_comp"
-  ],
-  "counters_me": [
-    "kiriko",
-    "zenyatta",
-    "ana",
-    "supports"
-  ],
   "subrole": "bruiser"
 }

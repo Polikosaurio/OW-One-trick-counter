@@ -24,18 +24,5 @@
     "strong_against_medic": 0.4,
     "strong_against_specialist": 0.4
   },
-  "best_against": [
-    "genji",
-    "tracer",
-    "reaper",
-    "winston",
-    "flankers"
-  ],
-  "counters_me": [
-    "genji",
-    "dva",
-    "winston",
-    "echo"
-  ],
   "subrole": "sharpshooter"
 }

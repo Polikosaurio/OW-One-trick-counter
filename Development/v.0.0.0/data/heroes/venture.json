@@ -21,14 +21,5 @@
     "strong_against_tactician": 0.6,
     "strong_against_medic": 0.5
   },
-  "best_against": [
-    "team",
-    "backline"
-  ],
-  "counters_me": [
-    "brigitte",
-    "cassidy",
-    "roadhog"
-  ],
   "subrole": "flanker"
 }

@@ -396,6 +396,10 @@ class HeroSelector(ctk.CTkFrame):
             "struggles_vs_dive": "Struggles vs dive",
             "weak_vs_sustained_poke": "Weak vs sustained poke",
             "struggles_vs_close_combat": "Struggles in CQC",
+            "weak_to_hack": "Weak to hack",
+            "weak_to_cleanse": "Weak to cleanse",
+            "weak_to_projectile_absorption": "Weak to proj. absorb",
+            "weak_to_barrier": "Weak to barriers",
             # Kit strength tags
             "poke_from_cover": "Poke from cover",
             "strong_cover_utilization": "Cover fights",
@@ -424,6 +428,10 @@ class HeroSelector(ctk.CTkFrame):
             "weak_to_anti_flank": "Weak to anti-flank",
             "weak_to_long_range": "Weak to long range",
             "weak_to_anti_heal": "Weak to anti-heal",
+            "weak_to_hack": "Weak to hack",
+            "weak_to_cleanse": "Weak to cleanse",
+            "weak_to_projectile_absorption": "Weak to proj. absorb",
+            "weak_to_barrier": "Weak to barriers",
             "vulnerable_to_cc": "Vulnerable to CC",
             "crowd_control": "Crowd control",
             "burst_damage": "Burst damage",
@@ -470,6 +478,14 @@ class HeroSelector(ctk.CTkFrame):
             "assassination": "Assassination",
             "one_shot": "One-shot",
             "self_heal": "Self heal",
+            "tracking_ability": "Tracking shots",
+            "invulnerability_frames": "i-frames",
+            "dot_damage": "DoT damage",
+            "damage_reduction": "Dmg reduction",
+            "deflect_melee": "Melee deflect",
+            "block_ability": "Block/parry",
+            "burst_healing": "Burst healing",
+            "sustained_healing": "Sustained healing",
         }
         return short.get(tag, tag.replace("_", " ").title())
 

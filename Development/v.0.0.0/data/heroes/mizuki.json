@@ -28,37 +28,5 @@
     "strong_against_recon": 0.6,
     "strong_against_initiator": 0.7
   },
-  "best_against": [
-    "genji",
-    "tracer",
-    "reaper",
-    "winston",
-    "doomfist",
-    "dva",
-    "wreckingball",
-    "anran",
-    "vendetta",
-    "junkerqueen",
-    "reinhardt"
-  ],
-  "counters_me": [
-    "wreckingball",
-    "junkerqueen",
-    "doomfist",
-    "genji",
-    "pharah",
-    "echo",
-    "zenyatta",
-    "sombra",
-    "roadhog",
-    "kiriko",
-    "sigma",
-    "ashe",
-    "reinhardt",
-    "sojourn",
-    "symmetra",
-    "wuyang",
-    "zarya"
-  ],
   "subrole": "survivor"
 }

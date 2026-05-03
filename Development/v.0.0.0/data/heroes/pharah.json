@@ -20,15 +20,5 @@
     "strong_against_tactician": 0.5,
     "strong_against_medic": 0.4
   },
-  "best_against": [
-    "team",
-    "ground_comp"
-  ],
-  "counters_me": [
-    "ashe",
-    "bastion",
-    "soldier76",
-    "widowmaker"
-  ],
   "subrole": "recon"
 }

@@ -21,17 +21,5 @@
     "strong_against_sharpshooter": 0.4,
     "strong_against_survivor": 0.3
   },
-  "best_against": [
-    "dva",
-    "winston",
-    "genji",
-    "flankers"
-  ],
-  "counters_me": [
-    "reaper",
-    "pharah",
-    "echo",
-    "divers"
-  ],
   "subrole": "specialist"
 }

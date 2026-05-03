@@ -18,13 +18,5 @@
     "strong_against_bruiser": 0.4,
     "strong_against_specialist": 0.3
   },
-  "best_against": [
-    "team"
-  ],
-  "counters_me": [
-    "genji",
-    "tracer",
-    "dva"
-  ],
   "subrole": "medic"
 }

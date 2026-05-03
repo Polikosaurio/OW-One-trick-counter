@@ -20,18 +20,5 @@
     "strong_against_tactician": 0.5,
     "strong_against_medic": 0.4
   },
-  "best_against": [
-    "widowmaker",
-    "mercy",
-    "zenyatta",
-    "ana",
-    "supports"
-  ],
-  "counters_me": [
-    "dva",
-    "winston",
-    "cassidy",
-    "sombra"
-  ],
   "subrole": "recon"
 }
