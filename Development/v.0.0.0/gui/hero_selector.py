@@ -18,6 +18,9 @@ class HeroSelector(ctk.CTkFrame):
         self.roles_data = {}
         self.enemy_btns = {}
         self.your_btns = {}
+        self._update_debounce_id = None
+        self._last_update_state = None
+        self._db = None
         
         self._load_data()
         self._load_icons()
@@ -104,21 +107,21 @@ class HeroSelector(ctk.CTkFrame):
         self.intensity_var = ctk.DoubleVar(value=0.5)
         ctk.CTkSlider(
             slider_frame, from_=0.0, to=1.0, 
-            variable=self.intensity_var, command=lambda v: self._update(), 
+            variable=self.intensity_var, command=lambda v: self._schedule_update(), 
             width=70, height=12
         ).pack(side="bottom", pady=(0, 2))
         
         self.value_var = ctk.BooleanVar(value=False)
         ctk.CTkSwitch(
             header_frame, text="Value (0-1)", 
-            variable=self.value_var, command=self._update, 
+            variable=self.value_var, command=self._schedule_update, 
             font=ctk.CTkFont(size=10), switch_width=30, switch_height=15
         ).pack(side="right", padx=10)
         
         self.colorblind_var = ctk.BooleanVar(value=False)
         ctk.CTkSwitch(
             header_frame, text="Colorblind", 
-            variable=self.colorblind_var, command=self._update, 
+            variable=self.colorblind_var, command=self._schedule_update, 
             font=ctk.CTkFont(size=10), switch_width=30, switch_height=15
         ).pack(side="right", padx=5)
         
@@ -163,7 +166,7 @@ class HeroSelector(ctk.CTkFrame):
             alts_left_panel, 
             values=["Your Role", "All Roles"], 
             variable=self.alts_filter_var,
-            command=lambda v: self._update(),
+            command=lambda v: self._schedule_update(),
             height=20,
             font=ctk.CTkFont(size=10)
         )
@@ -174,6 +177,21 @@ class HeroSelector(ctk.CTkFrame):
         
         # 3. SIDEBAR: Matchup Analysis (Right Column)
         ctk.CTkLabel(sidebar_right, text="MATCHUP ANALYSIS", font=ctk.CTkFont(size=14, weight="bold"), text_color="#FFFFFF").pack(pady=(20, 10))
+        
+        # Switch/Intercambiar button
+        self.switch_btn = ctk.CTkButton(
+            sidebar_right,
+            text="⇄ SWITCH",
+            font=ctk.CTkFont(size=11, weight="bold"),
+            fg_color="#3A3A4A",
+            hover_color="#555566",
+            border_color="#666",
+            border_width=1,
+            corner_radius=6,
+            height=30,
+            command=self._switch_selections
+        )
+        self.switch_btn.pack(fill="x", padx=15, pady=(0, 10))
         
         self.info = ctk.CTkTextbox(
             sidebar_right,
@@ -240,13 +258,21 @@ class HeroSelector(ctk.CTkFrame):
                     
             current_row += (len(heroes_in_role) - 1) // cols + 1
 
+    def _switch_selections(self):
+        self.selected_enemy, self.selected_your = self.selected_your, self.selected_enemy
+        self._schedule_update()
+
+    def _schedule_update(self):
+        if self._update_debounce_id is not None:
+            self.after_cancel(self._update_debounce_id)
+        self._update_debounce_id = self.after(80, self._update)
     def _on_enemy_click(self, hero):
         # Deselect if clicking the same hero, otherwise select
         if self.selected_enemy == hero:
             self.selected_enemy = None
         else:
             self.selected_enemy = hero
-        self._update()
+        self._schedule_update()
         
     def _on_your_click(self, hero):
         # Deselect if clicking the same hero, otherwise select
@@ -254,7 +280,7 @@ class HeroSelector(ctk.CTkFrame):
             self.selected_your = None
         else:
             self.selected_your = hero
-        self._update()
+        self._schedule_update()
 
     def _get_hi_res_image(self, hero):
         if hero in self.hi_res_images:
@@ -363,12 +389,21 @@ class HeroSelector(ctk.CTkFrame):
         return min(max(norm, 0.0), 1.0)
 
     def _update(self):
-        from core.counters import CounterDB
-        db = CounterDB()
+        self._update_debounce_id = None
         
-        # Obtenemos el estado del modo daltónico y valor numérico
+        if self._db is None:
+            from core.counters import CounterDB
+            self._db = CounterDB()
+        db = self._db
+        
+        # Early exit: skip if state hasn't changed since last render
         cb_mode = self.colorblind_var.get()
         show_value = self.value_var.get()
+        intensity = self.intensity_var.get()
+        current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity)
+        if current_state == self._last_update_state:
+            return
+        self._last_update_state = current_state
         
         # Paleta de selecciones principales
         enemy_c = "#FF9900" if cb_mode else "#FF4444"  # Orange vs Red
@@ -377,6 +412,12 @@ class HeroSelector(ctk.CTkFrame):
         # Actualizamos los títulos principales
         self.enemy_title_lbl.configure(text_color=enemy_c)
         self.your_title_lbl.configure(text_color=ally_c)
+        
+        # Update switch button state (disabled when no selections)
+        if self.selected_enemy is None and self.selected_your is None:
+            self.switch_btn.configure(state="disabled", fg_color="#2A2A34", text="⇄ SWITCH")
+        else:
+            self.switch_btn.configure(state="normal", fg_color="#3A3A4A", text="⇄ SWITCH")
         
         # 1. Update Grid Colors (Heatmap & Borders)
         for h, data in self.roster_btns.items():
