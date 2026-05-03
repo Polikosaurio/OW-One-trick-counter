@@ -263,18 +263,7 @@ class CounterDB:
 
         adv_yours = []
         adv_theirs = []
-        subrole_notes = []
         tactics = []
-
-        # 0. Subrole matchup analysis
-        enemy_subrole = enemy.get("subrole", "")
-        my_subrole = my_data.get("subrole", "")
-        if enemy_subrole and enemy_subrole in SUBROLE_INFO:
-            sr_info = SUBROLE_INFO[enemy_subrole]
-            subrole_notes.append(f"[{enemy_name}'s subrole: {enemy_subrole.upper()} -- {sr_info['passive']}]")
-        if my_subrole and my_subrole in SUBROLE_INFO and my_subrole != enemy_subrole:
-            sr_info = SUBROLE_INFO[my_subrole]
-            subrole_notes.append(f"[Your subrole: {my_subrole.upper()} -- {sr_info['passive']}]")
 
         # 1. Tu héroe explota debilidades del enemigo
         for tag, weight in sorted(enemy_tags.items(), key=lambda kv: -kv[1]):
@@ -306,8 +295,6 @@ class CounterDB:
 
         # Formatear el breakdown
         breakdown = []
-        if subrole_notes:
-            breakdown.append("SUBROLES:\n" + "\n".join(subrole_notes))
         if adv_yours:
             breakdown.append("YOUR ADVANTAGES:\n" + "\n".join(adv_yours))
         if adv_theirs:
@@ -321,8 +308,6 @@ class CounterDB:
                 "DPS": "Use high ground, don't overcommit.",
                 "Support": "Play safe, prioritise survival and your allies.",
             }
-            if my_subrole and my_subrole in SUBROLE_INFO:
-                breakdown.append(f"SUBROLES:\n[Your subrole: {my_subrole.upper()} — {SUBROLE_INFO[my_subrole]['passive']}]")
             breakdown.append("TACTICS:\n- " + fallback.get(my_role, "Play your life - no specific data"))
 
         return "\n\n".join(breakdown)
