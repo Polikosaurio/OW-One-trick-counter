@@ -317,7 +317,8 @@ class CounterDB:
         Returns a numeric score (higher = better counter).
         Based on how many of the enemy's weaknesses the player hero covers.
         Skill rank modifiers are applied to both heroes.
-        If smurf is suspected, enemy gets a significant skill boost.
+        If smurf is suspected, enemy weaknesses are harder to exploit
+        (better positioning, mechanics, game sense).
         """
         enemy = self.get_hero_data(enemy_hero)
         my_data = self.get_hero_data(my_hero)
@@ -327,9 +328,15 @@ class CounterDB:
         enemy_tags = enemy.get("tags", {})
         my_tags = my_data.get("tags", {})
 
-        # Skill modifiers for both heroes
+        # Enemy skill: determines how well they mitigate their weaknesses
         enemy_rank = self._get_enemy_rank()
-        enemy_mod = self._get_skill_modifier(enemy_hero, rank_override=enemy_rank)
+        # For the enemy, higher rank = less exploitable weaknesses
+        # We use an INVERSE modifier: high skill reduces weakness weight
+        enemy_skill = self._get_skill_modifier(enemy_hero, rank_override=enemy_rank)
+        # Invert: 1.3 skill → 0.77 weakness mitigation
+        enemy_weakness_mod = 2.0 - enemy_skill
+
+        # My skill: determines how well I exploit enemy weaknesses
         my_mod = self._get_skill_modifier(my_hero)
 
         score = 0.0
@@ -337,13 +344,15 @@ class CounterDB:
             if tag in TAG_OPPOSITES:
                 opposite = TAG_OPPOSITES[tag]
                 my_val = my_tags.get(opposite, 0.0)
-                # Enemy weakness is scaled by their skill modifier
-                # My counter strength is scaled by my skill modifier
-                score += (weight * enemy_mod) * (my_val * my_mod)
+                # Enemy weakness scaled down by their skill (smurf = harder to exploit)
+                # My counter strength scaled by my skill
+                effective_weakness = weight * enemy_weakness_mod
+                score += effective_weakness * (my_val * my_mod)
 
         # Bonus if the enemy explicitly lists my_hero in their counters_me
+        # Smurf enemies play around their counters better
         if my_hero in [c.strip().lower() for c in enemy.get("counters_me", [])]:
-            score += 1.0 * my_mod
+            score += 1.0 * my_mod * enemy_weakness_mod
 
         return score
 

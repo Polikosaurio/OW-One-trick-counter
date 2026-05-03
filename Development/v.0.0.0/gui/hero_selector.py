@@ -144,17 +144,24 @@ class HeroSelector(ctk.CTkFrame):
         self.skill_rank_combo.pack(side="right", padx=5)
         ctk.CTkLabel(header_frame, text="Rank", font=ctk.CTkFont(size=9)).pack(side="right", padx=(0, 2))
         
-        # Smurf Alert - clickable cube, blue only when active
+        # Smurf Alert - clickable cube with label
         from core.counters import SMURF_EMOJI
         self.smurf_active = False
+        smurf_frame = ctk.CTkFrame(header_frame, fg_color="transparent")
+        smurf_frame.pack(side="right", padx=5)
+        
+        ctk.CTkLabel(smurf_frame, text="Smurf", font=ctk.CTkFont(size=9), text_color="#888").pack(side="left", padx=(0, 3))
         self.smurf_btn = ctk.CTkButton(
-            header_frame, text=f"{SMURF_EMOJI}", 
-            font=ctk.CTkFont(size=14), width=28, height=28,
+            smurf_frame, text=f"{SMURF_EMOJI}", 
+            font=ctk.CTkFont(size=12), width=24, height=24,
             fg_color="transparent", hover_color="#3355FF",
             border_color="#555", border_width=2, corner_radius=4,
             command=self._toggle_smurf
         )
-        self.smurf_btn.pack(side="right", padx=5)
+        self.smurf_btn.pack(side="left")
+        
+        self.smurf_tooltip = ctk.CTkLabel(smurf_frame, text="", font=ctk.CTkFont(size=8), text_color="#5588FF")
+        self.smurf_tooltip.pack(side="left", padx=(3, 0))
         
         self.roster_frame = ctk.CTkFrame(roster_container, fg_color="transparent")
         self.roster_frame.pack()
@@ -311,8 +318,10 @@ class HeroSelector(ctk.CTkFrame):
         self.smurf_active = not self.smurf_active
         if self.smurf_active:
             self.smurf_btn.configure(fg_color="#3355FF", border_color="#3355FF")
+            self.smurf_tooltip.configure(text="Enemy +3 tiers")
         else:
             self.smurf_btn.configure(fg_color="transparent", border_color="#555")
+            self.smurf_tooltip.configure(text="")
         if self._db:
             self._db.set_smurf(self.smurf_active)
         self._schedule_update()
