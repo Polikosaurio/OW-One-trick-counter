@@ -144,6 +144,17 @@ class HeroSelector(ctk.CTkFrame):
         self.skill_rank_combo.pack(side="right", padx=5)
         ctk.CTkLabel(header_frame, text="Rank", font=ctk.CTkFont(size=9)).pack(side="right", padx=(0, 2))
         
+        # Smurf Alert Toggle
+        from core.counters import SMURF_EMOJI, SMURF_WARNING
+        self.smurf_var = ctk.BooleanVar(value=False)
+        self.smurf_toggle = ctk.CTkSwitch(
+            header_frame, text=f" {SMURF_EMOJI} Smurf Alert", 
+            variable=self.smurf_var, command=self._on_smurf_change, 
+            font=ctk.CTkFont(size=9), switch_width=30, switch_height=15,
+            fg_color="#3355FF", progress_color="#3366FF"
+        )
+        self.smurf_toggle.pack(side="right", padx=5)
+        
         self.roster_frame = ctk.CTkFrame(roster_container, fg_color="transparent")
         self.roster_frame.pack()
         self.roster_btns = {}
@@ -292,6 +303,12 @@ class HeroSelector(ctk.CTkFrame):
                 if info["label"] == value:
                     self._db.set_rank(key)
                     break
+        self._schedule_update()
+
+    def _on_smurf_change(self):
+        # Toggle smurf suspicion mode
+        if self._db:
+            self._db.set_smurf(self.smurf_var.get())
         self._schedule_update()
 
     def _schedule_update(self):
@@ -552,10 +569,15 @@ class HeroSelector(ctk.CTkFrame):
         intensity = self.intensity_var.get()
         alts_filter = self.alts_filter_var.get()
         skill_rank = self.skill_rank_var.get()
-        current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity, alts_filter, skill_rank)
+        smurf_active = self.smurf_var.get()
+        current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity, alts_filter, skill_rank, smurf_active)
         if current_state == self._last_update_state:
             return
         self._last_update_state = current_state
+        
+        # Apply smurf state to DB
+        if self._db:
+            self._db.set_smurf(smurf_active)
         
         # Paleta de selecciones principales
         enemy_c = "#FF9900" if cb_mode else "#FF4444"  # Orange vs Red

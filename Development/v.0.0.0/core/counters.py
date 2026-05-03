@@ -1,5 +1,5 @@
 """
-Counter Database v2.2 - Tag-based System with Skill Scaling
+Counter Database v2.3 - Tag-based System with Skill Scaling & Smurf Detection
 Provides strategic advice based on hero tag matching, adjusted by player skill rank.
 Counters are scored and sorted so the best ones come first.
 """
@@ -7,20 +7,25 @@ Counters are scored and sorted so the best ones come first.
 import json
 import os
 
-# Overwatch 2 Competitive Ranks
+# Overwatch 2 Competitive Ranks with emojis
 RANK_INFO = {
-    "bronze":     {"tier": 0, "label": "Bronze"},
-    "silver":     {"tier": 1, "label": "Silver"},
-    "gold":       {"tier": 2, "label": "Gold"},
-    "platinum":   {"tier": 3, "label": "Platinum"},
-    "diamond":    {"tier": 4, "label": "Diamond"},
-    "master":     {"tier": 5, "label": "Master"},
-    "grandmaster":{"tier": 6, "label": "Grandmaster"},
-    "champion":   {"tier": 7, "label": "Champion"},
+    "bronze":     {"tier": 0, "label": "Bronze",     "emoji": "\u2B50"},
+    "silver":     {"tier": 1, "label": "Silver",     "emoji": "\U0001F948"},
+    "gold":       {"tier": 2, "label": "Gold",       "emoji": "\U0001F947"},
+    "platinum":   {"tier": 3, "label": "Platinum",   "emoji": "\U0001F48E"},
+    "diamond":    {"tier": 4, "label": "Diamond",    "emoji": "\U0001F48E"},
+    "master":     {"tier": 5, "label": "Master",     "emoji": "\U0001F31F"},
+    "grandmaster":{"tier": 6, "label": "Grandmaster","emoji": "\U0001F451"},
+    "champion":   {"tier": 7, "label": "Champion",   "emoji": "\U0001F3C6"},
 }
 
 RANK_ORDER = list(RANK_INFO.keys())
 DEFAULT_RANK = "platinum"
+
+# Smurf: enemy plays as if 3 tiers above current lobby rank
+SMURF_TIER_BOOST = 3
+SMURF_EMOJI = "\U0001F535"
+SMURF_WARNING = "\u26A0\uFE0F"
 
 # Tags whose effectiveness scales with player skill rank.
 # direction="positive" = stronger at high ranks (aim-dependent, mechanical heroes)
@@ -212,6 +217,7 @@ class CounterDB:
     _heroes = None
     _roles = None
     _rank = DEFAULT_RANK
+    _smurf_suspected = False
 
     def __new__(cls):
         if cls._instance is None:
@@ -252,15 +258,24 @@ class CounterDB:
     def get_rank(self):
         return self._rank
 
-    def _get_skill_modifier(self, hero):
+    def set_smurf(self, suspected):
+        """Toggle smurf suspicion mode - enemy plays above their rank."""
+        self._smurf_suspected = suspected
+
+    def get_smurf(self):
+        return self._smurf_suspected
+
+    def _get_skill_modifier(self, hero, rank_override=None):
         """
         Returns a multiplier based on hero's skill-dependent tags and current rank.
         > 1.0 means hero benefits at current rank level
         < 1.0 means hero is disadvantaged at current rank level
+        rank_override: use a specific rank key instead of self._rank (for smurf detection)
         """
         hero_data = self.get_hero_data(hero)
         tags = hero_data.get("tags", {})
-        rank_tier = RANK_INFO[self._rank]["tier"]
+        effective_rank = rank_override if rank_override else self._rank
+        rank_tier = RANK_INFO[effective_rank]["tier"]
         max_tier = len(RANK_ORDER) - 1  # 7 for Champion
 
         modifier = 1.0
@@ -285,6 +300,14 @@ class CounterDB:
 
         return modifier
 
+    def _get_enemy_rank(self):
+        """Returns the effective rank of the enemy (boosted if smurf is suspected)."""
+        lobby_rank = self._rank
+        if self._smurf_suspected:
+            boosted_tier = min(RANK_INFO[lobby_rank]["tier"] + SMURF_TIER_BOOST, len(RANK_ORDER) - 1)
+            return RANK_ORDER[boosted_tier]
+        return lobby_rank
+
     # ------------------------------------------------------------------
     # Scoring
     # ------------------------------------------------------------------
@@ -294,6 +317,7 @@ class CounterDB:
         Returns a numeric score (higher = better counter).
         Based on how many of the enemy's weaknesses the player hero covers.
         Skill rank modifiers are applied to both heroes.
+        If smurf is suspected, enemy gets a significant skill boost.
         """
         enemy = self.get_hero_data(enemy_hero)
         my_data = self.get_hero_data(my_hero)
@@ -304,7 +328,8 @@ class CounterDB:
         my_tags = my_data.get("tags", {})
 
         # Skill modifiers for both heroes
-        enemy_mod = self._get_skill_modifier(enemy_hero)
+        enemy_rank = self._get_enemy_rank()
+        enemy_mod = self._get_skill_modifier(enemy_hero, rank_override=enemy_rank)
         my_mod = self._get_skill_modifier(my_hero)
 
         score = 0.0
