@@ -473,13 +473,13 @@ class HeroSelector(ctk.CTkFrame):
         # Paletas de color maestras
         palettes = {
             "standard": {
-                "muted": ["#5C2B2B", "#5C402B", "#5C5C2B", "#405C2B", "#2B5C2B"],
-                "vibrant": ["#FF0000", "#FF6600", "#666644", "#88FF00", "#00FF00"],
+                "muted": ["#5C2B2B", "#5C402B", "#5C5C00", "#405C2B", "#2B5C2B"],
+                "vibrant": ["#FF0000", "#FF6600", "#FFFF00", "#88FF00", "#00FF00"],
                 "contrast": ["#000000", "#444444", "#888888", "#BBBBBB", "#FFFFFF"]
             },
             "colorblind": {
-                "muted": ["#20235B", "#4A6E85", "#5C5C2B", "#A36D3A", "#9C4226"],
-                "vibrant": ["#313695", "#74ADD1", "#5C5C2B", "#FDAE61", "#F46D43"],
+                "muted": ["#20235B", "#4A6E85", "#444444", "#A36D3A", "#9C4226"],
+                "vibrant": ["#313695", "#74ADD1", "#CCCCCC", "#FDAE61", "#F46D43"],
                 "contrast": ["#000000", "#444444", "#888888", "#BBBBBB", "#FFFFFF"]
             }
         }
