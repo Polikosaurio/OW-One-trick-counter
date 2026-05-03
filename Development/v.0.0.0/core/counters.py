@@ -102,6 +102,9 @@ TAG_OPPOSITES = {
     "weak_to_cleanse":           "dot_damage",
     "weak_to_projectile_absorption": "projectile",
     "weak_to_barrier":           "shield_break",
+    "weak_to_brawl":             "brawl",
+    "weak_to_shield":            "shield",
+    "weak_to_anti_utility":      "anti_flank",
 }
 
 # Tags that are inherently advantageous regardless of matchup
@@ -113,6 +116,7 @@ GENERIC_GOOD_TAGS = {
     "tracking_ability", "invulnerability_frames", "dot_damage",
     "damage_reduction", "deflect_melee", "block_ability",
     "burst_healing", "sustained_healing",
+    "anti_hack", "anti_utility", "shield",
 }
 
 # ---------------------------------------------------------------------------
@@ -130,6 +134,9 @@ TAG_PREYS_ON = {
     "sustained_damage":    "shield-reliant and kiting heroes",
     "close_combat":        "immobile heroes without escape tools",
     "crowd_control":       "dive heroes and ability-reliant comps",
+    "anti_flank":          "flankers, divers, and ability-dependent heroes",
+    "anti_hack":           "hack/utility-dependent heroes",
+    "anti_utility":        "ability-reliant heroes",
     "area_denial":         "grouped heroes and zone-dependent setups",
     "long_range":          "short-range heroes that must close distance",
     "mobile":              "static / anchor-type heroes",
@@ -143,6 +150,10 @@ TAG_PREYS_ON = {
     "aerial":              "ground-bound heroes without anti-air",
     "brawl":               "poke-dependent compositions",
     "shield":              "poke and sustain heroes",
+    "anti_flank":          "flankers and isolated heroes",
+    "anti_hack":           "utility-dependent heroes",
+    "anti_utility":        "heroes reliant on abilities",
+    "anti_air":            "aerial heroes without ground fallback",
 }
 
 # Subrole descriptions
@@ -175,6 +186,9 @@ MATCHUP_LABELS = {
     "weak_to_cleanse":           "cleanse/sustain",
     "weak_to_projectile_absorption": "projectile absorption",
     "weak_to_barrier":           "barrier pressure",
+    "weak_to_brawl":             "brawl pressure",
+    "weak_to_shield":            "shield presence",
+    "weak_to_anti_utility":      "anti-utility",
     # Kit strengths
     "tracking_ability":          "tracking shots",
     "invulnerability_frames":    "invulnerability",
@@ -229,6 +243,10 @@ MATCHUP_LABELS = {
     "area_denial":         "area denial",
     "anti_flank":          "anti-flank",
     "anti_air":            "anti-air",
+    "brawl":               "brawl pressure",
+    "shield":              "shield coverage",
+    "anti_utility":        "utility denial",
+    "anti_hack":           "hack immunity",
     # Subrole tags
     "weak_against_bruiser":      "bruiser pressure",
     "weak_against_initiator":    "initiator dive",
