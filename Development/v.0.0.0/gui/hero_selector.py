@@ -144,7 +144,7 @@ class HeroSelector(ctk.CTkFrame):
         self.skill_rank_combo.pack(side="right", padx=5)
         ctk.CTkLabel(header_frame, text="Rank", font=ctk.CTkFont(size=9)).pack(side="right", padx=(0, 2))
         
-        # Smurf Alert - clickable cube with label
+        # Smurf Alert - clickable cube
         from core.counters import SMURF_EMOJI
         self.smurf_active = False
         smurf_frame = ctk.CTkFrame(header_frame, fg_color="transparent")
@@ -159,9 +159,6 @@ class HeroSelector(ctk.CTkFrame):
             command=self._toggle_smurf
         )
         self.smurf_btn.pack(side="left")
-        
-        self.smurf_tooltip = ctk.CTkLabel(smurf_frame, text="", font=ctk.CTkFont(size=8), text_color="#5588FF")
-        self.smurf_tooltip.pack(side="left", padx=(3, 0))
         
         self.roster_frame = ctk.CTkFrame(roster_container, fg_color="transparent")
         self.roster_frame.pack()
@@ -318,10 +315,8 @@ class HeroSelector(ctk.CTkFrame):
         self.smurf_active = not self.smurf_active
         if self.smurf_active:
             self.smurf_btn.configure(fg_color="#3355FF", border_color="#3355FF")
-            self.smurf_tooltip.configure(text="Enemy +3 tiers")
         else:
             self.smurf_btn.configure(fg_color="transparent", border_color="#555")
-            self.smurf_tooltip.configure(text="")
         if self._db:
             self._db.set_smurf(self.smurf_active)
         self._schedule_update()
