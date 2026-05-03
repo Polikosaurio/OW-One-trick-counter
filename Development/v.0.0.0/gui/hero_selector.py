@@ -58,8 +58,19 @@ class HeroSelector(ctk.CTkFrame):
         return "?"
     
     def _setup_ui(self):
+        # 0. Global Split Layout (Left Content vs Right Sidebar)
+        main_layout = ctk.CTkFrame(self, fg_color="transparent")
+        main_layout.pack(fill="both", expand=True)
+        
+        content_left = ctk.CTkFrame(main_layout, fg_color="transparent")
+        content_left.pack(side="left", fill="both", expand=True)
+        
+        sidebar_right = ctk.CTkFrame(main_layout, fg_color="#1A1A24", corner_radius=8, width=320)
+        sidebar_right.pack(side="right", fill="y", padx=(5, 5), pady=(5, 5))
+        sidebar_right.pack_propagate(False) # Forzar ancho fijo
+        
         # 1. TOP BAND: Enemy Card (Left) | Roster (Center) | Your Card (Right)
-        top_band = ctk.CTkFrame(self, fg_color="transparent")
+        top_band = ctk.CTkFrame(content_left, fg_color="transparent")
         top_band.pack(fill="x", padx=5, pady=(5, 5))
         
         # --- LEFT: Enemy Profile ---
@@ -67,9 +78,12 @@ class HeroSelector(ctk.CTkFrame):
         self.enemy_profile.pack(side="left", fill="y", padx=(0, 10))
         self.enemy_profile.pack_propagate(False)
         
-        ctk.CTkLabel(self.enemy_profile, text="ENEMY HERO", font=ctk.CTkFont(size=12, weight="bold"), text_color="#FF4444").pack(pady=(10,5))
+        self.enemy_title_lbl = ctk.CTkLabel(self.enemy_profile, text="ENEMY HERO", font=ctk.CTkFont(size=12, weight="bold"), text_color="#FF4444")
+        self.enemy_title_lbl.pack(pady=(10,5))
+        
         self.enemy_pic = ctk.CTkLabel(self.enemy_profile, text="[Left Click]")
         self.enemy_pic.pack(pady=(0, 10))
+        
         self.enemy_tags_frame = ctk.CTkScrollableFrame(self.enemy_profile, fg_color="transparent")
         self.enemy_tags_frame.pack(fill="both", expand=True, padx=5, pady=(0, 5))
         
@@ -81,20 +95,6 @@ class HeroSelector(ctk.CTkFrame):
         header_frame.pack(fill="x")
         
         ctk.CTkLabel(header_frame, text="ROSTER (L-Click: Enemy | R-Click: You)", font=ctk.CTkFont(size=10, weight="bold"), text_color="#888").pack(side="left", padx=10)
-        
-        self.colorblind_var = ctk.BooleanVar(value=False)
-        ctk.CTkSwitch(
-            header_frame, text="Colorblind", 
-            variable=self.colorblind_var, command=self._update, 
-            font=ctk.CTkFont(size=10), switch_width=30, switch_height=15
-        ).pack(side="right", padx=5)
-        
-        self.value_var = ctk.BooleanVar(value=False)
-        ctk.CTkSwitch(
-            header_frame, text="Value (0-1)", 
-            variable=self.value_var, command=self._update, 
-            font=ctk.CTkFont(size=10), switch_width=30, switch_height=15
-        ).pack(side="right", padx=10)
         
         # Intensity Slider
         slider_frame = ctk.CTkFrame(header_frame, fg_color="transparent")
@@ -108,6 +108,20 @@ class HeroSelector(ctk.CTkFrame):
             width=70, height=12
         ).pack(side="bottom", pady=(0, 2))
         
+        self.value_var = ctk.BooleanVar(value=False)
+        ctk.CTkSwitch(
+            header_frame, text="Value (0-1)", 
+            variable=self.value_var, command=self._update, 
+            font=ctk.CTkFont(size=10), switch_width=30, switch_height=15
+        ).pack(side="right", padx=10)
+        
+        self.colorblind_var = ctk.BooleanVar(value=False)
+        ctk.CTkSwitch(
+            header_frame, text="Colorblind", 
+            variable=self.colorblind_var, command=self._update, 
+            font=ctk.CTkFont(size=10), switch_width=30, switch_height=15
+        ).pack(side="right", padx=5)
+        
         self.roster_frame = ctk.CTkFrame(roster_container, fg_color="transparent")
         self.roster_frame.pack()
         self.roster_btns = {}
@@ -118,19 +132,22 @@ class HeroSelector(ctk.CTkFrame):
         self.your_profile.pack(side="right", fill="y", padx=(10, 0))
         self.your_profile.pack_propagate(False)
         
-        ctk.CTkLabel(self.your_profile, text="YOUR HERO", font=ctk.CTkFont(size=12, weight="bold"), text_color="#00E5FF").pack(pady=(10,5))
+        self.your_title_lbl = ctk.CTkLabel(self.your_profile, text="YOUR HERO", font=ctk.CTkFont(size=12, weight="bold"), text_color="#00E5FF")
+        self.your_title_lbl.pack(pady=(10,5))
+        
         self.your_pic = ctk.CTkLabel(self.your_profile, text="[Right Click]")
         self.your_pic.pack(pady=(0, 10))
+        
         self.your_tags_frame = ctk.CTkScrollableFrame(self.your_profile, fg_color="transparent")
         self.your_tags_frame.pack(fill="both", expand=True, padx=5, pady=(0, 5))
         
-        # 2. BOTTOM BAND: Matchup Analysis & Alternatives
-        bottom_band = ctk.CTkFrame(self, fg_color="#1A1A24", corner_radius=8)
-        bottom_band.pack(fill="both", expand=True, padx=5, pady=(5, 5))
+        # 2. BOTTOM BAND: Alternatives
+        bottom_band = ctk.CTkFrame(content_left, fg_color="#1A1A24", corner_radius=8)
+        bottom_band.pack(fill="x", padx=5, pady=(5, 5))
         
-        # Sub-band for alternatives (top of bottom band)
+        # Sub-band for alternatives
         self.alts_frame = ctk.CTkFrame(bottom_band, fg_color="transparent", height=70)
-        self.alts_frame.pack(fill="x", padx=10, pady=(10, 0))
+        self.alts_frame.pack(fill="x", padx=10, pady=(10, 10))
         self.alts_frame.pack_propagate(False)
         
         # Left panel for label and filter toggle
@@ -138,7 +155,8 @@ class HeroSelector(ctk.CTkFrame):
         alts_left_panel.pack(side="left", fill="y", padx=(0, 5))
         alts_left_panel.pack_propagate(False)
         
-        ctk.CTkLabel(alts_left_panel, text="BEST ALTERNATIVES", font=ctk.CTkFont(size=11, weight="bold"), text_color="#AAAAAA").pack(anchor="w")
+        self.alts_title_lbl = ctk.CTkLabel(alts_left_panel, text="BEST ALTERNATIVES", font=ctk.CTkFont(size=11, weight="bold"), text_color="#AAAAAA")
+        self.alts_title_lbl.pack(anchor="w")
         
         self.alts_filter_var = ctk.StringVar(value="Your Role")
         self.alts_filter_seg = ctk.CTkSegmentedButton(
@@ -154,16 +172,18 @@ class HeroSelector(ctk.CTkFrame):
         self.alts_icons_frame = ctk.CTkScrollableFrame(self.alts_frame, orientation="horizontal", fg_color="transparent")
         self.alts_icons_frame.pack(side="left", fill="both", expand=True)
         
-        # Matchup Textbox
+        # 3. SIDEBAR: Matchup Analysis (Right Column)
+        ctk.CTkLabel(sidebar_right, text="MATCHUP ANALYSIS", font=ctk.CTkFont(size=14, weight="bold"), text_color="#FFFFFF").pack(pady=(20, 10))
+        
         self.info = ctk.CTkTextbox(
-            bottom_band,
-            font=ctk.CTkFont(size=13),
-            text_color="#FFFFFF",
+            sidebar_right,
+            font=ctk.CTkFont(size=14),
+            text_color="#DDDDDD",
             fg_color="transparent",
             wrap="word",
             activate_scrollbars=True
         )
-        self.info.pack(fill="both", expand=True, padx=10, pady=10)
+        self.info.pack(fill="both", expand=True, padx=15, pady=(0, 20))
         self.info.insert("1.0", "Select heroes to see matchup analysis...")
         self.info.configure(state="disabled")
         
@@ -256,7 +276,7 @@ class HeroSelector(ctk.CTkFrame):
                 pass
         return None
 
-    def _populate_tags_scroll(self, scroll_frame, tags_dict):
+    def _populate_tags_scroll(self, scroll_frame, tags_dict, cb_mode=False):
         # Limpiar frame
         for widget in scroll_frame.winfo_children():
             widget.destroy()
@@ -272,7 +292,13 @@ class HeroSelector(ctk.CTkFrame):
             tag_frame = ctk.CTkFrame(scroll_frame, fg_color="transparent")
             tag_frame.pack(fill="x", pady=1)
             
-            val_color = "#44FF44" if weight >= 0.8 else "#FFCC00" if weight >= 0.5 else "#AAAAAA"
+            # Color coding según el modo
+            if cb_mode:
+                # Daltónico: Naranja intenso (>0.8), Naranja claro (>0.5), Gris (<0.5)
+                val_color = "#F46D43" if weight >= 0.8 else "#FDAE61" if weight >= 0.5 else "#AAAAAA"
+            else:
+                # Estándar: Verde brillante (>0.8), Amarillo (>0.5), Gris (<0.5)
+                val_color = "#44FF44" if weight >= 0.8 else "#FFCC00" if weight >= 0.5 else "#AAAAAA"
             
             ctk.CTkLabel(tag_frame, text=tag.replace('_', ' ').title(), font=ctk.CTkFont(size=10)).pack(side="left")
             ctk.CTkLabel(tag_frame, text=f"{weight:.1f}", font=ctk.CTkFont(size=10, weight="bold"), text_color=val_color).pack(side="right", padx=5)
@@ -348,6 +374,10 @@ class HeroSelector(ctk.CTkFrame):
         enemy_c = "#FF9900" if cb_mode else "#FF4444"  # Orange vs Red
         ally_c = "#3366FF" if cb_mode else "#00E5FF"   # Blue vs Cyan
         
+        # Actualizamos los títulos principales
+        self.enemy_title_lbl.configure(text_color=enemy_c)
+        self.your_title_lbl.configure(text_color=ally_c)
+        
         # 1. Update Grid Colors (Heatmap & Borders)
         for h, data in self.roster_btns.items():
             btn = data["btn"]
@@ -400,6 +430,7 @@ class HeroSelector(ctk.CTkFrame):
             widget.destroy()
         
         if self.selected_enemy:
+            self.alts_title_lbl.configure(text="BEST ALTERNATIVES")
             # Get absolutely all counters sorted by score
             all_alts = db.get_all_counters(self.selected_enemy, limit=60)
             
@@ -420,6 +451,36 @@ class HeroSelector(ctk.CTkFrame):
                     command=lambda h=alt['hero']: self._on_your_click(h)
                 )
                 btn.pack(side="left", padx=2)
+                
+        elif self.selected_your:
+            self.alts_title_lbl.configure(text="STRONG AGAINST")
+            # Encontrar a quién contrarresta mejor "Your Hero"
+            strong_against = []
+            for h in db._heroes.keys():
+                if h == self.selected_your: continue
+                # Evaluamos qué tan bueno es tu héroe contra 'h'
+                score = db._score_counter(h, self.selected_your)
+                strong_against.append({'hero': h, 'score': score, 'role': db.get_role(h)})
+            
+            strong_against.sort(key=lambda x: -x['score'])
+            
+            if self.alts_filter_var.get() == "Your Role":
+                my_role = db.get_role(self.selected_your)
+                strong_against = [a for a in strong_against if a['role'] == my_role]
+                
+            for alt in strong_against:
+                alt_img = self.hero_images.get(alt['hero'])
+                btn = ctk.CTkButton(
+                    self.alts_icons_frame, text="", image=alt_img, width=34, height=34,
+                    fg_color=self._get_color_for_score(alt['score'], cb_mode), 
+                    border_width=0,
+                    # Al hacer clic en un enemigo frente al que somos fuertes, lo marcamos como ENEMIGO
+                    command=lambda h=alt['hero']: self._on_enemy_click(h)
+                )
+                btn.pack(side="left", padx=2)
+                
+        else:
+            self.alts_title_lbl.configure(text="BEST ALTERNATIVES")
 
         # 3. Update Profiles
         enemy_name = ""
@@ -434,10 +495,10 @@ class HeroSelector(ctk.CTkFrame):
             else:
                 self.enemy_pic.configure(image="", text=enemy_name)
                 
-            self._populate_tags_scroll(self.enemy_tags_frame, enemy_data.get("tags", {}))
+            self._populate_tags_scroll(self.enemy_tags_frame, enemy_data.get("tags", {}), cb_mode)
         else:
             self.enemy_pic.configure(image="", text="[Left Click]")
-            self._populate_tags_scroll(self.enemy_tags_frame, {})
+            self._populate_tags_scroll(self.enemy_tags_frame, {}, cb_mode)
             
         if self.selected_your:
             your_data = db.get_hero_data(self.selected_your)
@@ -448,10 +509,10 @@ class HeroSelector(ctk.CTkFrame):
             else:
                 self.your_pic.configure(image="", text=your_name)
                 
-            self._populate_tags_scroll(self.your_tags_frame, your_data.get("tags", {}))
+            self._populate_tags_scroll(self.your_tags_frame, your_data.get("tags", {}), cb_mode)
         else:
             self.your_pic.configure(image="", text="[Right Click]")
-            self._populate_tags_scroll(self.your_tags_frame, {})
+            self._populate_tags_scroll(self.your_tags_frame, {}, cb_mode)
 
         # 4. Update Matchup Info Textbox
         self.info.configure(state="normal")

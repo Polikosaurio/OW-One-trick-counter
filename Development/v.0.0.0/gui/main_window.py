@@ -20,7 +20,7 @@ class MainWindow:
         
         self.root = ctk.CTk()
         self.root.title("OW One Trick Counter")
-        self.root.geometry("1050x650")
+        self.root.geometry("1280x650")
         self.root.resizable(True, True)
         
         ctk.set_appearance_mode("dark")
