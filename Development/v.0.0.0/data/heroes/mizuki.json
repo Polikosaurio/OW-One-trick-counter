@@ -2,31 +2,39 @@
   "name": "Mizuki",
   "role": "Support",
   "tags": {
-    "healing": 0.9,
     "mobile": 0.7,
-    "utility": 0.7,
+    "healing": 0.8,
     "peel": 0.6,
-    "off_support": 0.7,
-    "poke": 0.5,
-    "weak_to_flank": 0.5,
-    "weak_to_dive": 0.5,
+    "utility": 0.7,
+    "area_denial": 0.6,
+    "projectile_absorption": 0.8,
+    "dive_synergy": 0.7,
     "self_sustain": 0.6,
     "escape_ability": 0.5,
-    "weak_to_sustained_damage": 0.4,
-    "weak_to_anti_heal": 0.4,
+    "weak_to_long_range": 0.7,
+    "struggles_vs_ranged": 0.6,
+    "weak_vs_sustained_poke": 0.7,
+    "weak_to_dive": 0.5,
+    "struggles_vs_dive": 0.5,
+    "weak_to_anti_heal": 0.5,
     "weak_against_sharpshooter": 0.4,
     "weak_against_specialist": 0.3,
-    "strong_against_flanker": 0.4,
-    "strong_against_recon": 0.3
+    "strong_against_flanker": 0.6,
+    "strong_against_recon": 0.5
   },
   "best_against": [
-    "team"
-  ],
-  "counters_me": [
     "genji",
     "tracer",
-    "dva",
-    "winston"
+    "reaper",
+    "winston",
+    "doomfist"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "hanzo",
+    "ashe",
+    "soldier76",
+    "sigma"
   ],
   "subrole": "survivor"
 }

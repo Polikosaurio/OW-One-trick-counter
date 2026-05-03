@@ -45,10 +45,34 @@ TAG_OPPOSITES = {
     "weak_against_tactician":     "tactician",
     "weak_against_medic":         "medic",
     "weak_against_survivor":      "survivor",
+    # --- Matchup-specific tags (contextual weaknesses) ---
+    # Los pierde en duelos del mismo tipo (ej: poke vs poke)
+    "loses_poke_duels":       "sniper",
+    # Depende de cobertura para ser efectivo
+    "cover_dependent":        "angle_denial",
+    # Muy débil cuando está expuesto/sin cobertura
+    "exposed_vulnerable":     "poke",
+    # Le cuesta contra enemigos a distancia
+    "struggles_vs_ranged":    "long_range",
+    # Vulnerable a que lo kiteen
+    "vulnerable_to_kiting":   "mobile",
+    # Depende de escudos para sobrevivir
+    "shield_reliant":         "shield_break",
+    # Solo puede pelear en melee
+    "melee_only":             "long_range",
+    # Le cuesta contra composiciones dive
+    "struggles_vs_dive":      "dive_capability",
+    # Pierde contra poke sostenido (no burst)
+    "weak_vs_sustained_poke": "sustained_damage",
+    # Le cuesta en combate cerrado
+    "struggles_vs_close_combat": "close_combat",
 }
 
 # Tags that are inherently good for a hero to have regardless of matchup
-GENERIC_GOOD_TAGS = {"healing", "peel", "anti_flank", "utility", "versatile"}
+GENERIC_GOOD_TAGS = {"healing", "peel", "anti_flank", "utility", "versatile",
+    "close_quarters_dominant", "strong_cover_utilization", "high_burst_combo",
+    "ally_transport", "projectile_absorption", "pick_potential_from_range",
+    "dive_synergy", "zone_lockdown", "shield_break", "angle_denial"}
 
 # Subrole descriptions for advice generation
 SUBROLE_INFO = {
@@ -62,6 +86,78 @@ SUBROLE_INFO = {
     "tactician":     {"role": "Support", "passive": "Excess ultimate charge carries over after using your ultimate."},
     "medic":         {"role": "Support", "passive": "Healing allies with your weapon also heals you."},
     "survivor":      {"role": "Support", "passive": "Using a movement ability activates passive health regeneration."},
+}
+
+# Human-readable labels for matchup tags
+MATCHUP_LABELS = {
+    # Matchup-specific tags (contextual weaknesses)
+    "loses_poke_duels":       "poke duels",
+    "cover_dependent":        "cover denial",
+    "exposed_vulnerable":     "exposure to poke",
+    "struggles_vs_ranged":    "ranged opponents",
+    "vulnerable_to_kiting":   "kiting",
+    "shield_reliant":         "shield pressure",
+    "melee_only":             "range advantage",
+    "struggles_vs_dive":      "dive compositions",
+    "weak_vs_sustained_poke": "sustained poke",
+    "struggles_vs_close_combat": "close combat",
+    # Kit strength tags
+    "poke_from_cover":        "poke from cover",
+    "strong_cover_utilization": "cover fights",
+    "close_quarters_dominant": "close quarters",
+    "high_burst_combo":       "burst combos",
+    "ally_transport":         "ally mobility",
+    "projectile_absorption":  "projectile-heavy comps",
+    "pick_potential_from_range": "pick potential at range",
+    "dive_synergy":           "dive compositions",
+    "zone_lockdown":          "zone control",
+    "shield_break":           "shields",
+    "angle_denial":           "angle control",
+    # Legacy weakness tags
+    "weak_to_flank":          "flank pressure",
+    "weak_to_mobility":       "mobile enemies",
+    "weak_to_dive":           "dive compositions",
+    "weak_to_cc":             "crowd control",
+    "weak_to_sniper":         "snipers",
+    "weak_to_poke":           "poke damage",
+    "weak_to_ranged":         "ranged pressure",
+    "weak_to_hitscan":        "hitscan accuracy",
+    "weak_to_burst":          "burst damage",
+    "weak_to_anti_air":       "anti-air",
+    "weak_to_kiting":         "kiting",
+    "weak_to_grounding":      "grounding effects",
+    "weak_to_close_combat":   "close combat",
+    "weak_to_aoe":            "AoE damage",
+    "weak_to_sustained_damage": "sustained damage",
+    "weak_to_anti_flank":     "anti-flank",
+    "weak_to_long_range":     "long range",
+    "weak_to_anti_heal":      "anti-heal",
+    # Legacy strength tags
+    "sniper":                 "sniper damage",
+    "poke":                   "poke damage",
+    "hitscan":                "hitscan pressure",
+    "burst_damage":           "burst damage",
+    "flank":                  "flank access",
+    "dive_capability":        "dive potential",
+    "crowd_control":          "crowd control",
+    "mobile":                 "mobility",
+    "long_range":             "long range",
+    "sustained_damage":       "sustained damage",
+    "close_combat":           "close combat",
+    "area_denial":            "area denial",
+    "anti_flank":             "anti-flank",
+    "anti_air":               "anti-air",
+    # Subrole weakness tags
+    "weak_against_bruiser":       "bruiser pressure",
+    "weak_against_initiator":     "initiator dive",
+    "weak_against_stalwart":      "stalwart defense",
+    "weak_against_sharpshooter":  "sharpshooter picks",
+    "weak_against_flanker":       "flank pressure",
+    "weak_against_specialist":    "specialist sustained fire",
+    "weak_against_recon":         "recon tracking",
+    "weak_against_tactician":     "tactician ult economy",
+    "weak_against_medic":         "medic sustain",
+    "weak_against_survivor":      "survivor sustain",
 }
 
 
@@ -153,6 +249,12 @@ class CounterDB:
             "reason": advice,
         }
 
+    def _format_tag_label(self, tag):
+        """Return a human-readable label for any tag."""
+        if tag in MATCHUP_LABELS:
+            return MATCHUP_LABELS[tag]
+        return tag.replace("weak_to_", "").replace("weak_against_", "").replace("_", " ")
+
     def _generate_advice(self, enemy_hero, enemy, my_data, my_role):
         enemy_tags = enemy.get("tags", {})
         my_tags = my_data.get("tags", {})
@@ -179,18 +281,18 @@ class CounterDB:
             if tag in TAG_OPPOSITES and weight >= 0.5:
                 opposite = TAG_OPPOSITES[tag]
                 if my_tags.get(opposite, 0) >= 0.5:
-                    weakness = tag.replace("weak_to_", "").replace("weak_against_", "").replace("_", " ").upper()
-                    ability = opposite.replace("_", " ").upper()
-                    adv_yours.append(f"[+] You have {ability} against their weak {weakness}")
+                    weakness = self._format_tag_label(tag)
+                    ability = self._format_tag_label(opposite)
+                    adv_yours.append(f"[+] You have {ability} against their {weakness}")
 
         # 2. El enemigo explota tus debilidades
         for tag, weight in sorted(my_tags.items(), key=lambda kv: -kv[1]):
             if tag in TAG_OPPOSITES and weight >= 0.5:
                 opposite = TAG_OPPOSITES[tag]
                 if enemy_tags.get(opposite, 0) >= 0.5:
-                    weakness = tag.replace("weak_to_", "").replace("weak_against_", "").replace("_", " ").upper()
-                    ability = opposite.replace("_", " ").upper()
-                    adv_theirs.append(f"[!] They have {ability} against your weak {weakness}")
+                    weakness = self._format_tag_label(tag)
+                    ability = self._format_tag_label(opposite)
+                    adv_theirs.append(f"[!] They have {ability} against your {weakness}")
 
         # 3. Role-specific generic tips based on my own strong tags
         for my_tag, val in my_tags.items():
