@@ -1,0 +1,24 @@
+{
+  "name": "Orisa",
+  "role": "Tank",
+  "tags": {
+    "fortify": 1.0,
+    "crowd_control": 0.8,
+    "poke": 0.7,
+    "spam": 0.7,
+    "tanky": 0.8,
+    "main_tank": 0.7,
+    "weak_to_dive": 0.6,
+    "static": 0.7
+  },
+  "best_against": [
+    "team",
+    "poke_comp"
+  ],
+  "counters_me": [
+    "dva",
+    "winston",
+    "genji",
+    "flankers"
+  ]
+}

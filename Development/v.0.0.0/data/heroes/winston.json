@@ -1,0 +1,26 @@
+{
+  "name": "Winston",
+  "role": "Tank",
+  "tags": {
+    "dive_capability": 1.0,
+    "mobile": 1.0,
+    "aerial": 1.0,
+    "peel": 0.8,
+    "main_tank": 0.7,
+    "anti_flank": 0.8,
+    "weak_to_cc": 0.7,
+    "weak_to_burst": 0.5
+  },
+  "best_against": [
+    "widowmaker",
+    "zenyatta",
+    "mercy",
+    "ana"
+  ],
+  "counters_me": [
+    "ramattra",
+    "zarya",
+    "roadhog",
+    "reaper"
+  ]
+}

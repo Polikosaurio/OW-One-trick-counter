@@ -1,0 +1,21 @@
+{
+  "name": "Illari",
+  "role": "Support",
+  "tags": {
+    "healing": 1.0,
+    "hitscan": 0.9,
+    "poke": 0.8,
+    "sniper": 0.7,
+    "off_support": 0.9,
+    "aim_intensive": 0.7,
+    "weak_to_flank": 0.6
+  },
+  "best_against": [
+    "team"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "dva"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Sojourn",
+  "role": "DPS",
+  "tags": {
+    "hitscan": 1.0,
+    "burst_damage": 0.9,
+    "poke": 0.8,
+    "railgun": 1.0,
+    "mobile": 0.6,
+    "one_shot": 0.6,
+    "aim_intensive": 0.8,
+    "weak_to_dive": 0.5
+  },
+  "best_against": [
+    "team",
+    "poke"
+  ],
+  "counters_me": [
+    "genji",
+    "dva",
+    "winston"
+  ]
+}

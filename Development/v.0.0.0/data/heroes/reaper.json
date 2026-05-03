@@ -1,0 +1,23 @@
+{
+  "name": "Reaper",
+  "role": "DPS",
+  "tags": {
+    "close_combat": 1.0,
+    "burst_damage": 0.9,
+    "brawl": 0.9,
+    "self_heal": 0.8,
+    "escape_ability": 0.7,
+    "tanky": 0.5,
+    "weak_to_poke": 0.7,
+    "weak_to_ranged": 0.6
+  },
+  "best_against": [
+    "team",
+    "close_quarters"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "hanzo",
+    "cassidy"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Lúcio",
+  "role": "Support",
+  "tags": {
+    "mobility_boost": 1.0,
+    "mobile": 0.9,
+    "peel": 0.8,
+    "healing": 0.7,
+    "speed": 1.0,
+    "spam": 0.5,
+    "off_support": 0.9,
+    "weak_to_poke": 0.7,
+    "aim_intensive": 0.2
+  },
+  "best_against": [
+    "dva",
+    "winston",
+    "genji",
+    "divers"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "cassidy",
+    "hanzo"
+  ]
+}

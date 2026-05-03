@@ -1,0 +1,25 @@
+{
+  "name": "Zenyatta",
+  "role": "Support",
+  "tags": {
+    "healing": 0.8,
+    "damage_boost": 1.0,
+    "discord": 1.0,
+    "poke": 0.8,
+    "off_support": 1.0,
+    "anti_healer": 0.9,
+    "weak_to_flank": 0.9,
+    "no_self_defense": 0.8,
+    "low_mobility": 0.9
+  },
+  "best_against": [
+    "team",
+    "any"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "dva",
+    "winston"
+  ]
+}

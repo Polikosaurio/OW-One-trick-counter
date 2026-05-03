@@ -1,0 +1,23 @@
+{
+  "name": "Soldier: 76",
+  "role": "DPS",
+  "tags": {
+    "hitscan": 1.0,
+    "sustained_damage": 0.8,
+    "poke": 0.8,
+    "self_heal": 0.8,
+    "mobile": 0.5,
+    "aim_intensive": 0.6,
+    "versatile": 0.9,
+    "weak_to_sniper": 0.5
+  },
+  "best_against": [
+    "team",
+    "any"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "widowmaker"
+  ]
+}

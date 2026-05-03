@@ -1,0 +1,23 @@
+{
+  "name": "Ramattra",
+  "role": "Tank",
+  "tags": {
+    "brawl": 1.0,
+    "crowd_control": 0.8,
+    "spam": 0.7,
+    "poke": 0.6,
+    "tanky": 0.8,
+    "main_tank": 0.7,
+    "dive": 0.6,
+    "weak_to_ranged": 0.5
+  },
+  "best_against": [
+    "team",
+    "brawl_comp"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "hanzo",
+    "sojourn"
+  ]
+}

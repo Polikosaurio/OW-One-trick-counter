@@ -1,0 +1,29 @@
+{
+  "name": "Genji",
+  "role": "DPS",
+  "tags": {
+    "mobile": 1.0,
+    "dive_capability": 0.9,
+    "poke": 0.7,
+    "escape_ability": 0.9,
+    "flank": 0.9,
+    "deflect": 0.8,
+    "burst_damage": 0.7,
+    "weak_to_cc": 0.8,
+    "aim_intensive": 0.8,
+    "beginner_unfriendly": 0.8
+  },
+  "best_against": [
+    "widowmaker",
+    "zenyatta",
+    "mercy",
+    "ana",
+    "supports"
+  ],
+  "counters_me": [
+    "brigitte",
+    "winston",
+    "zarya",
+    "symmetra"
+  ]
+}

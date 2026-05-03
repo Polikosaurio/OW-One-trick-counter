@@ -1,0 +1,24 @@
+{
+  "name": "Domina",
+  "role": "Tank",
+  "tags": {
+    "crowd_control": 0.9,
+    "tanky": 0.8,
+    "brawl": 0.7,
+    "burst_damage": 0.6,
+    "close_combat": 0.7,
+    "main_tank": 0.6,
+    "weak_to_poke": 0.6,
+    "weak_to_ranged": 0.5
+  },
+  "best_against": [
+    "supports",
+    "low_mobility"
+  ],
+  "counters_me": [
+    "pharah",
+    "widowmaker",
+    "junkrat",
+    "bastion"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Tracer",
+  "role": "DPS",
+  "tags": {
+    "mobile": 1.0,
+    "dive_capability": 1.0,
+    "burst_damage": 0.8,
+    "flank": 1.0,
+    "escape_ability": 1.0,
+    "one_shot": 0.6,
+    "aim_intensive": 0.8,
+    "weak_to_cc": 0.8,
+    "weak_to_sniper": 0.6,
+    "beginner_unfriendly": 0.7
+  },
+  "best_against": [
+    "supports",
+    "healers"
+  ],
+  "counters_me": [
+    "brigitte",
+    "cassidy",
+    "symmetra",
+    "torbjorn"
+  ]
+}

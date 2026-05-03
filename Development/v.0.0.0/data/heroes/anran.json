@@ -1,0 +1,24 @@
+{
+  "name": "Anran",
+  "role": "DPS",
+  "tags": {
+    "mobile": 0.8,
+    "poke": 0.9,
+    "burst_damage": 0.7,
+    "hitscan": 0.7,
+    "flank": 0.6,
+    "aim_intensive": 0.7,
+    "weak_to_dive": 0.6,
+    "weak_to_cc": 0.5
+  },
+  "best_against": [
+    "supports",
+    "low_mobility"
+  ],
+  "counters_me": [
+    "winston",
+    "dva",
+    "brigitte",
+    "reinhardt"
+  ]
+}

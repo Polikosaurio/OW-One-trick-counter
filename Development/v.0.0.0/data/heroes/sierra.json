@@ -1,0 +1,24 @@
+{
+  "name": "Sierra",
+  "role": "DPS",
+  "tags": {
+    "mobile": 0.8,
+    "poke": 0.8,
+    "burst_damage": 0.7,
+    "hitscan": 0.6,
+    "escape_ability": 0.6,
+    "aim_intensive": 0.7,
+    "weak_to_dive": 0.6,
+    "weak_to_cc": 0.5
+  },
+  "best_against": [
+    "tanks",
+    "low_mobility"
+  ],
+  "counters_me": [
+    "winston",
+    "dva",
+    "genji",
+    "tracer"
+  ]
+}

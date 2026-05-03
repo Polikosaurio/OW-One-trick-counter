@@ -1,0 +1,23 @@
+{
+  "name": "Roadhog",
+  "role": "Tank",
+  "tags": {
+    "brawl": 0.8,
+    "self_heal": 1.0,
+    "poke": 0.7,
+    "one_shot": 0.5,
+    "tanky": 0.9,
+    "hook": 1.0,
+    "weak_to_cc": 0.5,
+    "no_shield": 0.0
+  },
+  "best_against": [
+    "team",
+    "close"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "pharah",
+    "junkrat"
+  ]
+}

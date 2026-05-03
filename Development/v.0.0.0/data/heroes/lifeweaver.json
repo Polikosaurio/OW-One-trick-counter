@@ -1,0 +1,22 @@
+{
+  "name": "Lifeweaver",
+  "role": "Support",
+  "tags": {
+    "healing": 1.0,
+    "utility": 1.0,
+    "peel": 0.8,
+    "tree": 1.0,
+    "pull": 1.0,
+    "main_support": 0.7,
+    "weak_to_flank": 0.6,
+    "game_sense_intensive": 0.7
+  },
+  "best_against": [
+    "team"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "dva"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Vendetta",
+  "role": "DPS",
+  "tags": {
+    "mobile": 0.9,
+    "flank": 0.8,
+    "burst_damage": 0.8,
+    "dive_capability": 0.7,
+    "escape_ability": 0.7,
+    "aim_intensive": 0.6,
+    "weak_to_cc": 0.6,
+    "weak_to_poke": 0.5
+  },
+  "best_against": [
+    "supports",
+    "backline"
+  ],
+  "counters_me": [
+    "brigitte",
+    "cassidy",
+    "roadhog",
+    "symmetra"
+  ]
+}

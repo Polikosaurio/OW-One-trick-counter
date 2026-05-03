@@ -1,0 +1,28 @@
+{
+  "name": "Ana",
+  "role": "Support",
+  "tags": {
+    "healing": 1.0,
+    "hitscan": 0.9,
+    "poke": 0.8,
+    "anti_healer": 0.8,
+    "utility": 0.7,
+    "aim_intensive": 0.9,
+    "game_sense_intensive": 0.7,
+    "weak_to_flank": 0.7,
+    "low_mobility": 0.8
+  },
+  "best_against": [
+    "pharah",
+    "genji",
+    "echo",
+    "widowmaker",
+    "ana"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "winston",
+    "dva"
+  ]
+}

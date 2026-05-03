@@ -1,0 +1,23 @@
+{
+  "name": "Wrecking Ball",
+  "role": "Tank",
+  "tags": {
+    "mobile": 1.0,
+    "dive_capability": 1.0,
+    "aerial": 1.0,
+    "crowd_control": 0.9,
+    "brawl": 0.8,
+    "escape_ability": 0.9,
+    "weak_to_cc": 0.8,
+    "mechanic_intensive": 0.8
+  },
+  "best_against": [
+    "team",
+    "backline"
+  ],
+  "counters_me": [
+    "zarya",
+    "sigma",
+    "roadhog"
+  ]
+}

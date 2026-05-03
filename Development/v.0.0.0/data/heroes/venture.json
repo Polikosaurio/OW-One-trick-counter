@@ -1,0 +1,23 @@
+{
+  "name": "Venture",
+  "role": "DPS",
+  "tags": {
+    "dive_capability": 1.0,
+    "mobile": 0.9,
+    "burst_damage": 0.8,
+    "mobility": 0.9,
+    "crowd_control": 0.6,
+    "escape_ability": 0.7,
+    "weak_to_cc": 0.5,
+    "high_skill_ceiling": 0.8
+  },
+  "best_against": [
+    "team",
+    "backline"
+  ],
+  "counters_me": [
+    "brigitte",
+    "cassidy",
+    "roadhog"
+  ]
+}

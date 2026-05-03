@@ -1,0 +1,25 @@
+{
+  "name": "Junkrat",
+  "role": "DPS",
+  "tags": {
+    "spam": 1.0,
+    "burst_damage": 0.8,
+    "trap": 0.7,
+    "poke": 0.8,
+    "low_aim_needed": 0.8,
+    "area_denial": 0.9,
+    "weak_to_poke": 0.7,
+    "no_self_defense": 0.7
+  },
+  "best_against": [
+    "team",
+    "choke_points",
+    "static_defense"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "pharah",
+    "ashe",
+    "dva"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Mei",
+  "role": "DPS",
+  "tags": {
+    "crowd_control": 1.0,
+    "burst_damage": 0.7,
+    "freeze": 1.0,
+    "poke": 0.6,
+    "survival": 0.8,
+    "wall": 0.8,
+    "weak_to_flank": 0.5,
+    "no_self_defense": 0.4
+  },
+  "best_against": [
+    "dva",
+    "winston",
+    "genji",
+    "flankers"
+  ],
+  "counters_me": [
+    "reaper",
+    "pharah",
+    "echo",
+    "divers"
+  ]
+}

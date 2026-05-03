@@ -1,0 +1,28 @@
+{
+  "name": "Ashe",
+  "role": "DPS",
+  "tags": {
+    "hitscan": 1.0,
+    "sniper": 0.7,
+    "poke": 0.8,
+    "aim_intensive": 0.8,
+    "burst_damage": 0.6,
+    "one_shot": 0.3,
+    "mobile": 0.4,
+    "weak_to_flank": 0.5,
+    "low_mobility": 0.5
+  },
+  "best_against": [
+    "widowmaker",
+    "pharah",
+    "zenyatta",
+    "mercy",
+    "ana"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "winston",
+    "dva"
+  ]
+}

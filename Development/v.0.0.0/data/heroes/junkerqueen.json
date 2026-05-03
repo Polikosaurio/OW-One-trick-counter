@@ -1,0 +1,24 @@
+{
+  "name": "Junker Queen",
+  "role": "Tank",
+  "tags": {
+    "brawl": 1.0,
+    "self_heal": 0.9,
+    "tanky": 0.8,
+    "crowd_control": 0.7,
+    "close_combat": 0.8,
+    "main_tank": 0.6,
+    "weak_to_poke": 0.7,
+    "weak_to_ranged": 0.5
+  },
+  "best_against": [
+    "team",
+    "brawl_comp"
+  ],
+  "counters_me": [
+    "pharah",
+    "widowmaker",
+    "junkrat",
+    "bastion"
+  ]
+}

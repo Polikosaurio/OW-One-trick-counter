@@ -1,0 +1,28 @@
+{
+  "name": "Kiriko",
+  "role": "Support",
+  "tags": {
+    "healing": 0.9,
+    "mobile": 0.8,
+    "peel": 0.8,
+    "dash": 0.8,
+    "utility": 0.8,
+    "invulnerability": 0.7,
+    "off_support": 0.9,
+    "weak_to_flank": 0.5,
+    "game_sense_intensive": 0.6
+  },
+  "best_against": [
+    "genji",
+    "tracer",
+    "dva",
+    "winston",
+    "divers"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "cassidy",
+    "sojourn",
+    "hanzo"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Echo",
+  "role": "DPS",
+  "tags": {
+    "dive_capability": 1.0,
+    "mobile": 0.9,
+    "burst_damage": 0.8,
+    "poke": 0.7,
+    "aerial": 0.9,
+    "spam": 0.6,
+    "weak_to_flank": 0.5,
+    "no_self_defense": 0.4
+  },
+  "best_against": [
+    "widowmaker",
+    "mercy",
+    "zenyatta",
+    "ana",
+    "supports"
+  ],
+  "counters_me": [
+    "dva",
+    "winston",
+    "cassidy",
+    "sombra"
+  ]
+}

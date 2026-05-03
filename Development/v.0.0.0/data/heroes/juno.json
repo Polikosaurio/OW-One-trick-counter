@@ -1,0 +1,21 @@
+{
+  "name": "Juno",
+  "role": "Support",
+  "tags": {
+    "mobility_boost": 1.0,
+    "mobile": 0.9,
+    "healing": 0.7,
+    "speed": 1.0,
+    "orbital": 0.9,
+    "off_support": 1.0,
+    "weak_to_flank": 0.5
+  },
+  "best_against": [
+    "divers"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "dva"
+  ]
+}

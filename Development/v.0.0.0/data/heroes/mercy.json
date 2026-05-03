@@ -1,0 +1,24 @@
+{
+  "name": "Mercy",
+  "role": "Support",
+  "tags": {
+    "healing": 1.0,
+    "pocket": 1.0,
+    "mobility_boost": 0.9,
+    "flight": 0.9,
+    "peel": 0.7,
+    "main_support": 0.8,
+    "weak_to_flank": 0.8,
+    "weak_to_dive": 0.8,
+    "low_aim_needed": 0.9
+  },
+  "best_against": [
+    "pocket_targets"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "dva",
+    "winston"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Bastion",
+  "role": "DPS",
+  "tags": {
+    "sustained_damage": 1.0,
+    "spam": 0.8,
+    "fortify": 0.7,
+    "poke": 0.7,
+    "low_aim_needed": 0.8,
+    "setup": 0.7,
+    "static": 0.8,
+    "weak_to_mobility": 0.9,
+    "no_self_defense": 0.7
+  },
+  "best_against": [
+    "reinhardt",
+    "sigma",
+    "zarya",
+    "roadhog",
+    "team"
+  ],
+  "counters_me": [
+    "sombra",
+    "genji",
+    "tracer",
+    "winston",
+    "dva"
+  ]
+}

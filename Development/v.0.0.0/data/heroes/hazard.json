@@ -1,0 +1,24 @@
+{
+  "name": "Hazard",
+  "role": "Tank",
+  "tags": {
+    "mobile": 0.9,
+    "dive_capability": 0.8,
+    "tanky": 0.7,
+    "crowd_control": 0.6,
+    "brawl": 0.7,
+    "aerial": 0.6,
+    "weak_to_cc": 0.5,
+    "weak_to_burst": 0.5
+  },
+  "best_against": [
+    "supports",
+    "backline"
+  ],
+  "counters_me": [
+    "zarya",
+    "roadhog",
+    "brigitte",
+    "cassidy"
+  ]
+}

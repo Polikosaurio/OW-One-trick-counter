@@ -1,0 +1,23 @@
+{
+  "name": "Sigma",
+  "role": "Tank",
+  "tags": {
+    "shield": 0.9,
+    "poke": 0.9,
+    "spam": 0.8,
+    "main_tank": 0.6,
+    "fortify": 0.7,
+    "gravity": 0.8,
+    "off_tank": 0.7,
+    "weak_to_dive": 0.6
+  },
+  "best_against": [
+    "team",
+    "poke_comp"
+  ],
+  "counters_me": [
+    "dva",
+    "winston",
+    "genji"
+  ]
+}

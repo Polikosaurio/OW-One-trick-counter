@@ -1,0 +1,28 @@
+{
+  "name": "Baptiste",
+  "role": "Support",
+  "tags": {
+    "healing": 1.0,
+    "hitscan": 0.7,
+    "utility": 0.8,
+    "self_heal": 0.6,
+    "shield": 0.5,
+    "invulnerability": 0.5,
+    "poke": 0.6,
+    "weak_to_flank": 0.4,
+    "fortify": 0.5
+  },
+  "best_against": [
+    "junkrat",
+    "pharah",
+    "reaper",
+    "genji",
+    "tracer"
+  ],
+  "counters_me": [
+    "genji",
+    "tracer",
+    "dva",
+    "winston"
+  ]
+}

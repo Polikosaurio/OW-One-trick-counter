@@ -1,0 +1,37 @@
+{
+  "name": "Widowmaker",
+  "role": "DPS",
+  "tags": {
+    "sniper": 1.0,
+    "one_shot": 1.0,
+    "hitscan": 1.0,
+    "poke": 1.0,
+    "aim_intensive": 1.0,
+    "high_skill_ceiling": 1.0,
+    "weak_to_dive": 1.0,
+    "weak_to_flank": 0.9,
+    "weak_to_mobility": 0.8,
+    "static": 0.8,
+    "low_mobility": 0.7,
+    "no_self_defense": 0.6
+  },
+  "best_against": [
+    "pharah",
+    "zenyatta",
+    "ana",
+    "torbjorn",
+    "cassidy",
+    "mei",
+    "junkrat",
+    "baptiste"
+  ],
+  "counters_me": [
+    "winston",
+    "dva",
+    "sombra",
+    "genji",
+    "tracer",
+    "doomfist",
+    "wreckingball"
+  ]
+}

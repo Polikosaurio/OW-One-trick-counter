@@ -1,0 +1,24 @@
+{
+  "name": "Pharah",
+  "role": "DPS",
+  "tags": {
+    "aerial": 1.0,
+    "mobile": 0.7,
+    "spam": 0.8,
+    "poke": 0.7,
+    "burst_damage": 0.7,
+    "air_control": 1.0,
+    "weak_to_hitscan": 0.9,
+    "weak_to_anti_air": 0.8
+  },
+  "best_against": [
+    "team",
+    "ground_comp"
+  ],
+  "counters_me": [
+    "ashe",
+    "bastion",
+    "soldier76",
+    "widowmaker"
+  ]
+}

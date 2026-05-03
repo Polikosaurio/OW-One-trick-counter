@@ -1,0 +1,23 @@
+{
+  "name": "Torbjörn",
+  "role": "DPS",
+  "tags": {
+    "spam": 0.8,
+    "turret": 1.0,
+    "armor": 1.0,
+    "area_denial": 0.8,
+    "setup": 0.8,
+    "low_aim_needed": 0.7,
+    "weak_to_flank": 0.7,
+    "static": 0.8
+  },
+  "best_against": [
+    "team",
+    "static_defense"
+  ],
+  "counters_me": [
+    "dva",
+    "winston",
+    "genji"
+  ]
+}

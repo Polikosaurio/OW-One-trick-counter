@@ -1,0 +1,28 @@
+{
+  "name": "Brigitte",
+  "role": "Support",
+  "tags": {
+    "peel": 1.0,
+    "brawl": 0.8,
+    "close_combat": 0.9,
+    "crowd_control": 0.7,
+    "healing": 0.7,
+    "heal_to_damage": 0.6,
+    "tanky": 0.5,
+    "weak_to_poke": 0.7,
+    "anti_flank": 0.9
+  },
+  "best_against": [
+    "tracer",
+    "genji",
+    "reaper",
+    "winston",
+    "dva"
+  ],
+  "counters_me": [
+    "pharah",
+    "widowmaker",
+    "ashe",
+    "junkrat"
+  ]
+}

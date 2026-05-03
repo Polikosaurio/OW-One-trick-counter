@@ -1,0 +1,25 @@
+{
+  "name": "Mauga",
+  "role": "Tank",
+  "tags": {
+    "sustained_damage": 1.0,
+    "brawl": 0.9,
+    "burst_damage": 0.7,
+    "close_combat": 0.9,
+    "tanky": 0.6,
+    "low_aim_needed": 0.7,
+    "weak_to_cc": 0.5,
+    "weak_to_poke": 0.6
+  },
+  "best_against": [
+    "team",
+    "close",
+    "brawl_comp"
+  ],
+  "counters_me": [
+    "kiriko",
+    "zenyatta",
+    "ana",
+    "supports"
+  ]
+}

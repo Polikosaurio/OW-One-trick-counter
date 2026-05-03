@@ -1,0 +1,27 @@
+{
+  "name": "Doomfist",
+  "role": "Tank",
+  "tags": {
+    "dive_capability": 1.0,
+    "burst_damage": 0.9,
+    "close_combat": 0.9,
+    "mobile": 0.8,
+    "crowd_control": 0.7,
+    "aerial": 0.6,
+    "weak_to_cc": 0.6,
+    "no_self_defense": 0.5
+  },
+  "best_against": [
+    "widowmaker",
+    "zenyatta",
+    "mercy",
+    "ana",
+    "supports"
+  ],
+  "counters_me": [
+    "brigitte",
+    "cassidy",
+    "roadhog",
+    "zarya"
+  ]
+}

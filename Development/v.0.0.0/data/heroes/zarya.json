@@ -1,0 +1,22 @@
+{
+  "name": "Zarya",
+  "role": "Tank",
+  "tags": {
+    "brawl": 1.0,
+    "crowd_control": 0.8,
+    "gravity": 1.0,
+    "spam": 0.7,
+    "tanky": 0.7,
+    "main_damage": 0.8,
+    "weak_to_ranged": 0.5
+  },
+  "best_against": [
+    "team",
+    "brawl_comp"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "pharah",
+    "ashe"
+  ]
+}

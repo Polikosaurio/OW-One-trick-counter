@@ -1,0 +1,23 @@
+{
+  "name": "Reinhardt",
+  "role": "Tank",
+  "tags": {
+    "brawl": 1.0,
+    "shield": 1.0,
+    "close_combat": 0.9,
+    "main_tank": 1.0,
+    "tanky": 0.9,
+    "crowd_control": 0.7,
+    "weak_to_poke": 0.8,
+    "static": 0.7
+  },
+  "best_against": [
+    "team",
+    "brawl_comp"
+  ],
+  "counters_me": [
+    "widowmaker",
+    "pharah",
+    "junkrat"
+  ]
+}

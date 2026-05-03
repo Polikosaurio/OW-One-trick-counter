@@ -1,0 +1,24 @@
+{
+  "name": "Sombra",
+  "role": "DPS",
+  "tags": {
+    "mobile": 1.0,
+    "dive_capability": 0.9,
+    "hack": 1.0,
+    "flank": 1.0,
+    "utility": 1.0,
+    "escape_ability": 0.9,
+    "anti_utility": 0.9,
+    "weak_to_corr": 0.5,
+    "game_sense_intensive": 0.7
+  },
+  "best_against": [
+    "supports",
+    "ults"
+  ],
+  "counters_me": [
+    "cassidy",
+    "brigitte",
+    "mercy"
+  ]
+}

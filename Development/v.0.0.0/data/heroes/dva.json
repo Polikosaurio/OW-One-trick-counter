@@ -1,0 +1,28 @@
+{
+  "name": "D.Va",
+  "role": "Tank",
+  "tags": {
+    "dive_capability": 1.0,
+    "mobile": 0.9,
+    "fortify": 0.8,
+    "aerial": 0.8,
+    "peel": 0.7,
+    "anti_flank": 0.7,
+    "intercept": 0.7,
+    "weak_to_sniper": 0.6,
+    "weak_to_poke": 0.5
+  },
+  "best_against": [
+    "widowmaker",
+    "pharah",
+    "hanzo",
+    "zenyatta",
+    "mercy"
+  ],
+  "counters_me": [
+    "ramattra",
+    "zarya",
+    "sigma",
+    "roadhog"
+  ]
+}

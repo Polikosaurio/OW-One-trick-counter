@@ -9,9 +9,9 @@
   ],
   "count": 51,
   "roles": {
-    "Tank": ["dva", "orisa", "ramattra", "reinhardt", "roadhog", "sigma", "winston", "zarya", "wreckingball", "hazard", "junkerqueen", "doomfist", "domina"],
-    "DPS": ["ashe", "bastion", "cassidy", "echo", "genji", "hanzo", "junkrat", "mauga", "pharah", "reaper", "sojourn", "sombra", "symmetra", "torbjorn", "tracer", "venture", "widowmaker", "soldier76", "anran", "emre", "freja", "jetpackcat", "sierra", "vendetta"],
-    "Support": ["ana", "baptiste", "brigitte", "kiriko", "lifeweaver", "lucio", "mercy", "moira", "zenyatta", "illari", "juno", "wuyang", "mizuki"]
+    "Tank": ["dva", "orisa", "ramattra", "reinhardt", "roadhog", "sigma", "winston", "zarya", "wreckingball", "hazard", "junkerqueen", "doomfist", "domina", "mauga"],
+    "DPS": ["ashe", "bastion", "cassidy", "echo", "genji", "hanzo", "junkrat", "mei", "pharah", "reaper", "sojourn", "sombra", "symmetra", "torbjorn", "tracer", "venture", "widowmaker", "soldier76", "anran", "emre", "freja", "sierra", "vendetta"],
+    "Support": ["ana", "baptiste", "brigitte", "kiriko", "lifeweaver", "lucio", "mercy", "moira", "zenyatta", "illari", "juno", "wuyang", "mizuki", "jetpackcat"]
   },
   "updated": "2026-05-03"
 }

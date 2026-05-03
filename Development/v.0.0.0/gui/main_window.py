@@ -20,8 +20,8 @@ class MainWindow:
         
         self.root = ctk.CTk()
         self.root.title("OW One Trick Counter")
-        self.root.geometry("650x620")
-        self.root.resizable(False, False)
+        self.root.geometry("1050x650")
+        self.root.resizable(True, True)
         
         ctk.set_appearance_mode("dark")
         
@@ -29,14 +29,26 @@ class MainWindow:
         self._setup_tray()
     
     def _setup_ui(self):
+        # Compact title area
+        top_bar = ctk.CTkFrame(self.root, fg_color="transparent", height=30)
+        top_bar.pack(fill="x", padx=10, pady=(5, 0))
+        
         ctk.CTkLabel(
-            self.root,
-            text="OW One Trick Counter",
-            font=ctk.CTkFont(size=24, weight="bold")
-        ).pack(pady=15)
+            top_bar,
+            text="OW ONE TRICK COUNTER",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            text_color="#8888AA"
+        ).pack(side="left", padx=10)
+        
+        ctk.CTkLabel(
+            top_bar,
+            text=f"Hotkeys: {self.config.get('hotkey_toggle').upper()} (Overlay) | {self.config.get('hotkey_mouse_lock').upper()} (Mouse Lock)",
+            font=ctk.CTkFont(size=10),
+            text_color="#555555"
+        ).pack(side="right", padx=10)
         
         self.hero_selector = HeroSelector(self.root)
-        self.hero_selector.pack(pady=5, padx=20, fill="both", expand=True)
+        self.hero_selector.pack(pady=0, padx=10, fill="both", expand=True)
         
         btn_frame = ctk.CTkFrame(self.root)
         btn_frame.pack(pady=10, padx=20, fill="x")
@@ -140,8 +152,8 @@ class MainWindow:
             self.config.set("overlay_position", {"x": x, "y": y})
             if self.overlay and self.overlay.window:
                 self.overlay.window.geometry(f"+{x}+{y}")
-        except:
-            pass
+        except ValueError:
+            print("[Settings] Invalid X/Y position values — must be integers")
     
     def toggle_overlay(self):
         if self.overlay_visible:
@@ -151,7 +163,9 @@ class MainWindow:
         else:
             sel = self.hero_selector.get_selection()
             if not self.overlay:
-                self.overlay = GameOverlay(self.config, sel)
+                self.overlay = GameOverlay(self.root, self.config, sel)
+            else:
+                self.overlay.update_selection(sel)
             self.overlay.show()
             self.overlay_visible = True
     

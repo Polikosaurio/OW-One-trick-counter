@@ -1,0 +1,24 @@
+{
+  "name": "Jetpack Cat",
+  "role": "Support",
+  "tags": {
+    "mobile": 0.9,
+    "healing": 0.8,
+    "aerial": 0.8,
+    "off_support": 0.7,
+    "peel": 0.5,
+    "utility": 0.6,
+    "weak_to_hitscan": 0.7,
+    "weak_to_anti_air": 0.6
+  },
+  "best_against": [
+    "ground_based",
+    "low_mobility"
+  ],
+  "counters_me": [
+    "ashe",
+    "soldier76",
+    "cassidy",
+    "widowmaker"
+  ]
+}
