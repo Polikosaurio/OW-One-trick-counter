@@ -1,5 +1,5 @@
 """
-Hero Selector with Dynamic Roles
+Hero Selector - Dynamic Grid
 """
 
 import customtkinter as ctk
@@ -24,22 +24,31 @@ class HeroSelector(ctk.CTkFrame):
     def _load_data(self):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         
-        with open(os.path.join(base_dir, "data", "heroes_index.json"), "r") as f:
-            index = json.load(f)
-            self.roles_data = index["roles"]
+        idx_path = os.path.join(base_dir, "data", "heroes_index.json")
+        
+        if os.path.exists(idx_path):
+            with open(idx_path, "r") as f:
+                self.roles_data = json.load(f)["roles"]
+        else:
+            print(f"[HeroSelector] Not found: {idx_path}")
+            self.roles_data = {"Tank": [], "DPS": [], "Support": []}
     
     def _load_icons(self):
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        assets_path = os.path.join(project_root, "..", "Assets", "HeroUI")
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        project_root = os.path.dirname(base_dir)
+        assets_path = os.path.join(project_root, "Assets", "HeroUI")
+        
+        print(f"[HeroSelector] Looking in: {assets_path}")
         
         if not os.path.exists(assets_path):
-            print(f"[HeroSelector] Not found: {assets_path}")
-            return
+            print(f"[HeroSelector] NOT FOUND: {assets_path}")
+            assets_path = "D:\\PROYECTOS\\000001-A MEDIAS\\2026-05-03-One Trick Counter\\Assets\\HeroUI"
         
         all_heroes = []
         for role, heroes in self.roles_data.items():
             all_heroes.extend(heroes)
         
+        loaded = 0
         for hero in all_heroes:
             icon_path = os.path.join(assets_path, f"{hero}.png")
             if os.path.exists(icon_path):
@@ -47,134 +56,99 @@ class HeroSelector(ctk.CTkFrame):
                     img = Image.open(icon_path)
                     img = img.resize((32, 32), Image.LANCZOS)
                     self.hero_images[hero] = ImageTk.PhotoImage(img)
+                    loaded += 1
                 except Exception as e:
-                    print(f"[HeroSelector] {hero}: {e}")
+                    print(f"[HeroSelector] Error {hero}: {e}")
+        
+        print(f"[HeroSelector] Loaded {loaded}/{len(all_heroes)} icons")
     
     def _setup_ui(self):
         ctk.CTkLabel(
             self,
-            text="Select ENEMY Hero (problematic):",
+            text="Select ENEMY Hero:",
             font=ctk.CTkFont(size=11, weight="bold")
-        ).grid(row=0, column=0, columnspan=12, pady=(2, 5))
+        ).grid(row=0, column=0, columnspan=10, pady=3)
         
         row = 1
-        for role, heroes in self.roles_data.items():
-            for hero in heroes:
-                btn = ctk.CTkButton(
-                    self,
-                    text="",
-                    image=self.hero_images.get(hero),
-                    width=32, height=32,
-                    fg_color="#2b2b2b",
-                    hover_color="#4b4b4b",
-                    command=lambda h=hero: self._on_enemy_click(h)
-                )
-                if hero not in self.hero_images:
-                    btn.configure(text=hero[:3].upper(), font=ctk.CTkFont(size=7))
-                
-                btn.grid(row=row, column=0, padx=1, pady=1)
-                break
-            
-            row += 1
-            col = 0
-            for hero in heroes:
-                btn = ctk.CTkButton(
-                    self,
-                    text="",
-                    image=self.hero_images.get(hero),
-                    width=32, height=32,
-                    fg_color="#2b2b2b",
-                    hover_color="#4b4b4b",
-                    command=lambda h=hero: self._on_enemy_click(h)
-                )
-                if hero not in self.hero_images:
-                    btn.configure(text=hero[:3].upper(), font=ctk.CTkFont(size=7))
-                
-                btn.grid(row=row, column=col, padx=1, pady=1)
-                col += 1
-                if col >= 12:
-                    col = 0
-                    row += 1
-        
-        row += 1
-        ctk.CTkLabel(
-            self,
-            text="Select YOUR Hero:",
-            font=ctk.CTkFont(size=11, weight="bold")
-        ).grid(row=row, column=0, columnspan=12, pady=(10, 5))
-        row += 1
-        
         col = 0
         for role, heroes in self.roles_data.items():
             for hero in heroes:
                 btn = ctk.CTkButton(
-                    self,
-                    text="",
-                    image=self.hero_images.get(hero),
-                    width=32, height=32,
-                    fg_color="#1a3a1a",
-                    hover_color="#2a5a2a",
+                    self, text="", image=self.hero_images.get(hero),
+                    width=30, height=30, fg_color="#3B2B2B", hover_color="#5B4B4B",
+                    command=lambda h=hero: self._on_enemy_click(h)
+                )
+                if hero not in self.hero_images:
+                    btn.configure(text=hero[:3].upper(), font=ctk.CTkFont(size=8))
+                btn.grid(row=row, column=col, padx=1, pady=1)
+                col += 1
+                if col >= 10:
+                    col = 0
+                    row += 1
+            col = 0
+            row += 1
+        
+        row += 1
+        ctk.CTkLabel(
+            self, text="YOUR Hero:",
+            font=ctk.CTkFont(size=11, weight="bold")
+        ).grid(row=row, column=0, columnspan=10, pady=3)
+        row += 1
+        col = 0
+        for role, heroes in self.roles_data.items():
+            for hero in heroes:
+                btn = ctk.CTkButton(
+                    self, text="", image=self.hero_images.get(hero),
+                    width=30, height=30, fg_color="#2B3B2B", hover_color="#4B5B4B",
                     command=lambda h=hero: self._on_your_click(h)
                 )
                 if hero not in self.hero_images:
-                    btn.configure(text=hero[:3].upper(), font=ctk.CTkFont(size=7))
-                
+                    btn.configure(text=hero[:3].upper(), font=ctk.CTkFont(size=8))
                 btn.grid(row=row, column=col, padx=1, pady=1)
                 col += 1
-                if col >= 12:
+                if col >= 10:
                     col = 0
                     row += 1
         
         row += 1
-        self.info_label = ctk.CTkLabel(
-            self,
-            text="Select enemy hero for advice",
-            font=ctk.CTkFont(size=10),
-            wraplength=380,
-            justify="left"
+        self.info = ctk.CTkLabel(
+            self, text="Select enemy hero for advice",
+            font=ctk.CTkFont(size=10), wraplength=350, justify="left"
         )
-        self.info_label.grid(row=row, column=0, columnspan=12, pady=10)
+        self.info.grid(row=row, column=0, columnspan=10, pady=5)
     
     def _on_enemy_click(self, hero):
         self.selected_enemy = hero
-        self._update_info()
+        self._update()
     
     def _on_your_click(self, hero):
         self.selected_your = hero
-        self._update_info()
+        self._update()
     
-    def _update_info(self):
+    def _update(self):
         from core.counters import CounterDB
         db = CounterDB()
         
         if not self.selected_enemy:
-            self.info_label.configure(text="Select enemy hero first")
+            self.info.configure(text="Select ENEMY hero first")
             return
         
-        e_data = db.get_hero_data(self.selected_enemy)
-        e_name = e_data.get("name", self.selected_enemy)
+        enemy_data = db.get_hero_data(self.selected_enemy)
+        enemy_name = enemy_data.get("name", self.selected_enemy)
         
-        info = f"Enemy: {e_name}"
+        info = f"Enemy: {enemy_name}"
         
         if self.selected_your:
             counter = db.get_counter(self.selected_enemy, self.selected_your)
-            reason = counter.get("reason", "No data")
-            
-            my_role = db.get_role(self.selected_your)
-            
-            info = f"{self.selected_your} ({my_role}) vs {e_name}\n\n{reason}"
+            info = f"{self.selected_your} vs {enemy_name}\n\n{counter.get('reason', 'No data')}"
             
             rec = db.get_recommended_switch(self.selected_enemy, self.selected_your)
-            if rec and rec["hero"] != self.selected_your:
-                info += f"\n\n→ Consider switching to {rec['hero']}: {rec['reason'][:60]}..."
+            if rec and rec.get("to") != self.selected_your:
+                info += f"\n→ Switch to {rec['to']}"
         else:
-            role_counters = db.get_role_counters(self.selected_enemy, "DPS")
-            if role_counters:
-                info += "\n\nDPS counters:"
-                for c in role_counters[:3]:
-                    info += f"\n• {c['hero']}: {c['reason'][:50]}..."
+            info += "\n\nNow select your hero"
         
-        self.info_label.configure(text=info)
+        self.info.configure(text=info)
     
     def get_selection(self):
         return {"enemy": self.selected_enemy, "your": self.selected_your}
@@ -182,7 +156,6 @@ class HeroSelector(ctk.CTkFrame):
 
 if __name__ == "__main__":
     root = ctk.CTk()
-    root.title("Hero Selector")
-    selector = HeroSelector(root)
-    selector.pack(fill="both", expand=True, padx=10, pady=10)
+    root.title("Test")
+    HeroSelector(root).pack(padx=10, pady=10)
     root.mainloop()
