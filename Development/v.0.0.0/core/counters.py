@@ -158,6 +158,17 @@ MATCHUP_LABELS = {
     "weak_against_tactician":     "tactician ult economy",
     "weak_against_medic":         "medic sustain",
     "weak_against_survivor":      "survivor sustain",
+    # Subrole strength tags
+    "strong_against_bruiser":       "bruiser counter",
+    "strong_against_initiator":     "initiator counter",
+    "strong_against_stalwart":      "stalwart counter",
+    "strong_against_sharpshooter":  "sharpshooter counter",
+    "strong_against_flanker":       "flanker counter",
+    "strong_against_specialist":    "specialist counter",
+    "strong_against_recon":         "recon counter",
+    "strong_against_tactician":     "tactician counter",
+    "strong_against_medic":         "medic counter",
+    "strong_against_survivor":      "survivor counter",
 }
 
 
