@@ -1,0 +1,453 @@
+{
+  "ana": {
+    "name": "Ana",
+    "role": "Support",
+    "tags": {
+      "healing": 1.0, "hitscan": 0.9, "poke": 0.8, "anti_healer": 0.8,
+      "utility": 0.7, "aim_intensive": 0.9, "game_sense_intensive": 0.7,
+      "weak_to_flank": 0.7, "low_mobility": 0.8
+    },
+    "best_against": ["pharah", "genji", "echo", "widowmaker", "ana"],
+    "counters_me": ["genji", "tracer", "winston", "dva"]
+  },
+  "ashe": {
+    "name": "Ashe",
+    "role": "DPS",
+    "tags": {
+      "hitscan": 1.0, "sniper": 0.7, "poke": 0.8, "aim_intensive": 0.8,
+      "burst_damage": 0.6, "one_shot": 0.3, "mobile": 0.4,
+      "weak_to_flank": 0.5, "low_mobility": 0.5
+    },
+    "best_against": ["widowmaker", "pharah", "zenyatta", "mercy", "ana"],
+    "counters_me": ["genji", "tracer", "winston", "dva"]
+  },
+  "baptiste": {
+    "name": "Baptiste",
+    "role": "Support",
+    "tags": {
+      "healing": 1.0, "hitscan": 0.7, "utility": 0.8, "self_heal": 0.6,
+      "shield": 0.5, "invulnerability": 0.5, "poke": 0.6,
+      "weak_to_flank": 0.4, "fortify": 0.5
+    },
+    "best_against": ["junkrat", "pharah", "reaper", "genji", "tracer"],
+    "counters_me": ["genji", "tracer", "dva", "winston"]
+  },
+  "bastion": {
+    "name": "Bastion",
+    "role": "DPS",
+    "tags": {
+      "sustained_damage": 1.0, "spam": 0.8, "fortify": 0.7, "poke": 0.7,
+      "low_aim_needed": 0.8, "setup": 0.7, "static": 0.8,
+      "weak_to_mobility": 0.9, "no_self_defense": 0.7
+    },
+    "best_against": ["reinhardt", "sigma", "zarya", "roadhog", "team"],
+    "counters_me": ["sombra", "genji", "tracer", "winston", "dva"]
+  },
+  "brigitte": {
+    "name": "Brigitte",
+    "role": "Support",
+    "tags": {
+      "peel": 1.0, "brawl": 0.8, "close_combat": 0.9, "crowd_control": 0.7,
+      "healing": 0.7, "heal_to_damage": 0.6, "tanky": 0.5,
+      "weak_to_poke": 0.7, "anti_flank": 0.9
+    },
+    "best_against": ["tracer", "genji", "reaper", "winston", "dva"],
+    "counters_me": ["pharah", "widowmaker", "ashe", "junkrat"]
+  },
+  "cassidy": {
+    "name": "Cassidy",
+    "role": "DPS",
+    "tags": {
+      "hitscan": 1.0, "burst_damage": 0.8, "crowd_control": 0.7, "poke": 0.6,
+      "aim_intensive": 0.7, "close_combat": 0.6,
+      "weak_to_mobility": 0.6, "no_self_defense": 0.4
+    },
+    "best_against": ["genji", "tracer", "reaper", "winston", "hero"],
+    "counters_me": ["genji", "dva", "winston", "echo"]
+  },
+  "dva": {
+    "name": "D.Va",
+    "role": "Tank",
+    "tags": {
+      "dive_capability": 1.0, "mobile": 0.9, "fortify": 0.8, "aerial": 0.8,
+      "peel": 0.7, "anti_flank": 0.7, "intercept": 0.7,
+      "weak_to_sniper": 0.6, "weak_to_poke": 0.5
+    },
+    "best_against": ["widowmaker", "pharah", "hanzo", "zenyatta", "mercy"],
+    "counters_me": ["ramattra", "zarya", "sigma", "roadhog"]
+  },
+  "doomfist": {
+    "name": "Doomfist",
+    "role": "Tank",
+    "tags": {
+      "dive_capability": 1.0, "burst_damage": 0.9, "close_combat": 0.9, "mobile": 0.8,
+      "crowd_control": 0.7, "aerial": 0.6,
+      "weak_to_cc": 0.6, "no_self_defense": 0.5
+    },
+    "best_against": ["widowmaker", "zenyatta", "mercy", "ana", "supports"],
+    "counters_me": ["brigitte", "mcree", "cassidy", "roadhog"]
+  },
+  "echo": {
+    "name": "Echo",
+    "role": "DPS",
+    "tags": {
+      "dive_capability": 1.0, "mobile": 0.9, "burst_damage": 0.8, "poke": 0.7,
+      "aerial": 0.9, "spam": 0.6,
+      "weak_to_flank": 0.5, "no_self_defense": 0.4
+    },
+    "best_against": ["widowmaker", "mercy", "zenyatta", "ana", "supports"],
+    "counters_me": ["dva", "winston", "cassidy", "sombra"]
+  },
+  "genji": {
+    "name": "Genji",
+    "role": "DPS",
+    "tags": {
+      "mobile": 1.0, "dive_capability": 0.9, "poke": 0.7, "escape_ability": 0.9,
+      "flank": 0.9, "deflect": 0.8, "burst_damage": 0.7,
+      "weak_to_cc": 0.8, "aim_intensive": 0.8, "beginner_unfriendly": 0.8
+    },
+    "best_against": ["widowmaker", "zenyatta", "mercy", "ana", " Supports"],
+    "counters_me": ["brigitte", "winston", "zarya", "symmetra"]
+  },
+  "hanzo": {
+    "name": "Hanzo",
+    "role": "DPS",
+    "tags": {
+      "sniper": 0.8, "poke": 0.9, "burst_damage": 0.7, "spam": 0.6,
+      "one_shot": 0.5, "projectile": 0.8,
+      "weak_to_mobility": 0.6, "aim_intensive": 0.8
+    },
+    "best_against": ["widowmaker", "pharah", "zenyatta", "mercy", "team"],
+    "counters_me": ["genji", "tracer", "winston", "dva"]
+  },
+  "junkrat": {
+    "name": "Junkrat",
+    "role": "DPS",
+    "tags": {
+      "spam": 1.0, "burst_damage": 0.8, "trap": 0.7, "poke": 0.8,
+      "low_aim_needed": 0.8, "area_denial": 0.9,
+      "weak_to_poke": 0.7, "no_self_defense": 0.7
+    },
+    "best_against": ["team", "choke_points", "static_defense"],
+    "counters_me": ["widowmaker", "pharah", "ashe", "dva"]
+  },
+  "kiriko": {
+    "name": "Kiriko",
+    "role": "Support",
+    "tags": {
+      "healing": 0.9, "mobile": 0.8, "peel": 0.8, "dash": 0.8,
+      "utility": 0.8, "invulnerability": 0.7, "off_support": 0.9,
+      "weak_to_flank": 0.5, "game_sense_intensive": 0.6
+    },
+    "best_against": ["genji", "tracer", "dva", "winston", "divers"],
+    "counters_me": ["widowmaker", "cassidy", "sojourn", "hanzo"]
+  },
+  "lucio": {
+    "name": "Lúcio",
+    "role": "Support",
+    "tags": {
+      "mobility_boost": 1.0, "mobile": 0.9, "peel": 0.8, "healing": 0.7,
+      "speed": 1.0, "spam": 0.5, "off_support": 0.9,
+      "weak_to_poke": 0.7, "aim_intensive": 0.2
+    },
+    "best_against": ["dva", "winston", "genji", "divers"],
+    "counters_me": ["widowmaker", "cassidy", "hanzo"]
+  },
+  "mauga": {
+    "name": "Mauga",
+    "role": "DPS",
+    "tags": {
+      "sustained_damage": 1.0, "brawl": 0.9, "burst_damage": 0.7, "close_combat": 0.9,
+      "tanky": 0.6, "low_aim_needed": 0.7,
+      "weak_to_cc": 0.5, "weak_to_poke": 0.6
+    },
+    "best_against": ["team", "close", "brawl_comp"],
+    "counters_me": ["kiri ko", "zenyatta", "ana", " supports"]
+  },
+  "mei": {
+    "name": "Mei",
+    "role": "DPS",
+    "tags": {
+      "crowd_control": 1.0, "burst_damage": 0.7, "freeze": 1.0, "poke": 0.6,
+      "survival": 0.8, "wall": 0.8,
+      "weak_to_flank": 0.5, "no_self_defense": 0.4
+    },
+    "best_against": ["dva", "winston", "genji", "flankers"],
+    "counters_me": ["reaper", "pharah", "echo", "divers"]
+  },
+  "mercy": {
+    "name": "Mercy",
+    "role": "Support",
+    "tags": {
+      "healing": 1.0, "pocket": 1.0, "mobility_boost": 0.9, "flight": 0.9,
+      "peel": 0.7, "main_support": 0.8,
+      "weak_to_flank": 0.8, "weak_to_dive": 0.8, "low_aim_needed": 0.9
+    },
+    "best_against": ["pocket_targets"],
+    "counters_me": ["genji", "tracer", "dva", "winston"]
+  },
+  "moira": {
+    "name": "Moira",
+    "role": "Support",
+    "tags": {
+      "healing": 1.0, "sustained_damage": 0.8, "self_heal": 1.0, "close_combat": 0.8,
+      "main_support": 0.9, "escape_ability": 0.8,
+      "weak_to_poke": 0.6, "low_aim_needed": 0.8
+    },
+    "best_against": ["team", "brawl_comp"],
+    "counters_me": ["cassidy", "sombra", "zenyatta", "ana"]
+  },
+  "orisa": {
+    "name": "Orisa",
+    "role": "Tank",
+    "tags": {
+      "fortify": 1.0, "crowd_control": 0.8, "poke": 0.7, "spam": 0.7,
+      "tanky": 0.8, "main_tank": 0.7,
+      "weak_to_dive": 0.6, "static": 0.7
+    },
+    "best_against": ["team", "poke_comp"],
+    "counters_me": ["dva", "winston", "genji", "flankers"]
+  },
+  "pharah": {
+    "name": "Pharah",
+    "role": "DPS",
+    "tags": {
+      "aerial": 1.0, "mobile": 0.7, "spam": 0.8, "poke": 0.7,
+      "burst_damage": 0.7, "air_control": 1.0,
+      "weak_to_hitscan": 0.9, "weak_to_anti_air": 0.8
+    },
+    "best_against": ["team", "ground_comp"],
+    "counters_me": ["ashe", "bastion", "soldier76", "widowmaker"]
+  },
+  "ramattra": {
+    "name": "Ramattra",
+    "role": "Tank",
+    "tags": {
+      "brawl": 1.0, "crowd_control": 0.8, "spam": 0.7, "poke": 0.6,
+      "tanky": 0.8, "main_tank": 0.7, "dive": 0.6,
+      "weak_to_ranged": 0.5
+    },
+    "best_against": ["team", "brawl_comp"],
+    "counters_me": ["widowmaker", "hanzo", "sojourn"]
+  },
+  "reaper": {
+    "name": "Reaper",
+    "role": "DPS",
+    "tags": {
+      "close_combat": 1.0, "burst_damage": 0.9, "brawl": 0.9, "self_heal": 0.8,
+      "escape_ability": 0.7, "tanky": 0.5,
+      "weak_to_poke": 0.7, "weak_to_ranged": 0.6
+    },
+    "best_against": ["team", "close_quarters"],
+    "counters_me": ["widowmaker", "hanzo", "cassidy"]
+  },
+  "reinhardt": {
+    "name": "Reinhardt",
+    "role": "Tank",
+    "tags": {
+      "brawl": 1.0, "shield": 1.0, "close_combat": 0.9, "main_tank": 1.0,
+      "tanky": 0.9, "crowd_control": 0.7,
+      "weak_to_poke": 0.8, "static": 0.7
+    },
+    "best_against": ["team", "brawl_comp"],
+    "counters_me": ["widowmaker", "pharah", "junkrat"]
+  },
+  "roadhog": {
+    "name": "Roadhog",
+    "role": "Tank",
+    "tags": {
+      "brawl": 0.8, "self_heal": 1.0, "poke": 0.7, "one_shot": 0.5,
+      "tanky": 0.9, "hook": 1.0,
+      "weak_to_cc": 0.5, "no_shield": 0.0
+    },
+    "best_against": ["team", "close"],
+    "counters_me": ["widowmaker", "pharah", "junkrat"]
+  },
+  "sigma": {
+    "name": "Sigma",
+    "role": "Tank",
+    "tags": {
+      "shield": 0.9, "poke": 0.9, "spam": 0.8, "main_tank": 0.6,
+      "fortify": 0.7, "gravity": 0.8, "off_tank": 0.7,
+      "weak_to_dive": 0.6
+    },
+    "best_against": ["team", "poke_comp"],
+    "counters_me": ["dva", "winston", "genji"]
+  },
+  "sojourn": {
+    "name": "Sojourn",
+    "role": "DPS",
+    "tags": {
+      "hitscan": 1.0, "burst_damage": 0.9, "poke": 0.8, "railgun": 1.0,
+      "mobile": 0.6, "one_shot": 0.6, "aim_intensive": 0.8,
+      "weak_to_dive": 0.5
+    },
+    "best_against": ["team", " poke"],
+    "counters_me": ["genji", "dva", "winston"]
+  },
+  "soldier76": {
+    "name": "Soldier: 76",
+    "role": "DPS",
+    "tags": {
+      "hitscan": 1.0, "sustained_damage": 0.8, "poke": 0.8, "self_heal": 0.8,
+      "mobile": 0.5, "aim_intensive": 0.6, "versatile": 0.9,
+      "weak_to_sniper": 0.5
+    },
+    "best_against": ["team", "any"],
+    "counters_me": ["genji", "tracer", "widowmaker"]
+  },
+  "sombra": {
+    "name": "Sombra",
+    "role": "DPS",
+    "tags": {
+      "mobile": 1.0, "dive_capability": 0.9, "hack": 1.0, "flank": 1.0,
+      "utility": 1.0, "escape_ability": 0.9, "anti_utility": 0.9,
+      "weak_to_corr": 0.5, "game_sense_intensive": 0.7
+    },
+    "best_against": ["supports", "ults"],
+    "counters_me": ["cassidy", "brigitte", "mercy"]
+  },
+  "symmetra": {
+    "name": "Symmetra",
+    "role": "DPS",
+    "tags": {
+      "spam": 0.9, "shield": 0.8, "teleporter": 1.0, "area_denial": 0.9,
+      "turrent": 1.0, "utility": 0.9,
+      "weak_to_flank": 0.7, "static": 0.8
+    },
+    "best_against": ["team", "defense"],
+    "counters_me": ["dva", "winston", "genji"]
+  },
+  "torbjorn": {
+    "name": "Torbjörn",
+    "role": "DPS",
+    "tags": {
+      "spam": 0.8, "turret": 1.0, "armor": 1.0, "area_denial": 0.8,
+      "setup": 0.8, "low_aim_needed": 0.7,
+      "weak_to_flank": 0.7, "static": 0.8
+    },
+    "best_against": ["team", "static_defense"],
+    "counters_me": ["dva", "winston", "genji"]
+  },
+  "tracer": {
+    "name": "Tracer",
+    "role": "DPS",
+    "tags": {
+      "mobile": 1.0, "dive_capability": 1.0, "burst_damage": 0.8, "flank": 1.0,
+      "escape_ability": 1.0, "one_shot": 0.6, "aim_intensive": 0.8,
+      "weak_to_cc": 0.8, "weak_to_sniper": 0.6, "beginner_unfriendly": 0.7
+    },
+    "best_against": ["supports", " Healers"],
+    "counters_me": ["brigitte", "cassidy", "symmetra", "torbjorn"]
+  },
+  "venture": {
+    "name": "Venture",
+    "role": "DPS",
+    "tags": {
+      "dive_capability": 1.0, "mobile": 0.9, "burst_damage": 0.8, "mobility": 0.9,
+      "crowd_control": 0.6, "escape_ability": 0.7,
+      "weak_to_cc": 0.5, "high_skill_ceiling": 0.8
+    },
+    "best_against": ["team", "backline"],
+    "counters_me": ["brigitte", "cassidy", "roadhog"]
+  },
+  "widowmaker": {
+    "name": "Widowmaker",
+    "role": "DPS",
+    "tags": {
+      "sniper": 1.0, "one_shot": 1.0, "hitscan": 1.0, "poke": 1.0,
+      "aim_intensive": 1.0, "high_skill_ceiling": 1.0,
+      "weak_to_dive": 0.9, "static": 0.8
+    },
+    "best_against": ["team", "any"],
+    "counters_me": ["genji", "tracer", "winston", "dva"]
+  },
+  "winston": {
+    "name": "Winston",
+    "role": "Tank",
+    "tags": {
+      "dive_capability": 1.0, "mobile": 1.0, "aerial": 1.0, "peel": 0.8,
+      "main_tank": 0.7, "anti_flank": 0.8,
+      "weak_to_cc": 0.7, "weak_to_burst": 0.5
+    },
+    "best_against": ["widowmaker", "zenyatta", "mercy", "ana"],
+    "counters_me": ["ramattra", "zarya", "roadhog", "reaper"]
+  },
+  "wreckingball": {
+    "name": "Wrecking Ball",
+    "role": "Tank",
+    "tags": {
+      "mobile": 1.0, "dive_capability": 1.0, "aerial": 1.0, "crowd_control": 0.9,
+      "brawl": 0.8, "escape_ability": 0.9,
+      "weak_to_cc": 0.8, "mechanic_intensive": 0.8
+    },
+    "best_against": ["team", " backline"],
+    "counters_me": ["zarya", "sigma", "roadhog"]
+  },
+  "zarya": {
+    "name": "Zarya",
+    "role": "Tank",
+    "tags": {
+      "brawl": 1.0, "crowd_control": 0.8, "gravity": 1.0, "spam": 0.7,
+      "tanky": 0.7, "main_damage": 0.8,
+      "weak_to_ranged": 0.5
+    },
+    "best_against": ["team", "brawl_comp"],
+    "counters_me": ["widowmaker", "pharah", "ashe"]
+  },
+  "zenyatta": {
+    "name": "Zenyatta",
+    "role": "Support",
+    "tags": {
+      "healing": 0.8, "damage_boost": 1.0, "discord": 1.0, "poke": 0.8,
+      "off_support": 1.0, "anti_healer": 0.9,
+      "weak_to_flank": 0.9, "no_self_defense": 0.8, "low_mobility": 0.9
+    },
+    "best_against": ["team", "any"],
+    "counters_me": ["genji", "tracer", "dva", "winston"]
+  },
+  "illari": {
+    "name": "Illari",
+    "role": "Support",
+    "tags": {
+      "healing": 1.0, "hitscan": 0.9, "poke": 0.8, "sniper": 0.7,
+      "off_support": 0.9, "aim_intensive": 0.7,
+      "weak_to_flank": 0.6
+    },
+    "best_against": ["team"],
+    "counters_me": ["genji", "tracer", "dva"]
+  },
+  "juno": {
+    "name": "Juno",
+    "role": "Support",
+    "tags": {
+      "mobility_boost": 1.0, "mobile": 0.9, "healing": 0.7, "speed": 1.0,
+      "orbital": 0.9, "off_support": 1.0,
+      "weak_to_flank": 0.5
+    },
+    "best_against": ["divers"],
+    "counters_me": ["genji", "tracer", "dva"]
+  },
+  "lifeweaver": {
+    "name": "Lifeweaver",
+    "role": "Support",
+    "tags": {
+      "healing": 1.0, "utility": 1.0, "peel": 0.8, "tree": 1.0,
+      "pull": 1.0, "main_support": 0.7,
+      "weak_to_flank": 0.6, "game_sense_intensive": 0.7
+    },
+    "best_against": ["team"],
+    "counters_me": ["genji", "tracer", "dva"]
+  },
+  "anran": {"name": "Anran", "role": "DPS", "tags": {"mobile": 0.8, "poke": 0.7, "burst_damage": 0.7}, "best_against": [], "counters_me": []},
+  "domina": {"name": "Domina", "role": "DPS", "tags": {"crowd_control": 0.8, "burst_damage": 0.7, "poke": 0.6}, "best_against": [], "counters_me": []},
+  "emre": {"name": "Emre", "role": "DPS", "tags": {"mobile": 0.7, "poke": 0.8, "burst_damage": 0.6}, "best_against": [], "counters_me": []},
+  "freja": {"name": "Freja", "role": "DPS", "tags": {"mobile": 0.8, "poke": 0.7, "burst_damage": 0.7}, "best_against": [], "counters_me": []},
+  "hazard": {"name": "Hazard", "role": "Tank", "tags": {"mobile": 0.8, "dive": 0.8, "tanky": 0.6}, "best_against": [], "counters_me": []},
+  "jetpackcat": {"name": "Jetpack Cat", "role": "DPS", "tags": {"mobile": 0.8, "dive": 0.8, "burst_damage": 0.7}, "best_against": [], "counters_me": []},
+  "junkerqueen": {"name": "Junker Queen", "role": "Tank", "tags": {"brawl": 0.9, "self_heal": 0.8, "tanky": 0.7, "crowd_control": 0.6}, "best_against": [], "counters_me": []},
+  "mizuki": {"name": "Mizuki", "role": "DPS", "tags": {"mobile": 0.7, "poke": 0.8, "burst_damage": 0.6}, "best_against": [], "counters_me": []},
+  "sierra": {"name": "Sierra", "role": "DPS", "tags": {"mobile": 0.7, "poke": 0.8, "burst_damage": 0.7}, "best_against": [], "counters_me": []},
+  "vendetta": {"name": "Vendetta", "role": "DPS", "tags": {"mobile": 0.8, "poke": 0.7, "burst_damage": 0.7}, "best_against": [], "counters_me": []},
+  "wuyang": {"name": "Wuyang", "role": "Support", "tags": {"healing": 0.8, "mobile": 0.7, "peel": 0.7}, "best_against": [], "counters_me": []}
+}

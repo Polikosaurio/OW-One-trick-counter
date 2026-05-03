@@ -1,0 +1,17 @@
+{
+  "heroes": [
+    "ana", "anran", "ashe", "baptiste", "bastion", "brigitte", "cassidy", "domina", "doomfist", "dva",
+    "echo", "emre", "freja", "genji", "hanzo", "hazard", "illari", "jetpackcat", "junkerqueen", "junkrat",
+    "juno", "kiriko", "lifeweaver", "lucio", "mauga", "mei", "mercy", "mizuki", "moira", "orisa",
+    "pharah", "ramattra", "reaper", "reinhardt", "roadhog", "sierra", "sigma", "sojourn", "soldier76", "sombra",
+    "symmetra", "torbjorn", "tracer", "vendetta", "venture", "widowmaker", "winston", "wreckingball", "wuyang",
+    "zarya", "zenyatta"
+  ],
+  "count": 51,
+  "roles": {
+    "Tank": ["dva", "orisa", "ramattra", "reinhardt", "roadhog", "sigma", "winston", "zarya", "wreckingball"],
+    "DPS": ["ashe", "bastion", "cassidy", "echo", "genji", "hanzo", "junkrat", "mauga", "pharah", "reaper", "sojourn", "sombra", "symmetra", "torbjorn", "tracer", "venture", "widowmaker", "soldier76"],
+    "Support": ["ana", "baptiste", "brigitte", "kiriko", "lifeweaver", "lucio", "mercy", "moira", "zenyatta", "illari", "juno"]
+  },
+  "updated": "2026-05-03"
+}
