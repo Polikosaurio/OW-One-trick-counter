@@ -400,7 +400,8 @@ class HeroSelector(ctk.CTkFrame):
         cb_mode = self.colorblind_var.get()
         show_value = self.value_var.get()
         intensity = self.intensity_var.get()
-        current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity)
+        alts_filter = self.alts_filter_var.get()
+        current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity, alts_filter)
         if current_state == self._last_update_state:
             return
         self._last_update_state = current_state
@@ -475,10 +476,13 @@ class HeroSelector(ctk.CTkFrame):
             # Get absolutely all counters sorted by score
             all_alts = db.get_all_counters(self.selected_enemy, limit=60)
             
-            # Apply "Your Role" filter if toggle is set AND we have a selected hero
-            if self.alts_filter_var.get() == "Your Role" and self.selected_your:
-                my_role = db.get_role(self.selected_your)
-                all_alts = [a for a in all_alts if a['role'] == my_role]
+            # Determine the "current role" for filtering
+            current_role = db.get_role(self.selected_your) if self.selected_your else None
+            
+            # Apply "Your Role" filter when toggle is set AND we have a role to filter by
+            if self.alts_filter_var.get() == "Your Role" and current_role:
+                all_alts = [a for a in all_alts if a['role'] == current_role]
+                self.alts_title_lbl.configure(text=f"BEST {current_role.upper()} ALTS")
             
             # Filter out the currently selected enemy and your currently selected hero
             all_alts = [a for a in all_alts if a['hero'] not in (self.selected_enemy, self.selected_your)]
@@ -505,9 +509,10 @@ class HeroSelector(ctk.CTkFrame):
             
             strong_against.sort(key=lambda x: -x['score'])
             
+            current_role = db.get_role(self.selected_your)
             if self.alts_filter_var.get() == "Your Role":
-                my_role = db.get_role(self.selected_your)
-                strong_against = [a for a in strong_against if a['role'] == my_role]
+                strong_against = [a for a in strong_against if a['role'] == current_role]
+                self.alts_title_lbl.configure(text=f"YOUR {current_role.upper()} COUNTERS")
                 
             for alt in strong_against:
                 alt_img = self.hero_images.get(alt['hero'])
