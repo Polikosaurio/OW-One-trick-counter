@@ -634,10 +634,8 @@ class HeroSelector(ctk.CTkFrame):
             
             strong_against.sort(key=lambda x: -x['score'])
             
-            current_role = db.get_role(self.selected_your)
-            if self.alts_filter_var.get() == "Your Role":
-                strong_against = [a for a in strong_against if a['role'] == current_role]
-                self.alts_title_lbl.configure(text=f"YOUR {current_role.upper()} COUNTERS")
+            # "Your Role" filter only makes sense when showing ally alternatives,
+            # not when showing enemy targets. Don't apply it here.
                 
             for alt in strong_against:
                 alt_img = self.hero_images.get(alt['hero'])
