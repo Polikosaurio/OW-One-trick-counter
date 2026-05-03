@@ -1,11 +1,46 @@
 """
-Counter Database v2.1 - Tag-based System
-Provides strategic advice based on hero tag matching.
+Counter Database v2.2 - Tag-based System with Skill Scaling
+Provides strategic advice based on hero tag matching, adjusted by player skill rank.
 Counters are scored and sorted so the best ones come first.
 """
 
 import json
 import os
+
+# Overwatch 2 Competitive Ranks
+RANK_INFO = {
+    "bronze":     {"tier": 0, "label": "Bronze"},
+    "silver":     {"tier": 1, "label": "Silver"},
+    "gold":       {"tier": 2, "label": "Gold"},
+    "platinum":   {"tier": 3, "label": "Platinum"},
+    "diamond":    {"tier": 4, "label": "Diamond"},
+    "master":     {"tier": 5, "label": "Master"},
+    "grandmaster":{"tier": 6, "label": "Grandmaster"},
+    "champion":   {"tier": 7, "label": "Champion"},
+}
+
+RANK_ORDER = list(RANK_INFO.keys())
+DEFAULT_RANK = "platinum"
+
+# Tags whose effectiveness scales with player skill rank.
+# direction="positive" = stronger at high ranks (aim-dependent, mechanical heroes)
+# direction="negative" = stronger at low ranks (mobility, unpredictable play)
+SKILL_DEPENDENT_TAGS = {
+    # Aim-dependent: benefit from good mechanics at high rank
+    "aim_intensive":    {"direction": "positive", "weight": 0.3},
+    "high_skill_ceiling": {"direction": "positive", "weight": 0.25},
+    "sniper":           {"direction": "positive", "weight": 0.2},
+    "hitscan":          {"direction": "positive", "weight": 0.15},
+    # Mobility-based: benefit from enemy tracking weakness at low rank
+    "mobile":           {"direction": "negative", "weight": 0.25},
+    "dive_capability":  {"direction": "negative", "weight": 0.2},
+    "flank":            {"direction": "negative", "weight": 0.15},
+    "escape_ability":   {"direction": "negative", "weight": 0.15},
+    # Game sense: benefit from macro understanding at high rank
+    "game_sense_intensive": {"direction": "positive", "weight": 0.2},
+    # Cooldown dependent: benefit from enemies not playing around CDs at low rank
+    "cooldown_dependent":   {"direction": "negative", "weight": 0.15},
+}
 
 
 # Maps an enemy weakness tag → the player tag that exploits it.
@@ -176,6 +211,7 @@ class CounterDB:
     _instance = None
     _heroes = None
     _roles = None
+    _rank = DEFAULT_RANK
 
     def __new__(cls):
         if cls._instance is None:
@@ -208,6 +244,47 @@ class CounterDB:
                 return role
         return "DPS"
 
+    def set_rank(self, rank):
+        """Set the current skill rank for matchup scaling."""
+        if rank in RANK_INFO:
+            self._rank = rank
+
+    def get_rank(self):
+        return self._rank
+
+    def _get_skill_modifier(self, hero):
+        """
+        Returns a multiplier based on hero's skill-dependent tags and current rank.
+        > 1.0 means hero benefits at current rank level
+        < 1.0 means hero is disadvantaged at current rank level
+        """
+        hero_data = self.get_hero_data(hero)
+        tags = hero_data.get("tags", {})
+        rank_tier = RANK_INFO[self._rank]["tier"]
+        max_tier = len(RANK_ORDER) - 1  # 7 for Champion
+
+        modifier = 1.0
+
+        for tag, info in SKILL_DEPENDENT_TAGS.items():
+            if tag not in tags:
+                continue
+            tag_weight = tags[tag]
+            direction = info["direction"]
+            strength = info["weight"]
+
+            if direction == "positive":
+                # Aim/mechanical heroes: stronger at high rank
+                # Bronze (tier 0) → 0.7, Champion (tier 7) → 1.3
+                rank_factor = 0.7 + (0.6 * rank_tier / max_tier)
+            else:
+                # Mobility heroes: stronger at low rank
+                # Bronze (tier 0) → 1.3, Champion (tier 7) → 0.7
+                rank_factor = 1.3 - (0.6 * rank_tier / max_tier)
+
+            modifier += tag_weight * strength * (rank_factor - 1.0)
+
+        return modifier
+
     # ------------------------------------------------------------------
     # Scoring
     # ------------------------------------------------------------------
@@ -216,6 +293,7 @@ class CounterDB:
         """
         Returns a numeric score (higher = better counter).
         Based on how many of the enemy's weaknesses the player hero covers.
+        Skill rank modifiers are applied to both heroes.
         """
         enemy = self.get_hero_data(enemy_hero)
         my_data = self.get_hero_data(my_hero)
@@ -225,16 +303,22 @@ class CounterDB:
         enemy_tags = enemy.get("tags", {})
         my_tags = my_data.get("tags", {})
 
+        # Skill modifiers for both heroes
+        enemy_mod = self._get_skill_modifier(enemy_hero)
+        my_mod = self._get_skill_modifier(my_hero)
+
         score = 0.0
         for tag, weight in enemy_tags.items():
             if tag in TAG_OPPOSITES:
                 opposite = TAG_OPPOSITES[tag]
                 my_val = my_tags.get(opposite, 0.0)
-                score += weight * my_val  # both sides contribute
+                # Enemy weakness is scaled by their skill modifier
+                # My counter strength is scaled by my skill modifier
+                score += (weight * enemy_mod) * (my_val * my_mod)
 
         # Bonus if the enemy explicitly lists my_hero in their counters_me
         if my_hero in [c.strip().lower() for c in enemy.get("counters_me", [])]:
-            score += 1.0
+            score += 1.0 * my_mod
 
         return score
 

@@ -128,6 +128,22 @@ class HeroSelector(ctk.CTkFrame):
             font=ctk.CTkFont(size=10), switch_width=30, switch_height=15
         ).pack(side="right", padx=5)
         
+        # Skill Rank Selector
+        from core.counters import RANK_INFO, DEFAULT_RANK
+        rank_labels = [RANK_INFO[r]["label"] for r in RANK_INFO]
+        self.skill_rank_var = ctk.StringVar(value=RANK_INFO[DEFAULT_RANK]["label"])
+        self.skill_rank_combo = ctk.CTkComboBox(
+            header_frame,
+            values=rank_labels,
+            variable=self.skill_rank_var,
+            command=self._on_rank_change,
+            width=110, height=22,
+            font=ctk.CTkFont(size=9),
+            dropdown_font=ctk.CTkFont(size=9)
+        )
+        self.skill_rank_combo.pack(side="right", padx=5)
+        ctk.CTkLabel(header_frame, text="Rank", font=ctk.CTkFont(size=9)).pack(side="right", padx=(0, 2))
+        
         self.roster_frame = ctk.CTkFrame(roster_container, fg_color="transparent")
         self.roster_frame.pack()
         self.roster_btns = {}
@@ -266,6 +282,16 @@ class HeroSelector(ctk.CTkFrame):
 
     def _switch_selections(self):
         self.selected_enemy, self.selected_your = self.selected_your, self.selected_enemy
+        self._schedule_update()
+
+    def _on_rank_change(self, value):
+        # Always schedule update; rank is applied in _update
+        from core.counters import RANK_INFO
+        if self._db:
+            for key, info in RANK_INFO.items():
+                if info["label"] == value:
+                    self._db.set_rank(key)
+                    break
         self._schedule_update()
 
     def _schedule_update(self):
@@ -512,6 +538,12 @@ class HeroSelector(ctk.CTkFrame):
         if self._db is None:
             from core.counters import CounterDB
             self._db = CounterDB()
+            # Set initial rank
+            from core.counters import RANK_INFO
+            for key, info in RANK_INFO.items():
+                if info["label"] == self.skill_rank_var.get():
+                    self._db.set_rank(key)
+                    break
         db = self._db
         
         # Early exit: skip if state hasn't changed since last render
@@ -519,7 +551,8 @@ class HeroSelector(ctk.CTkFrame):
         show_value = self.value_var.get()
         intensity = self.intensity_var.get()
         alts_filter = self.alts_filter_var.get()
-        current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity, alts_filter)
+        skill_rank = self.skill_rank_var.get()
+        current_state = (self.selected_enemy, self.selected_your, cb_mode, show_value, intensity, alts_filter, skill_rank)
         if current_state == self._last_update_state:
             return
         self._last_update_state = current_state
